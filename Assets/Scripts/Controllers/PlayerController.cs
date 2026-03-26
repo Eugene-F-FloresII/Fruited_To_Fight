@@ -1,4 +1,3 @@
-using System;
 using Collection.PlayerStateMachine;
 using Data;
 using Shared.Events;
@@ -72,7 +71,7 @@ namespace Controllers
         private void PlayerMovement()
         {
             Vector2 moveInput =  MovementInput.action.ReadValue<Vector2>();
-            _rb.linearVelocity = moveInput * CharacterConfig.CharacterSpeed;
+            _rb.linearVelocity = moveInput.normalized * CharacterConfig.CharacterSpeed;
         }
         
         private void ChosenCharacter(CharacterConfig characterConfig) => CharacterConfig = characterConfig;

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645180222611c3749bad6237d394634d, type: 3}
   m_Name: Character_Orange
   m_EditorClassIdentifier: Assembly-CSharp::Data.CharacterConfig
-  CharacterPrefab: {fileID: 2373382641894152196, guid: 9d1d6537fd2df4d4cb845c26f1d0011c, type: 3}
+  CharacterId: 0
   CharacterName: Orange
-  CharacterSpeed: 20
+  CharacterSpeed: 10
