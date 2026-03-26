@@ -1,10 +1,12 @@
 using Controllers;
+using Data;
 using UnityEngine;
 
 namespace Collection.PlayerStateMachine
 {
     public class RunningState : IState
     {
+        private CharacterConfig _characterConfig;
         private PlayerController _playerController;
         private PlayerStateMachine _playerStateMachine;
 
@@ -12,11 +14,12 @@ namespace Collection.PlayerStateMachine
         {
             _playerController = playerController;
             _playerStateMachine = playerStateMachine;
+       
         }
         
         public void Enter()
         {
-            
+            Debug.Log("Entering Running State");
         }
 
         public void Execute()
@@ -26,7 +29,7 @@ namespace Collection.PlayerStateMachine
 
         public void Exit()
         {
-            
+            Debug.Log("Exiting Running State");
         }
     }
 

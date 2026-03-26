@@ -12,7 +12,13 @@ namespace Collection.PlayerStateMachine
             _currentState = newState;
             _currentState?.Enter();
         }
-        
+
+        public IState CurrentState
+        {
+            get => _currentState;
+            set => _currentState = value;
+        }
+
         public void Execute() => _currentState?.Execute();
     }
 

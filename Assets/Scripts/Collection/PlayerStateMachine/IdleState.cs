@@ -18,20 +18,17 @@ namespace Collection.PlayerStateMachine
 
         public void Enter()
         {
-            
+            Debug.Log("Entering Idle State");
         }
 
         public void Execute()
         {
-            if (_playerController._rb.linearVelocity != Vector2.zero)
-            {
-                _playerStateMachine.ChangeState(_runningState);
-            }
+            
         }
 
         public void Exit()
         {
-            
+            Debug.Log("Exiting Idle State");
         }
     }
 

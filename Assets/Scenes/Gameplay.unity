@@ -12161,6 +12161,7 @@ GameObject:
   - component: {fileID: 901668024}
   - component: {fileID: 901668023}
   - component: {fileID: 901668025}
+  - component: {fileID: 901668026}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -12196,7 +12197,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 971863104}
   - {fileID: 2079526478}
   - {fileID: 6164460721632430031}
   m_Father: {fileID: 0}
@@ -12213,34 +12213,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b39aa6cb62bfb849a74411d4e75228e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _rb: {fileID: 971863103}
+  CharacterConfig: {fileID: 11400000, guid: 020ab314f3fece64f869897a1f2e79bd, type: 2}
+  MovementInput: {fileID: -1680190386980627800, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
+  _rb: {fileID: 901668026}
   _boxCollider: {fileID: 2079526479}
-  _movementInput: {fileID: -1680190386980627800, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
---- !u!1 &971863102
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 971863104}
-  - component: {fileID: 971863103}
-  m_Layer: 0
-  m_Name: Player_Rigidbody
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!50 &971863103
+--- !u!50 &901668026
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971863102}
+  m_GameObject: {fileID: 901668022}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -12248,7 +12232,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -12260,21 +12244,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!4 &971863104
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971863102}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 901668024}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1108899937
 GameObject:
   m_ObjectHideFlags: 0

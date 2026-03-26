@@ -1,6 +1,7 @@
 using System;
 using Collection.PlayerStateMachine;
 using Data;
+using Shared.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,11 +10,14 @@ namespace Controllers
 {
     public class PlayerController : MonoBehaviour
     {
+        [Header("Character Config")]
+        public CharacterConfig CharacterConfig;
+        public InputActionReference MovementInput;
         
         [Header("References")]
-        [SerializeField] public Rigidbody2D _rb;
+        [SerializeField] private Rigidbody2D _rb;
         [SerializeField] private BoxCollider2D _boxCollider;
-        [SerializeField] private InputActionReference _movementInput;
+        
         
         [Header("Player States")]
         private IdleState _idleState;
@@ -32,6 +36,18 @@ namespace Controllers
         private void Start()
         {
             _playerStateMachine.ChangeState(_idleState);
+            MovementInput.action.Enable();
+        }
+
+        private void OnEnable()
+        {
+            Events_Character.OnCharacterChosen += ChosenCharacter;
+            MovementInput.action.Disable();
+        }
+
+        private void OnDisable()
+        {
+            Events_Character.OnCharacterChosen -= ChosenCharacter;
         }
 
         private void Update()
@@ -40,17 +56,27 @@ namespace Controllers
             TransitionHandler();
         }
 
+        private void FixedUpdate()
+        { 
+            PlayerMovement();
+        }
+
         private void TransitionHandler()
         {
-            if (_rb.linearVelocity != Vector2.zero)
-            {
+            if (_rb.linearVelocity != Vector2.zero && _playerStateMachine.CurrentState != _runningState)
                 _playerStateMachine.ChangeState(_runningState);
-            }
-            else if (_rb.linearVelocity ==  Vector2.zero)
-            {
+            else if (_rb.linearVelocity == Vector2.zero && _playerStateMachine.CurrentState != _idleState)
                 _playerStateMachine.ChangeState(_idleState);
-            }
         }
+
+        private void PlayerMovement()
+        {
+            Vector2 moveInput =  MovementInput.action.ReadValue<Vector2>();
+            _rb.linearVelocity = moveInput * CharacterConfig.CharacterSpeed;
+        }
+        
+        private void ChosenCharacter(CharacterConfig characterConfig) => CharacterConfig = characterConfig;
+        
     }
 }
 
