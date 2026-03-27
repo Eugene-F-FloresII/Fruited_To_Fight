@@ -1,5 +1,6 @@
 using Collection.PlayerStateMachine;
 using Data;
+using Gameplay;
 using Shared.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +15,7 @@ namespace Controllers
         public InputActionReference MovementInput;
         
         [Header("References")]
+        [SerializeField] private PlayerCharacter _playerCharacter;
         [SerializeField] private Rigidbody2D _rb;
         [SerializeField] private BoxCollider2D _boxCollider;
         
@@ -22,31 +24,32 @@ namespace Controllers
         private IdleState _idleState;
         private RunningState _runningState;
         private PlayerStateMachine _playerStateMachine;
+        
+        private Vector2 _moveDirection;
 
-
-        private void Awake()
-        {
-            _playerStateMachine = new PlayerStateMachine();
-            _runningState = new RunningState(this, _playerStateMachine);
-            _idleState = new IdleState(this, _playerStateMachine);
-            
-        }
 
         private void Start()
         {
+            _playerStateMachine = new PlayerStateMachine();
+            _runningState = new RunningState(this, _playerStateMachine,
+                _playerCharacter.CharacterAnimator,
+                _moveDirection);
+            _idleState = new IdleState(this, _playerStateMachine);
+            
             _playerStateMachine.ChangeState(_idleState);
-            MovementInput.action.Enable();
+           
         }
 
         private void OnEnable()
         {
             Events_Character.OnCharacterChosen += ChosenCharacter;
-            MovementInput.action.Disable();
+            MovementInput.action.Enable();
         }
 
         private void OnDisable()
         {
             Events_Character.OnCharacterChosen -= ChosenCharacter;
+            MovementInput.action.Disable();
         }
 
         private void Update()
@@ -63,14 +66,23 @@ namespace Controllers
         private void TransitionHandler()
         {
             if (_rb.linearVelocity != Vector2.zero && _playerStateMachine.CurrentState != _runningState)
+            {
                 _playerStateMachine.ChangeState(_runningState);
+            }
+                
             else if (_rb.linearVelocity == Vector2.zero && _playerStateMachine.CurrentState != _idleState)
+            {
                 _playerStateMachine.ChangeState(_idleState);
+            }
         }
 
         private void PlayerMovement()
         {
             Vector2 moveInput =  MovementInput.action.ReadValue<Vector2>();
+            _moveDirection = moveInput.normalized;
+            
+            _playerCharacter.CharacterAnimator.SetFloat("VelocityX", _moveDirection.x);
+            _playerCharacter.CharacterAnimator.SetFloat("VelocityY", _moveDirection.y);
             _rb.linearVelocity = moveInput.normalized * CharacterConfig.CharacterSpeed;
         }
         

@@ -9,27 +9,32 @@ namespace Collection.PlayerStateMachine
         private CharacterConfig _characterConfig;
         private PlayerController _playerController;
         private PlayerStateMachine _playerStateMachine;
+        private Animator _animator;
+        private Vector2 _moveDirection;
 
-        public RunningState(PlayerController playerController,PlayerStateMachine playerStateMachine)
+        public RunningState(PlayerController playerController,PlayerStateMachine playerStateMachine, Animator animator, Vector2 moveDirection)
         {
             _playerController = playerController;
             _playerStateMachine = playerStateMachine;
-       
+            _animator = animator;
+            _moveDirection = moveDirection;
         }
         
         public void Enter()
         {
-            Debug.Log("Entering Running State");
+            _animator.SetBool("IsMoving", true);
+            _animator.CrossFade("Movement", 0.01f);
         }
 
         public void Execute()
         {
-            
+           
         }
 
         public void Exit()
         {
-            Debug.Log("Exiting Running State");
+            _animator.SetBool("IsMoving", false);
+            _animator.CrossFade("Idle", 0.01f);
         }
     }
 

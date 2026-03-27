@@ -9,8 +9,10 @@ namespace Gameplay
     {
         [SerializeField] private CharacterConfig _characterConfig;
         [SerializeField] private List<GameObject> _characters;
+        
+        public Animator CharacterAnimator;
 
-        private void Start()
+        private void Awake()
         {
             foreach (GameObject character in _characters)
             {
@@ -18,6 +20,11 @@ namespace Gameplay
             }
             
             _characters[_characterConfig.CharacterId].SetActive(true);
+            
+            if (_characters[_characterConfig.CharacterId].TryGetComponent(out Animator animator))
+            {
+                CharacterAnimator = animator;
+            }
         }
 
         private void OnEnable()

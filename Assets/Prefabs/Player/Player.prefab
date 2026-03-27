@@ -143,6 +143,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   CharacterConfig: {fileID: 11400000, guid: 020ab314f3fece64f869897a1f2e79bd, type: 2}
   MovementInput: {fileID: -1680190386980627800, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
+  _playerCharacter: {fileID: 3127359511337143219}
+  _characterAnimator: {fileID: 0}
   _rb: {fileID: 1999794825571847956}
   _boxCollider: {fileID: 513007265146019826}
 --- !u!50 &1999794825571847956
