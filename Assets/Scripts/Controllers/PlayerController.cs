@@ -31,9 +31,7 @@ namespace Controllers
         private void Start()
         {
             _playerStateMachine = new PlayerStateMachine();
-            _runningState = new RunningState(this, _playerStateMachine,
-                _playerCharacter.CharacterAnimator,
-                _moveDirection);
+            _runningState = new RunningState(this, _playerStateMachine, _playerCharacter.CharacterAnimator,_moveDirection);
             _idleState = new IdleState(this, _playerStateMachine);
             
             _playerStateMachine.ChangeState(_idleState);
