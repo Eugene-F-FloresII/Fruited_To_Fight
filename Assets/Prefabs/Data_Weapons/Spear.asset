@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a48276087a0ef4c81d7cec4d0e92fb, type: 3}
   m_Name: Spear
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponConfig
+  WeaponPrefab: {fileID: 0}
   WeaponID: 0
   WeaponName: Spear
-  WeaponDamage: 0
-  WeaponAtkSpeed: 0
+  WeaponHoming: 1
+  WeaponRange: 6
+  WeaponDamage: 100
+  WeaponPierce: 5
+  WeaponSpeed: 20
+  WeaponAtkSpeed: 0.3
+  WeaponKnockback: 0

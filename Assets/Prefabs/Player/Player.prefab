@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8057373900752904030}
   - component: {fileID: 513007265146019826}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player_Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,10 +45,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 384
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 3127359511337143219}
   - component: {fileID: 6118030093309609748}
   - component: {fileID: 1999794825571847956}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1001 &3841182250214801595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -230,6 +230,10 @@ PrefabInstance:
     - target: {fileID: 4951161623196988664, guid: 97813bd3a29d84e4fba57f4447ded630, type: 3}
       propertyPath: m_Name
       value: Weapon_Hands_Spear
+      objectReference: {fileID: 0}
+    - target: {fileID: 7266486815899890568, guid: 97813bd3a29d84e4fba57f4447ded630, type: 3}
+      propertyPath: _weaponInHand
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

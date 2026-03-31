@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 8219122852226264418}
   - component: {fileID: 1779643901948791470}
   - component: {fileID: 5904125695011734709}
-  m_Layer: 0
+  - component: {fileID: 2710715450788840562}
+  m_Layer: 6
   m_Name: Enemy_RottedOrange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,6 +110,8 @@ MonoBehaviour:
   _enemyConfig: {fileID: 11400000, guid: 04554a6bf8316f744aa06448316d675b, type: 2}
   _playerController: {fileID: 0}
   _animator: {fileID: 1779643901948791470}
+  _hitMaterial: {fileID: 2100000, guid: f6fc82d52acb33e4f93cf7004c6be449, type: 2}
+  _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!95 &1779643901948791470
 Animator:
   serializedVersion: 7
@@ -144,7 +147,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -161,7 +164,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -177,3 +180,30 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.3145584, y: 0.2612463}
   m_EdgeRadius: 0
+--- !u!50 &2710715450788840562
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191412059391474361}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 100
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
