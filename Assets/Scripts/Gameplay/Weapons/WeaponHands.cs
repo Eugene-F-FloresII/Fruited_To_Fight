@@ -4,28 +4,43 @@ using System.Threading;
 using Controllers;
 using Data;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+
 
 namespace Gameplay.Weapons
 {
     public class WeaponHands : MonoBehaviour
     {
+        [Header("Weapon Config")]
         [SerializeField] private WeaponConfig _weaponConfig;
-        [SerializeField] private GameObject _weaponPrefab;
-        [SerializeField] private float _projectileRotationOffset = -90f;
         
+        [Header("Enemies in Range")]
         [SerializeField] private List<EnemyController> _enemies = new();
-        [SerializeField] private CircleCollider2D _circleCollider2D;
         
+        [Header("Object Pooling Settings")]
+        [SerializeField] private List<GameObject> _pooledObjects;
+        [SerializeField] private GameObject _pooledProjectile;
+        [SerializeField] private Transform _pooledTransform;
+        
+        private CircleCollider2D _circleCollider2D;
         private CancellationTokenSource _attackCts;
-
+        
+        private int _amountToPool;
         private float _currentAtkSpeed;
         private float _currentRange;
+        private readonly float _projectileRotationOffset = -90f;
+        
         private void Awake()
         {
             _enemies ??= new List<EnemyController>();
             UpdateWeaponStats();
         }
-        
+
+        private void Start()
+        {
+            PoolObjects();
+        }
+
         private void OnDestroy()
         {
             StopAttackLoop();
@@ -44,10 +59,11 @@ namespace Gameplay.Weapons
                 {
                     StopAttackLoop();
                     _attackCts = new CancellationTokenSource();
-                    _ = AttackEnemyAsync(_attackCts.Token);
+                    AttackEnemyAsync(_attackCts.Token).Forget();
                 }
             }
         }
+        
 
         private void OnTriggerExit2D(Collider2D other)
         {
@@ -64,9 +80,26 @@ namespace Gameplay.Weapons
 
         private void UpdateWeaponStats()
         {
-            _currentRange = _weaponConfig.WeaponRange;
-            _circleCollider2D.radius = _currentRange;
+            _pooledProjectile = _weaponConfig.WeaponPrefab;
             _currentAtkSpeed = _weaponConfig.WeaponAtkSpeed;
+            _currentRange = _weaponConfig.WeaponRange;
+            _amountToPool = _weaponConfig.WeaponAmountToPool;
+            
+            _circleCollider2D = GetComponent<CircleCollider2D>();
+            _circleCollider2D.radius = _currentRange;
+        }
+
+        private void PoolObjects()
+        {
+            _pooledObjects = new List<GameObject>();
+            GameObject pool;
+
+            for (int i = 0; i < _amountToPool; i++)
+            {
+                pool = Instantiate(_pooledProjectile, _pooledTransform);
+                pool.SetActive(false);
+                _pooledObjects.Add(pool);
+            }
         }
 
         private void StopAttackLoop()
@@ -76,12 +109,30 @@ namespace Gameplay.Weapons
                 return;
             }
 
-            _attackCts.Cancel();
-            _attackCts.Dispose();
+            _attackCts?.Cancel();
+            _attackCts?.Dispose();
             _attackCts = null;
         }
 
-        private async Awaitable AttackEnemyAsync(CancellationToken token)
+        public GameObject GetPooledObject()
+        {
+            if (_pooledObjects == null || _pooledObjects.Count == 0)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < _pooledObjects.Count; i++)
+            {
+                if (_pooledObjects[i] != null && !_pooledObjects[i].activeInHierarchy)
+                {
+                    return _pooledObjects[i];
+                }
+            }
+
+            return null;
+        }
+
+        private async UniTask AttackEnemyAsync(CancellationToken token)
         {
             try
             {
@@ -105,20 +156,27 @@ namespace Gameplay.Weapons
                     Vector2 direction = target.transform.position - transform.position;
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     Quaternion rotation = Quaternion.Euler(0, 0, angle + _projectileRotationOffset);
+                    
+                    GameObject spear = GetPooledObject();
 
-                    GameObject spawnedSpear = Instantiate(_weaponPrefab, transform.position, rotation);
-
-                    if (spawnedSpear.TryGetComponent(out Rigidbody2D rb))
+                    if (spear != null)
                     {
-                        rb.linearVelocity = direction.normalized * _weaponConfig.WeaponSpeed;
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"{nameof(WeaponHands)} spawned projectile without Rigidbody2D.", this);
-                        Destroy(spawnedSpear);
-                    }
+                        spear.transform.position = transform.position;
+                        spear.transform.rotation = rotation;
+                        spear.SetActive(true);
 
-                    await Awaitable.WaitForSecondsAsync(Mathf.Max(0.01f, _currentAtkSpeed), token);
+                        if (spear.TryGetComponent(out Rigidbody2D rb))
+                        {
+                            rb.linearVelocity = direction.normalized * _weaponConfig.WeaponSpeed;
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"{nameof(WeaponHands)} spawned projectile without Rigidbody2D.", this);
+                            spear.SetActive(false);
+                        }
+                    }
+                    
+                    await UniTask.Delay(TimeSpan.FromSeconds(Mathf.Max(0.01f, _currentAtkSpeed)), cancellationToken: token);
                 }
             }
             catch (OperationCanceledException)

@@ -12228,9 +12228,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad299783a5f188b469b43206933c447c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.EnemySpawnManager
+  _enemyConfig: {fileID: 11400000, guid: 04554a6bf8316f744aa06448316d675b, type: 2}
   _enemyPrefab: {fileID: 8219122852226264418, guid: 0ab585daf5c1de142bba809ad7769e7d, type: 3}
   _playerController: {fileID: 901668026}
   _camera: {fileID: 519420031}
+  _pooledRottenOrange: {fileID: 0}
+  _pooledRottenOrangesTransform: {fileID: 1755282328}
+  _enemiesToSpawn: 20
 --- !u!4 &919370835
 Transform:
   m_ObjectHideFlags: 0
@@ -12396,7 +12400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1755282328}
   m_Layer: 0
-  m_Name: RottedMangoes
+  m_Name: RottedOranges
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

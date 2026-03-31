@@ -2,13 +2,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Data;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace Controllers
 {
     public class EnemyController : MonoBehaviour
     {
+        [Header("Enemy Config")]
         [SerializeField] private EnemyConfig _enemyConfig;
         
+        [Header("Enemy References")]
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private Animator _animator;
         
@@ -19,11 +22,23 @@ namespace Controllers
         private SpriteRenderer _spriteRenderer;
         private float _currentHealth;
         private float _currentSpeed;
+        private float _playerPosX;
+        private float _playerPosY;
 
         private CancellationTokenSource _hitEffectCts;
-        private void Awake()
+        
+        private readonly string _velocityX = "VelocityX";
+        private readonly string _velocityY = "VelocityY";
+
+        private void OnEnable()
         {
             UpdateEnemyStats();
+        }
+
+        private void OnDisable()
+        {
+            _hitEffectCts?.Cancel();
+            _hitEffectCts?.Dispose();
         }
 
         private void FixedUpdate()
@@ -35,11 +50,12 @@ namespace Controllers
         {
             _currentHealth -= damage;
             
-            HitEffect();
+            _hitEffectCts = new CancellationTokenSource();
+            HitEffect(_hitEffectCts.Token).Forget();
 
             if (_currentHealth <= 0)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
 
@@ -47,11 +63,11 @@ namespace Controllers
 
         private void ChasePlayer()
         {
-            var Xpos = _playerController.transform.position.x;
-            var Ypos = _playerController.transform.position.y;
+            _playerPosX = _playerController.transform.position.x;
+            _playerPosY = _playerController.transform.position.y;
             
-            _animator.SetFloat("VelocityX", Xpos);
-            _animator.SetFloat("VelocityY", Ypos);
+            _animator.SetFloat(_velocityX, _playerPosX);
+            _animator.SetFloat(_velocityY, _playerPosY);
             
             
             gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, _playerController.transform.position, _currentSpeed * Time.deltaTime);
@@ -61,20 +77,17 @@ namespace Controllers
         {
             _currentHealth = _enemyConfig.EnemyHealth;
             _currentSpeed = _enemyConfig.EnemyMoveSpeed;
-            _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        async void HitEffect()
+        private async UniTask HitEffect(CancellationToken token)
         {
             if (_hitMaterial != null)
             {
-                _hitEffectCts?.Cancel();
-                _hitEffectCts = new CancellationTokenSource();
-
                 try
                 {
                     _spriteRenderer.material = _hitMaterial;
-                    await Task.Delay(100, _hitEffectCts.Token);
+                    await UniTask.Delay(150, cancellationToken: token);
                     _spriteRenderer.material = _defaultMaterial;
                 }
                 catch (MissingReferenceException)

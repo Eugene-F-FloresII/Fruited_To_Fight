@@ -124,6 +124,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2609973744302392053}
+  - {fileID: 3964961008253599873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6883880016600152331
@@ -234,7 +235,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.WeaponHands
   _weaponConfig: {fileID: 11400000, guid: bc3223387b63c8c4b9fd3200fe413aa9, type: 2}
-  _weaponPrefab: {fileID: 7993034772272472718, guid: 250673e2722374d468906a62733aa63f, type: 3}
-  _projectileRotationOffset: -90
   _enemies: []
-  _circleCollider2D: {fileID: 1501303039299796727}
+  _pooledObjects: []
+  _pooledProjectile: {fileID: 0}
+  _pooledTransform: {fileID: 3964961008253599873}
+--- !u!1 &8475770763074406319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3964961008253599873}
+  m_Layer: 7
+  m_Name: PooledProjectiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3964961008253599873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475770763074406319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3085726764258735245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

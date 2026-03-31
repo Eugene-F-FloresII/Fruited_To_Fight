@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using Controllers;
+using Cysharp.Threading.Tasks;
 using Data;
-using Obvious.Soap;
 using UnityEngine;
 
 namespace Gameplay.Weapons
@@ -11,30 +11,52 @@ namespace Gameplay.Weapons
     {
         [Header("Weapon Config")]
         [SerializeField] private WeaponConfig _weaponConfig;
-
-
+        
         [Header("Weapon References")] 
         [SerializeField] private WeaponTriggerHoming _weaponTriggerHoming;
         
         private int _currentPierce;
-        private readonly float _projectileRotationOffset = -90f;
         private float _currentDamage;
         private float _currentSpeed;
         private bool _canHome;
         private Rigidbody2D _weaponRb;
         
+        private const float ProjectileRotationOffset = -90f;
 
         private CancellationTokenSource _despawnCts;
         
         
-        private async void Awake()
+        private void Awake()
         {
-           UpdateWeaponStats();
-           _despawnCts = new CancellationTokenSource();
-           await DespawnSpear(_despawnCts.Token);
+            _weaponRb = GetComponent<Rigidbody2D>();
+        }
+
+        private void OnEnable()
+        {
+            UpdateWeaponStats();
+
+            if (_weaponRb != null)
+            {
+                _weaponRb.linearVelocity = Vector2.zero;
+                _weaponRb.angularVelocity = 0f;
+            }
+
+            StopDespawnTimer();
+            _despawnCts = new CancellationTokenSource();
+            DespawnSpear(_despawnCts.Token).Forget();
+        }
+
+        private void OnDisable()
+        {
+            StopDespawnTimer();
+
+            if (_weaponRb != null)
+            {
+                _weaponRb.linearVelocity = Vector2.zero;
+                _weaponRb.angularVelocity = 0f;
+            }
         }
         
-
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out EnemyController enemy))
@@ -45,8 +67,7 @@ namespace Gameplay.Weapons
                 
                 if (_currentPierce <= 0)
                 {
-                    _despawnCts?.Cancel();
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                 }
             }
         }
@@ -57,7 +78,18 @@ namespace Gameplay.Weapons
             _currentPierce = _weaponConfig.WeaponPierce;
             _currentSpeed = _weaponConfig.WeaponSpeed;
             _canHome = _weaponConfig.WeaponHoming;
-            _weaponRb = GetComponent<Rigidbody2D>();
+        }
+
+        private void StopDespawnTimer()
+        {
+            if (_despawnCts == null)
+            {
+                return;
+            }
+
+            _despawnCts.Cancel();
+            _despawnCts.Dispose();
+            _despawnCts = null;
         }
         
         private void OnPierceValueChanged()
@@ -69,7 +101,7 @@ namespace Gameplay.Weapons
                 
                 Vector2 direction = enemy.transform.position - transform.position;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                Quaternion rotation = Quaternion.Euler(0, 0, angle + _projectileRotationOffset);
+                Quaternion rotation = Quaternion.Euler(0, 0, angle + ProjectileRotationOffset);
                 
                 _weaponRb.linearVelocity = direction.normalized * _currentSpeed;
                 gameObject.transform.rotation = rotation;
@@ -77,18 +109,16 @@ namespace Gameplay.Weapons
             
         }
         
-        async Awaitable DespawnSpear(CancellationToken token)
+        private async UniTask DespawnSpear(CancellationToken token)
         {
             try
             {
-                await Awaitable.WaitForSecondsAsync(5,  token);
-                Destroy(gameObject);
-                Debug.Log("Spear despawned after timeout.");
+                await UniTask.Delay(TimeSpan.FromSeconds(3.5), cancellationToken: token);
+                gameObject.SetActive(false);
 
             }
             catch (OperationCanceledException)
             {
-                Debug.Log("Spawn despawn cancelled");
             }
         }
     }

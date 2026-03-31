@@ -9,6 +9,7 @@ namespace Data
         [Header("Weapon Settings")]
         public GameObject WeaponPrefab;
         public int WeaponID;
+        public int WeaponAmountToPool;
         public string WeaponName;
         public bool WeaponHoming;
         
