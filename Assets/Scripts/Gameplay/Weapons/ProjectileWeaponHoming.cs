@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Gameplay.Weapons
 {
-    public class WeaponTriggerHoming : MonoBehaviour
+    public class ProjectileWeaponHoming : MonoBehaviour
     {
         [SerializeField] private WeaponConfig _weaponConfig;
         

@@ -16,10 +16,10 @@ namespace Controllers
         [SerializeField] private Animator _animator;
         
         [Header("Material References")]
-        [SerializeField] private Material _hitMaterial;
-        [SerializeField] private Material _defaultMaterial;
+        [SerializeField] protected Material _hitMaterial;
+        [SerializeField] protected Material _defaultMaterial;
         
-        private SpriteRenderer _spriteRenderer;
+        protected SpriteRenderer SpriteRenderer;
         private float _currentHealth;
         private float _currentSpeed;
         private float _playerPosX;
@@ -40,7 +40,7 @@ namespace Controllers
             _hitEffectCts?.Cancel();
             _hitEffectCts?.Dispose();
 
-            _spriteRenderer.material = _defaultMaterial;
+            SpriteRenderer.material = _defaultMaterial;
         }
 
         private void FixedUpdate()
@@ -79,18 +79,18 @@ namespace Controllers
         {
             _currentHealth = _enemyConfig.EnemyHealth;
             _currentSpeed = _enemyConfig.EnemyMoveSpeed;
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            SpriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        private async UniTask HitEffect(CancellationToken token)
+        protected virtual async UniTask HitEffect(CancellationToken token)
         {
             if (_hitMaterial != null)
             {
                 try
                 {
-                    _spriteRenderer.material = _hitMaterial;
+                    SpriteRenderer.material = _hitMaterial;
                     await UniTask.Delay(150, cancellationToken: token);
-                    _spriteRenderer.material = _defaultMaterial;
+                    SpriteRenderer.material = _defaultMaterial;
                 }
                 catch (MissingReferenceException)
                 {

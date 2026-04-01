@@ -12229,7 +12229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.EnemySpawnManager
   _enemyConfig: {fileID: 11400000, guid: 04554a6bf8316f744aa06448316d675b, type: 2}
-  _enemyPrefab: {fileID: 8219122852226264418, guid: 0ab585daf5c1de142bba809ad7769e7d, type: 3}
   _playerController: {fileID: 901668026}
   _camera: {fileID: 519420031}
   _pooledRottenOrange: {fileID: 0}
@@ -12549,7 +12548,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8212474054702347331, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}

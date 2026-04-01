@@ -400,7 +400,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4816951564546313339}
-  - component: {fileID: 4438720036882165969}
+  - component: {fileID: 8642570435922343317}
   - component: {fileID: 6516983300907075425}
   m_Layer: 0
   m_Name: Spear
@@ -427,7 +427,7 @@ Transform:
   - {fileID: 2379061955907451291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4438720036882165969
+--- !u!114 &8642570435922343317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -436,12 +436,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7903187229947716330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6afbf76e5cd8cf2499e403c33749fce6, type: 3}
+  m_Script: {fileID: 11500000, guid: 68b2a059244440f43a8a202d3543542e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.WeaponSpear
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.Spear
   _weaponConfig: {fileID: 11400000, guid: bc3223387b63c8c4b9fd3200fe413aa9, type: 2}
-  _weaponTriggerHoming: {fileID: 7815907882579398864}
+  ProjectileWeaponHoming: {fileID: 7815907882579398864}
   _weaponTriggerRb: {fileID: 575762476540075523}
+  _homingTurnSpeed: 540
+  _retargetInterval: 0.08
 --- !u!50 &6516983300907075425
 Rigidbody2D:
   serializedVersion: 5

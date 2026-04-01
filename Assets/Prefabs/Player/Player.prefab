@@ -112,7 +112,7 @@ Transform:
   m_Children:
   - {fileID: 8057373900752904030}
   - {fileID: 4612188857370067010}
-  - {fileID: 2277742529020982326}
+  - {fileID: 1861694988889876528}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3127359511337143219
@@ -132,7 +132,7 @@ MonoBehaviour:
   _characters:
   - {fileID: 3316362820369665144}
   _weapons:
-  - {fileID: 8212474054702347331}
+  - {fileID: 8625144105575032901}
   CharacterAnimator: {fileID: 0}
   WeaponAnimator: {fileID: 0}
 --- !u!114 &6118030093309609748
@@ -179,7 +179,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!1001 &3841182250214801595
+--- !u!1001 &3676245294492245181
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -229,26 +229,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4951161623196988664, guid: 97813bd3a29d84e4fba57f4447ded630, type: 3}
       propertyPath: m_Name
-      value: Weapon_Hands_Spear
-      objectReference: {fileID: 0}
-    - target: {fileID: 7266486815899890568, guid: 97813bd3a29d84e4fba57f4447ded630, type: 3}
-      propertyPath: _weaponInHand
-      value: 1
+      value: SpearSpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97813bd3a29d84e4fba57f4447ded630, type: 3}
---- !u!4 &2277742529020982326 stripped
+--- !u!4 &1861694988889876528 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3085726764258735245, guid: 97813bd3a29d84e4fba57f4447ded630, type: 3}
-  m_PrefabInstance: {fileID: 3841182250214801595}
+  m_PrefabInstance: {fileID: 3676245294492245181}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8212474054702347331 stripped
+--- !u!1 &8625144105575032901 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4951161623196988664, guid: 97813bd3a29d84e4fba57f4447ded630, type: 3}
-  m_PrefabInstance: {fileID: 3841182250214801595}
+  m_PrefabInstance: {fileID: 3676245294492245181}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6560713935276549897
 PrefabInstance:

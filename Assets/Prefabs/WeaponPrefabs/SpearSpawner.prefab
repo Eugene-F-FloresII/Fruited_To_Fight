@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1501303039299796727}
   - component: {fileID: 663142787010339898}
   m_Layer: 7
-  m_Name: Weapon_Hands_Spear
+  m_Name: SpearSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,7 +236,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.WeaponHands
   _weaponConfig: {fileID: 11400000, guid: bc3223387b63c8c4b9fd3200fe413aa9, type: 2}
   _enemies: []
-  _pooledObjects: []
   _pooledProjectile: {fileID: 0}
   _pooledTransform: {fileID: 3964961008253599873}
 --- !u!1 &8475770763074406319

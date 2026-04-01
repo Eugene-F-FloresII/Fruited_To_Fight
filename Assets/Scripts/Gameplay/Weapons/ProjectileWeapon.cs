@@ -7,20 +7,20 @@ using UnityEngine;
 
 namespace Gameplay.Weapons
 {
-    public class WeaponSpear : MonoBehaviour
+    public class ProjectileWeapon : MonoBehaviour
     {
         [Header("Weapon Config")]
         [SerializeField] private WeaponConfig _weaponConfig;
         
         [Header("Weapon References")] 
-        [SerializeField] private WeaponTriggerHoming _weaponTriggerHoming;
+        [SerializeField] private ProjectileWeaponHoming ProjectileWeaponHoming;
         [SerializeField] private Rigidbody2D _weaponTriggerRb;
         [SerializeField] private float _homingTurnSpeed = 540f;
         [SerializeField] private float _retargetInterval = 0.08f;
         
-        private int _currentPierce;
-        private float _currentDamage;
-        private float _currentSpeed;
+        protected int CurrentPierce;
+        protected float CurrentDamage;
+        protected float CurrentSpeed;
         private bool _canHome;
         private Rigidbody2D _weaponRb;
         private EnemyController _currentHomingTarget;
@@ -54,7 +54,7 @@ namespace Gameplay.Weapons
 
             StopDespawnTimer();
             _despawnCts = new CancellationTokenSource();
-            DespawnSpear(_despawnCts.Token).Forget();
+            DespawnProjectileWeapon(_despawnCts.Token).Forget();
         }
 
         private void OnDisable()
@@ -78,15 +78,15 @@ namespace Gameplay.Weapons
            HomingWeapon();
         }
         
-        private void OnTriggerEnter2D(Collider2D other)
+        protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out EnemyController enemy))
             { 
-                enemy.TakeDamage(_currentDamage);
-                _currentPierce--;
+                enemy.TakeDamage(CurrentDamage);
+                CurrentPierce--;
                 OnPierceValueChanged();
                 
-                if (_currentPierce <= 0)
+                if (CurrentPierce <= 0)
                 {
                     gameObject.SetActive(false);
                 }
@@ -95,9 +95,9 @@ namespace Gameplay.Weapons
 
         private void UpdateWeaponStats()
         {
-            _currentDamage = _weaponConfig.WeaponDamage;
-            _currentPierce = _weaponConfig.WeaponPierce;
-            _currentSpeed = _weaponConfig.WeaponSpeed;
+            CurrentDamage = _weaponConfig.WeaponDamage;
+            CurrentPierce = _weaponConfig.WeaponPierce;
+            CurrentSpeed = _weaponConfig.WeaponSpeed;
             _canHome = _weaponConfig.WeaponHoming;
         }
 
@@ -113,9 +113,9 @@ namespace Gameplay.Weapons
             _despawnCts = null;
         }
         
-        private void OnPierceValueChanged()
+        protected void OnPierceValueChanged()
         {
-            if (_currentPierce < _weaponConfig.WeaponPierce && _canHome)
+            if (CurrentPierce < _weaponConfig.WeaponPierce && _canHome)
             {
                 _currentHomingTarget = GetNearestEnemy();
                 _isHoming = _currentHomingTarget != null;
@@ -160,7 +160,7 @@ namespace Gameplay.Weapons
 
             _weaponRb.MoveRotation(nextRotation);
 
-            Vector2 velocity = (Vector2)(Quaternion.Euler(0f, 0f, nextRotation) * Vector3.up) * _currentSpeed;
+            Vector2 velocity = (Vector2)(Quaternion.Euler(0f, 0f, nextRotation) * Vector3.up) * CurrentSpeed;
             _weaponRb.linearVelocity = velocity;
             _weaponTriggerRb.linearVelocity = velocity;
         }
@@ -172,17 +172,17 @@ namespace Gameplay.Weapons
 
         private bool IsTargetInRangeList(EnemyController enemy)
         {
-            if (enemy == null || _weaponTriggerHoming == null || _weaponTriggerHoming.Enemies == null)
+            if (enemy == null || ProjectileWeaponHoming == null || ProjectileWeaponHoming.Enemies == null)
             {
                 return false;
             }
 
-            return _weaponTriggerHoming.Enemies.Contains(enemy);
+            return ProjectileWeaponHoming.Enemies.Contains(enemy);
         }
 
         private EnemyController GetNearestEnemy()
         {
-            if (_weaponTriggerHoming == null || _weaponTriggerHoming.Enemies == null)
+            if (ProjectileWeaponHoming == null || ProjectileWeaponHoming.Enemies == null)
             {
                 return null;
             }
@@ -191,10 +191,10 @@ namespace Gameplay.Weapons
             float nearestDistanceSqr = float.MaxValue;
             Vector2 spearPosition = _weaponRb != null ? _weaponRb.position : (Vector2)transform.position;
 
-            int enemyCount = _weaponTriggerHoming.Enemies.Count;
+            int enemyCount = ProjectileWeaponHoming.Enemies.Count;
             for (int i = 0; i < enemyCount; i++)
             {
-                EnemyController enemy = _weaponTriggerHoming.Enemies[i];
+                EnemyController enemy = ProjectileWeaponHoming.Enemies[i];
                 if (enemy == null || !enemy.gameObject.activeInHierarchy)
                 {
                     continue;
@@ -213,7 +213,7 @@ namespace Gameplay.Weapons
             return nearestEnemy;
         }
         
-        private async UniTask DespawnSpear(CancellationToken token)
+        private async UniTask DespawnProjectileWeapon(CancellationToken token)
         {
             try
             {

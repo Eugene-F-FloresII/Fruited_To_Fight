@@ -9,7 +9,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Gameplay.Weapons
 {
-    public class WeaponHands : MonoBehaviour
+    public class ProjectileSpawner : MonoBehaviour
     {
         [Header("Weapon Config")]
         [SerializeField] private WeaponConfig _weaponConfig;
@@ -30,7 +30,7 @@ namespace Gameplay.Weapons
         private float _currentRange;
         private readonly float _projectileRotationOffset = -90f;
         
-          private Queue<GameObject> _pooledObjects;
+        private Queue<GameObject> _pooledObjects;
         private void Awake()
         {
             _enemies ??= new List<EnemyController>();
@@ -177,7 +177,7 @@ namespace Gameplay.Weapons
                         }
                         else
                         {
-                            Debug.LogWarning($"{nameof(WeaponHands)} spawned projectile without Rigidbody2D.", this);
+                            Debug.LogWarning($"{nameof(ProjectileSpawner)} spawned projectile without Rigidbody2D.", this);
                             spear.SetActive(false);
                         }
                     }

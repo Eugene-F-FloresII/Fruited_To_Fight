@@ -12,7 +12,6 @@ namespace Managers
     {
         [Header("Enemy Spawn References")]
         [SerializeField] private EnemyConfig _enemyConfig;
-        [SerializeField] private EnemyController _enemyPrefab;
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private Camera _camera;
         
