@@ -18,7 +18,7 @@ namespace Gameplay.Weapons
         [SerializeField] private List<EnemyController> _enemies = new();
         
         [Header("Object Pooling Settings")]
-        [SerializeField] private List<GameObject> _pooledObjects;
+      
         [SerializeField] private GameObject _pooledProjectile;
         [SerializeField] private Transform _pooledTransform;
         
@@ -30,6 +30,7 @@ namespace Gameplay.Weapons
         private float _currentRange;
         private readonly float _projectileRotationOffset = -90f;
         
+          private Queue<GameObject> _pooledObjects;
         private void Awake()
         {
             _enemies ??= new List<EnemyController>();
@@ -91,14 +92,14 @@ namespace Gameplay.Weapons
 
         private void PoolObjects()
         {
-            _pooledObjects = new List<GameObject>();
+            _pooledObjects = new Queue<GameObject>();
             GameObject pool;
 
             for (int i = 0; i < _amountToPool; i++)
             {
                 pool = Instantiate(_pooledProjectile, _pooledTransform);
                 pool.SetActive(false);
-                _pooledObjects.Add(pool);
+                _pooledObjects.Enqueue(pool);
             }
         }
 
@@ -121,11 +122,16 @@ namespace Gameplay.Weapons
                 return null;
             }
 
-            for (int i = 0; i < _pooledObjects.Count; i++)
+            int poolSize = _pooledObjects.Count;
+
+            for (int i = 0; i < poolSize; i++)
             {
-                if (_pooledObjects[i] != null && !_pooledObjects[i].activeInHierarchy)
+                GameObject pooledObject = _pooledObjects.Dequeue();
+                _pooledObjects.Enqueue(pooledObject);
+
+                if (pooledObject != null && !pooledObject.activeInHierarchy)
                 {
-                    return _pooledObjects[i];
+                    return pooledObject;
                 }
             }
 

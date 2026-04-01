@@ -39,6 +39,8 @@ namespace Controllers
         {
             _hitEffectCts?.Cancel();
             _hitEffectCts?.Dispose();
+
+            _spriteRenderer.material = _defaultMaterial;
         }
 
         private void FixedUpdate()

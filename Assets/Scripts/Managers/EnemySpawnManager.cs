@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Controllers;
 using Data;
+using NaughtyAttributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -28,16 +29,29 @@ namespace Managers
         {
             UpdateEnemyStats();
             PoolEnemies();
-            SpawnEnemies(_enemiesToSpawn);
+            SpawnEnemies();
         }
 
         public EnemyController GetPooledEnemy()
         {
             if (_pooledEnemies.Count > 0)
             {
-                EnemyController enemy = _pooledEnemies.Dequeue();
-                enemy.gameObject.SetActive(true);
-                return enemy;
+                int poolSize = _pooledEnemies.Count;
+
+                for (int i = 0; i < poolSize; i++)
+                {
+                    EnemyController enemy = _pooledEnemies.Dequeue();
+                    _pooledEnemies.Enqueue(enemy);
+
+                    if (!enemy.gameObject.activeSelf)
+                    {
+                        enemy.gameObject.SetActive(true);
+                        return enemy;
+                    }
+                }
+
+                Debug.LogWarning("All pooled enemies are currently active");
+                return null;
             }
             
             Debug.LogWarning("No enemies left in pool");
@@ -45,19 +59,19 @@ namespace Managers
             
         }
         
-         public void SpawnEnemies(int amount)
+        [Button("Spawn Enemies")]
+         public void SpawnEnemies()
          {
-             for (int i = 0; i < amount; i++)
+             for (int i = 0; i < _enemiesToSpawn; i++)
              {
-                 EnemyController enemy = GetPooledEnemy();
-                 if (enemy != null)
-                 {
-                     enemy.gameObject.transform.position = GetEdgeSpawnPosition();
-                     enemy.gameObject.transform.rotation = Quaternion.identity;
-                     enemy.InitializePlayer(_playerController);
-                 }
-             } 
-         }
+                  EnemyController enemy = GetPooledEnemy();
+                 if (enemy == null) break;
+
+                 enemy.gameObject.transform.position = GetEdgeSpawnPosition();
+                 enemy.gameObject.transform.rotation = Quaternion.identity;
+                 enemy.InitializePlayer(_playerController);
+              } 
+          }
          
         private void PoolEnemies()
         {

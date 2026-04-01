@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Controllers;
 using Data;
@@ -16,15 +15,26 @@ namespace Gameplay.Weapons
         
         private void Awake()
         {
-            _collider = GetComponent<CircleCollider2D>();
-            _collider.radius = _weaponConfig.WeaponRange;
+           UpdateTriggerHoming();
         }
 
         private void Update()
         {
             Enemies.RemoveAll(e => e == null);
         }
-        
+
+        private void OnEnable()
+        {
+            Enemies ??= new List<EnemyController>();
+            
+            UpdateTriggerHoming();
+        }
+
+        private void OnDisable()
+        {
+            Enemies.Clear();
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out EnemyController enemy))
@@ -39,6 +49,12 @@ namespace Gameplay.Weapons
             {
                 Enemies.Remove(enemy);
             }
+        }
+
+        private void UpdateTriggerHoming()
+        {
+            _collider = GetComponent<CircleCollider2D>();
+            _collider.radius = _weaponConfig.WeaponRange;
         }
         
         

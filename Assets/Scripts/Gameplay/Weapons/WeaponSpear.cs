@@ -14,6 +14,7 @@ namespace Gameplay.Weapons
         
         [Header("Weapon References")] 
         [SerializeField] private WeaponTriggerHoming _weaponTriggerHoming;
+        [SerializeField] private Rigidbody2D _weaponTriggerRb;
         
         private int _currentPierce;
         private float _currentDamage;
@@ -37,6 +38,8 @@ namespace Gameplay.Weapons
 
             if (_weaponRb != null)
             {
+                _weaponTriggerRb.linearVelocity = Vector2.zero;
+                _weaponTriggerRb.angularVelocity = 0f;
                 _weaponRb.linearVelocity = Vector2.zero;
                 _weaponRb.angularVelocity = 0f;
             }
@@ -52,6 +55,8 @@ namespace Gameplay.Weapons
 
             if (_weaponRb != null)
             {
+                _weaponTriggerRb.linearVelocity = Vector2.zero;
+                _weaponTriggerRb.angularVelocity = 0f;
                 _weaponRb.linearVelocity = Vector2.zero;
                 _weaponRb.angularVelocity = 0f;
             }
@@ -104,6 +109,7 @@ namespace Gameplay.Weapons
                 Quaternion rotation = Quaternion.Euler(0, 0, angle + ProjectileRotationOffset);
                 
                 _weaponRb.linearVelocity = direction.normalized * _currentSpeed;
+                _weaponTriggerRb.linearVelocity = direction.normalized * _currentSpeed;
                 gameObject.transform.rotation = rotation;
             }
             
