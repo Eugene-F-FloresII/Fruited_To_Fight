@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 2992e0799de6d22478a9bbee20abcc7a
   m_SerializeEntries:
+  - m_GUID: 0094ea7dc38e5474dbf057b04c5cbbe3
+    m_Address: Assets/Prefabs/Data_Seed/Seed.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 04554a6bf8316f744aa06448316d675b
     m_Address: Assets/Prefabs/Data_Enemies/RottedOrange.asset
     m_ReadOnly: 0

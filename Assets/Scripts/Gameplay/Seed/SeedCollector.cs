@@ -11,7 +11,13 @@ namespace Gameplay.Seed
         {
             if (other.TryGetComponent(out Seed seed))
             {
+                if (!seed.gameObject.activeSelf)
+                {
+                    return;
+                }
+
                 _seedCollected.Value++;
+                seed.gameObject.SetActive(false);
             }
         }
     }

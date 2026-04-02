@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedCollectionController
   _seedsCollectedText: {fileID: 3881386331234318389}
+  _seedsCollectionText: {fileID: 2247615803508443177}
   _seedsCollected: {fileID: 11400000, guid: 4036d8a9afb68704cb37959d5bb41968, type: 2}
 --- !u!1 &507762837117199338
 GameObject:
@@ -85,7 +86,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 131, y: 0}
+  m_AnchoredPosition: {x: 150.9, y: 0}
   m_SizeDelta: {x: 212.5, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4684398120093709372

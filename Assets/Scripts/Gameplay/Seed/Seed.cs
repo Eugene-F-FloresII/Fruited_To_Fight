@@ -1,4 +1,3 @@
-using System;
 using Data;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -12,66 +11,126 @@ namespace Gameplay.Seed
         [SerializeField] private AssetReferenceT<SeedConfig> _seedConfigReference;
 
         private SeedConfig _seedConfig;
-        private float _seedSpeed ;
-        private Transform _playerTransform;
-        private bool _playerLocDetected;
+        private Rigidbody2D _seedRb;
+        private float _seedSpeed;
+        private float _seedSeekerRadius;
+        private SeedSeeker _seedSeeker;
+        private bool _isInitialized;
+        private bool _isInitializing;
+
+        private void Awake()
+        {
+            _seedRb = GetComponent<Rigidbody2D>();
+        }
 
         private void Start()
         {
-            InitializeSeed().Forget();
+            EnsureInitialized().Forget();
         }
 
         private void OnEnable()
         {
-            UpdateSeedStats();
+            EnsureInitialized().Forget();
         }
 
         private void OnDisable()
         {
-            
+            if (_seedRb != null)
+            {
+                _seedRb.linearVelocity = Vector2.zero;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_seedConfigReference.IsValid())
+            {
+                _seedConfigReference.ReleaseAsset();
+            }
         }
 
         private void FixedUpdate()
         {
             FollowPlayer();
         }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.TryGetComponent(out SeedSeeker seedSeeker))
-            {
-                _playerTransform = seedSeeker.GetPlayerLocation();
-                _playerLocDetected = true;
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (other.TryGetComponent(out SeedSeeker seedSeeker))
-            {
-                _playerTransform = seedSeeker.GetPlayerLocation();
-                _playerLocDetected = false;
-            }
-        }
         
         private void FollowPlayer()
         {
-            if (_playerTransform != null && _playerLocDetected)
+            if (!_isInitialized)
             {
-                transform.position = Vector2.MoveTowards(transform.position, _playerTransform.position, _seedSpeed);
+                return;
             }
+
+            if (_seedSeeker == null)
+            {
+                return;
+            }
+
+            Transform playerTransform = _seedSeeker.GetPlayerLocation();
+
+            if (playerTransform == null)
+            {
+                return;
+            }
+
+            Vector2 currentPosition = _seedRb != null ? _seedRb.position : (Vector2)transform.position;
+            Vector2 targetPosition = playerTransform.position;
+            float sqrDistance = (targetPosition - currentPosition).sqrMagnitude;
+            float sqrRadius = _seedSeekerRadius * _seedSeekerRadius;
+
+            if (sqrDistance > sqrRadius)
+            {
+                return;
+            }
+
+            Vector2 nextPosition = Vector2.MoveTowards(currentPosition, targetPosition, _seedSpeed * Time.fixedDeltaTime);
+
+            if (_seedRb != null)
+            {
+                _seedRb.MovePosition(nextPosition);
+                return;
+            }
+
+            transform.position = nextPosition;
         }
 
         private void UpdateSeedStats()
         {
             _seedSpeed = _seedConfig.SeedSpeed;
+            _seedSeekerRadius = _seedConfig.SeedSeekerRadius;
         }
 
-        private async UniTask InitializeSeed()
+        private async UniTask EnsureInitialized()
         {
-            _seedConfig = await _seedConfigReference.LoadAssetAsync<SeedConfig>().ToUniTask();
-            
-            UpdateSeedStats();
+            if (_isInitialized || _isInitializing)
+            {
+                return;
+            }
+
+            _isInitializing = true;
+
+            try
+            {
+                _seedConfig = await _seedConfigReference.LoadAssetAsync<SeedConfig>().ToUniTask();
+
+                if (_seedConfig == null)
+                {
+                    Debug.LogWarning($"{nameof(Seed)} failed to load SeedConfig.", this);
+                    return;
+                }
+
+                UpdateSeedStats();
+                _isInitialized = true;
+            }
+            finally
+            {
+                _isInitializing = false;
+            }
+        }
+
+        public void Initialize(SeedSeeker seedSeeker)
+        {
+            _seedSeeker = seedSeeker;
         }
     }
 

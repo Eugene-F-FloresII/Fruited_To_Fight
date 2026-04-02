@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9467c2228a5bbdc48be3a59d90aeca73, type: 3}
   m_Name: Seed
   m_EditorClassIdentifier: Assembly-CSharp::Data.SeedConfig
+  SeedPrefab: {fileID: 3468746828670860831, guid: a2a96fe261c202546b375ea43eb7f846, type: 3}
   SeedSpeed: 10
   SeedSeekerRadius: 3
   Seedpoint: 0

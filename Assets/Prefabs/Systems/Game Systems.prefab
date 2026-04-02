@@ -128,7 +128,6 @@ MonoBehaviour:
   _userInterfaceGameObjects:
   - {fileID: 7531192955288277227}
   - {fileID: 546074533609907942}
-  - {fileID: 1075653149596014664}
 --- !u!1001 &3459015735024845329
 PrefabInstance:
   m_ObjectHideFlags: 0

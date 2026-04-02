@@ -5,6 +5,7 @@ using Data;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Gameplay.Weapons;
+using Shared.Events;
 using UnityEngine.AddressableAssets;
 
 namespace Controllers
@@ -86,6 +87,7 @@ namespace Controllers
 
             if (_currentHealth <= 0)
             {
+                Events_Seed.OnEnemyDeath?.Invoke(transform);
                 gameObject.SetActive(false);
             }
         }

@@ -14,6 +14,22 @@ namespace Gameplay.Seed
         private SeedConfig _seedConfig;
         private CircleCollider2D _circleCollider2D;
         private Transform _playerTransform;
+
+        private void Awake()
+        {
+            _circleCollider2D = GetComponent<CircleCollider2D>();
+
+            if (_playerController == null)
+            {
+                _playerController = GetComponentInParent<PlayerController>();
+            }
+
+            if (_playerController != null)
+            {
+                _playerTransform = _playerController.transform;
+            }
+        }
+
         private void Start()
         {
             InitializeSeedSeeker().Forget();
@@ -26,10 +42,13 @@ namespace Gameplay.Seed
 
         private async UniTask InitializeSeedSeeker()
         {
-            _seedConfig = await _seedConfigReference.LoadAssetAsync<SeedConfig>();
-            
-            _playerController = GetComponentInParent<PlayerController>();
-            _playerTransform = _playerController.transform;
+            _seedConfig = await _seedConfigReference.LoadAssetAsync<SeedConfig>().ToUniTask();
+
+            if (_seedConfig == null || _circleCollider2D == null)
+            {
+                return;
+            }
+
             _circleCollider2D.radius = _seedConfig.SeedSeekerRadius;
         }
     }
