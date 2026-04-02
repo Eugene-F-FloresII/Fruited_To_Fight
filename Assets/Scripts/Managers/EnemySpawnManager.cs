@@ -4,31 +4,39 @@ using Controllers;
 using Data;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
 namespace Managers
 {
     public class EnemySpawnManager : MonoBehaviour
     {
-        [Header("Enemy Spawn References")]
-        [SerializeField] private EnemyConfig _enemyConfig;
+        [Header("Enemy Spawn References")] 
+        [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private Camera _camera;
         
         [Header("Enemy Oranges Settings")]
-        [SerializeField] private EnemyController _pooledRottenOrange;
-        [SerializeField] private Transform _pooledRottenOrangesTransform;
+        [SerializeField] private EnemyController _pooledEnemy;
+        [SerializeField] private Transform _pooledTransform;
         [SerializeField] private int _enemiesToSpawn;
         
         private int _enemiesAmountToPool;
-        
+        private EnemyConfig _enemyConfig;
          private Queue<EnemyController> _pooledEnemies = new();
          
         private void Start()
         {
-            UpdateEnemyStats();
-            PoolEnemies();
-            SpawnEnemies();
+            LoadEnemyConfigAsync().Forget();
+            _camera = Camera.main;
+        }
+
+        private void OnDestroy()
+        {
+            if(_enemyConfigReference.IsValid())
+            {
+                _enemyConfigReference.ReleaseAsset();
+            }
         }
 
         public EnemyController GetPooledEnemy()
@@ -79,7 +87,7 @@ namespace Managers
 
             for (int i = 0; i < _enemiesAmountToPool; i++)
             {
-                pool = Instantiate(_pooledRottenOrange, _pooledRottenOrangesTransform);
+                pool = Instantiate(_pooledEnemy, _pooledTransform);
                 pool.gameObject.SetActive(false);
                 _pooledEnemies.Enqueue(pool);
             }
@@ -88,11 +96,10 @@ namespace Managers
         private void UpdateEnemyStats()
         {
             _enemiesAmountToPool = _enemyConfig.EnemyAmountToPool;
-            _pooledRottenOrange = _enemyConfig.EnemyPrefab;
+            _pooledEnemy = _enemyConfig.EnemyPrefab;
         }
 
-        private Vector2 GetEdgeSpawnPosition() {
-            _camera = Camera.main;
+        private Vector2 GetEdgeSpawnPosition() { 
             float height = _camera.orthographicSize;
             float width = height * _camera.aspect;
             float margin = 2f;
@@ -107,6 +114,16 @@ namespace Managers
                 _ => new Vector2(camPos.x - width - margin, Random.Range(camPos.y - height - margin, camPos.y + height + margin)), // left
             };
         }
+        
+        private async UniTaskVoid LoadEnemyConfigAsync()
+        {
+            _enemyConfig = await _enemyConfigReference.LoadAssetAsync<EnemyConfig>().ToUniTask();
+    
+            UpdateEnemyStats();
+            PoolEnemies();
+            SpawnEnemies();
+        }
+
     }
 
 }

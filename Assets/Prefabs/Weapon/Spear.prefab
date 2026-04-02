@@ -442,7 +442,7 @@ MonoBehaviour:
   _weaponConfig: {fileID: 11400000, guid: bc3223387b63c8c4b9fd3200fe413aa9, type: 2}
   ProjectileWeaponHoming: {fileID: 7815907882579398864}
   _weaponTriggerRb: {fileID: 575762476540075523}
-  _homingTurnSpeed: 540
+  _homingTurnSpeed: 520
   _retargetInterval: 0.08
 --- !u!50 &6516983300907075425
 Rigidbody2D:

@@ -1,9 +1,12 @@
+using System;
+using System.Threading;
 using Collection.PlayerStateMachine;
 using Data;
 using Gameplay;
 using Shared.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cysharp.Threading.Tasks;
 
 
 namespace Controllers
@@ -26,7 +29,16 @@ namespace Controllers
         private PlayerStateMachine _playerStateMachine;
         
         private Vector2 _moveDirection;
+        private Vector2 _enemyDirection;
+        
+        private Animator _playerCharacterAnimator;
+        
+        private bool _isKnockedBack;
+        private readonly string _velocityX = "VelocityX";
+        private readonly string _velocityY = "VelocityY";
+        private readonly float _cameraShakeForce = 1f;
 
+        private CancellationTokenSource _knockBackCts;
 
         private void Start()
         {
@@ -41,6 +53,9 @@ namespace Controllers
         private void OnEnable()
         {
             Events_Character.OnCharacterChosen += ChosenCharacter;
+            
+            UpdatePlayerStats();
+            
             MovementInput.action.Enable();
         }
 
@@ -48,6 +63,9 @@ namespace Controllers
         {
             Events_Character.OnCharacterChosen -= ChosenCharacter;
             MovementInput.action.Disable();
+            
+            _knockBackCts?.Cancel();  
+            _knockBackCts?.Dispose();  
         }
 
         private void Update()
@@ -59,6 +77,19 @@ namespace Controllers
         private void FixedUpdate()
         { 
             PlayerMovement();
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            if(_isKnockedBack) return;
+            if (other.TryGetComponent(out EnemyController enemy))
+            {
+                _enemyDirection = (transform.position - enemy.transform.position).normalized;
+                
+                _knockBackCts = new CancellationTokenSource();
+                
+                PlayerKnockBack(_enemyDirection, enemy.GetKnockBackForce(), 0.5f, _knockBackCts.Token).Forget();
+            }
         }
 
         private void TransitionHandler()
@@ -76,15 +107,45 @@ namespace Controllers
 
         private void PlayerMovement()
         {
+            if(_isKnockedBack) return;
+            
             Vector2 moveInput =  MovementInput.action.ReadValue<Vector2>();
             _moveDirection = moveInput.normalized;
             
-            _playerCharacter.CharacterAnimator.SetFloat("VelocityX", _moveDirection.x);
-            _playerCharacter.CharacterAnimator.SetFloat("VelocityY", _moveDirection.y);
+            _playerCharacterAnimator.SetFloat(_velocityX, _moveDirection.x);
+            _playerCharacterAnimator.SetFloat(_velocityY, _moveDirection.y);
             _rb.linearVelocity = moveInput.normalized * CharacterConfig.CharacterSpeed;
         }
         
         private void ChosenCharacter(CharacterConfig characterConfig) => CharacterConfig = characterConfig;
+
+        private async UniTask PlayerKnockBack(Vector2 direction, float force, float duration, CancellationToken token)
+        {
+            try
+            {
+                _rb.linearVelocity = Vector2.zero;
+                _rb.AddForce(direction * force, ForceMode2D.Impulse);
+                Events_Character.RequestShake(_cameraShakeForce);
+                _isKnockedBack = true;
+                await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
+
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log("Player Knocked Back");
+                _isKnockedBack = false;
+            }
+            finally
+            {
+                _isKnockedBack = false;
+                _rb.linearVelocity = Vector2.zero;
+            }
+        }
+        
+        private void UpdatePlayerStats()
+        {
+            _playerCharacterAnimator = _playerCharacter.CharacterAnimator;
+        }
         
     }
 }

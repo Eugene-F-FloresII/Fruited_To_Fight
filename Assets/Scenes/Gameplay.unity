@@ -12183,11 +12183,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!4 &901668024 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6029804757836756755, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
-  m_PrefabInstance: {fileID: 8475182404646661433}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &901668026 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6118030093309609748, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
@@ -12228,11 +12223,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad299783a5f188b469b43206933c447c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.EnemySpawnManager
-  _enemyConfig: {fileID: 11400000, guid: 04554a6bf8316f744aa06448316d675b, type: 2}
+  _enemyConfigReference:
+    m_AssetGUID: 04554a6bf8316f744aa06448316d675b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   _playerController: {fileID: 901668026}
   _camera: {fileID: 519420031}
-  _pooledRottenOrange: {fileID: 0}
-  _pooledRottenOrangesTransform: {fileID: 1755282328}
+  _pooledEnemy: {fileID: 0}
+  _pooledTransform: {fileID: 1755282328}
   _enemiesToSpawn: 20
 --- !u!4 &919370835
 Transform:
@@ -12282,113 +12282,6 @@ Transform:
   - {fileID: 359896130}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1653429540
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1653429543}
-  - component: {fileID: 1653429542}
-  - component: {fileID: 1653429544}
-  m_Layer: 0
-  m_Name: CinemachineCamera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1653429542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653429540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
-  Priority:
-    Enabled: 0
-    m_Value: 0
-  OutputChannel: 1
-  StandbyUpdate: 2
-  m_StreamingVersion: 20241001
-  m_LegacyPriority: 0
-  Target:
-    TrackingTarget: {fileID: 901668024}
-    LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 0
-  Lens:
-    FieldOfView: 60
-    OrthographicSize: 8
-    NearClipPlane: 0.3
-    FarClipPlane: 1000
-    Dutch: 0
-    ModeOverride: 0
-    PhysicalProperties:
-      GateFit: 2
-      SensorSize: {x: 21.946, y: 16.002}
-      LensShift: {x: 0, y: 0}
-      FocusDistance: 10
-      Iso: 200
-      ShutterSpeed: 0.005
-      Aperture: 16
-      BladeCount: 5
-      Curvature: {x: 2, y: 11}
-      BarrelClipping: 0.25
-      Anamorphism: 0
-  BlendHint: 0
---- !u!4 &1653429543
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653429540}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1653429544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653429540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachinePositionComposer
-  CameraDistance: 10
-  DeadZoneDepth: 0
-  Composition:
-    ScreenPosition: {x: 0, y: 0}
-    DeadZone:
-      Enabled: 0
-      Size: {x: 0.2, y: 0.2}
-    HardLimits:
-      Enabled: 0
-      Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
-  CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 1, y: 1, z: 1}
-  Lookahead:
-    Enabled: 1
-    Time: 0
-    Smoothing: 5
-    IgnoreY: 0
 --- !u!1 &1755282327
 GameObject:
   m_ObjectHideFlags: 0
@@ -12548,8 +12441,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 8212474054702347331, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
@@ -12563,5 +12455,4 @@ SceneRoots:
   - {fileID: 8475182404646661433}
   - {fileID: 542823201}
   - {fileID: 2124369937}
-  - {fileID: 1653429543}
   - {fileID: 919370835}

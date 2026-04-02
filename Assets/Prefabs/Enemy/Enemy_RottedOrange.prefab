@@ -107,7 +107,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b5c317efc32b648b8bac6b78ad6fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Controllers.EnemyController
-  _enemyConfig: {fileID: 11400000, guid: 04554a6bf8316f744aa06448316d675b, type: 2}
+  _enemyConfigReference:
+    m_AssetGUID: 04554a6bf8316f744aa06448316d675b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   _playerController: {fileID: 0}
   _animator: {fileID: 1779643901948791470}
   _hitMaterial: {fileID: 2100000, guid: f6fc82d52acb33e4f93cf7004c6be449, type: 2}

@@ -19,3 +19,4 @@ MonoBehaviour:
   EnemyDamage: 50
   EnemyMoveSpeed: 5
   EnemyAtkSpeed: 10
+  EnemyKnockbackForce: 12

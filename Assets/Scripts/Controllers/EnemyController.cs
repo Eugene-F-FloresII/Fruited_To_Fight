@@ -1,15 +1,18 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Data;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
+using UnityEngine.AddressableAssets;
 
 namespace Controllers
 {
     public class EnemyController : MonoBehaviour
     {
         [Header("Enemy Config")]
-        [SerializeField] private EnemyConfig _enemyConfig;
+        [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
         
         [Header("Enemy References")]
         [SerializeField] private PlayerController _playerController;
@@ -20,15 +23,24 @@ namespace Controllers
         [SerializeField] protected Material _defaultMaterial;
         
         protected SpriteRenderer SpriteRenderer;
+        private EnemyConfig _enemyConfig;
+        
+        
         private float _currentHealth;
         private float _currentSpeed;
         private float _playerPosX;
         private float _playerPosY;
+        private float _currentKnockbackForce;
 
         private CancellationTokenSource _hitEffectCts;
         
         private readonly string _velocityX = "VelocityX";
         private readonly string _velocityY = "VelocityY";
+
+        private void Awake()
+        {
+            LoadEnemyConfigAsync().Forget();
+        }
 
         private void OnEnable()
         {
@@ -41,6 +53,14 @@ namespace Controllers
             _hitEffectCts?.Dispose();
 
             SpriteRenderer.material = _defaultMaterial;
+        }
+
+        private void OnDestroy()
+        {
+            if(_enemyConfigReference.IsValid())
+            {
+                _enemyConfigReference.ReleaseAsset();
+            }
         }
 
         private void FixedUpdate()
@@ -61,6 +81,11 @@ namespace Controllers
             }
         }
 
+        public float GetKnockBackForce()
+        {
+            return _currentKnockbackForce;
+        }
+
         public void InitializePlayer(PlayerController playerController) =>  _playerController = playerController; 
 
         private void ChasePlayer()
@@ -78,6 +103,7 @@ namespace Controllers
         private void UpdateEnemyStats()
         {
             _currentHealth = _enemyConfig.EnemyHealth;
+            _currentKnockbackForce = _enemyConfig.EnemyKnockbackForce;
             _currentSpeed = _enemyConfig.EnemyMoveSpeed;
             SpriteRenderer = GetComponent<SpriteRenderer>();
         }
@@ -101,6 +127,13 @@ namespace Controllers
                     Debug.Log("Entity Dead");
                 }
             }
+        }
+        
+        private async UniTaskVoid LoadEnemyConfigAsync()
+        {
+            _enemyConfig = await _enemyConfigReference.LoadAssetAsync<EnemyConfig>().ToUniTask();
+
+            UpdateEnemyStats();
         }
         
         

@@ -14,6 +14,7 @@ namespace Data
         public float EnemyDamage;
         public float EnemyMoveSpeed;
         public float EnemyAtkSpeed;
+        public float EnemyKnockbackForce;
     }
 
 }

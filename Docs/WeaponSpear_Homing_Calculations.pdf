@@ -1,0 +1,396 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [ 4 0 R 6 0 R 8 0 R ] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 1859 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 742 Td
+(# Weapon Spear Homing \\(Code-First, Math Explained\\)) Tj
+T*
+( ) Tj
+T*
+(This guide explains the homing calculations used by `WeaponSpear` in this project.) Tj
+T*
+( ) Tj
+T*
+(## 1\\) Target Direction) Tj
+T*
+( ) Tj
+T*
+(Code pattern:) Tj
+T*
+( ) Tj
+T*
+(```csharp) Tj
+T*
+(Vector2 desiredDirection = \\(Vector2\\)\\(target.transform.position - transform.position\\);) Tj
+T*
+(desiredDirection.Normalize\\(\\);) Tj
+T*
+(```) Tj
+T*
+( ) Tj
+T*
+(Math meaning:) Tj
+T*
+( ) Tj
+T*
+(- `targetPos - projectilePos` gives a vector that points from spear to enemy.) Tj
+T*
+(- Normalizing turns it into unit length \\(magnitude = 1\\), so direction is separated from speed.) Tj
+T*
+( ) Tj
+T*
+(Formula:) Tj
+T*
+( ) Tj
+T*
+(`d = \\(p_target - p_projectile\\) / |p_target - p_projectile|`) Tj
+T*
+( ) Tj
+T*
+(Why this matters:) Tj
+T*
+( ) Tj
+T*
+(- You can use the same direction for velocity and rotation, then apply speed independently.) Tj
+T*
+( ) Tj
+T*
+(## 2\\) Nearest Target Selection) Tj
+T*
+( ) Tj
+T*
+(Code pattern:) Tj
+T*
+( ) Tj
+T*
+(```csharp) Tj
+T*
+(float distanceSqr = \\(\\(Vector2\\)enemy.transform.position - currentPosition\\).sqrMagnitude;) Tj
+T*
+(if \\(distanceSqr < closestDistanceSqr\\)) Tj
+T*
+({) Tj
+T*
+(    closestDistanceSqr = distanceSqr;) Tj
+T*
+(    target = enemy;) Tj
+T*
+(}) Tj
+T*
+(```) Tj
+T*
+( ) Tj
+T*
+(Math meaning:) Tj
+T*
+( ) Tj
+T*
+(- Euclidean distance is `sqrt\\(dx^2 + dy^2\\)`.) Tj
+T*
+(- For comparison only, square root is unnecessary.) Tj
+T*
+( ) Tj
+T*
+(Formula:) Tj
+T*
+( ) Tj
+T*
+(`dist2 = dx^2 + dy^2`) Tj
+T*
+( ) Tj
+T*
+(Why use squared distance:) Tj
+T*
+( ) Tj
+T*
+(- Faster and stable for frequent checks in physics updates.) Tj
+T*
+(- Ordering is identical to actual distance because sqrt is monotonic.) Tj
+T*
+( ) Tj
+T*
+(## 3\\) Snap Steering vs Smooth Steering) Tj
+T*
+( ) Tj
+T*
+(### Snap \\(used after pierce retarget\\)) Tj
+T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 1720 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 742 Td
+( ) Tj
+T*
+(Code idea:) Tj
+T*
+( ) Tj
+T*
+(```csharp) Tj
+T*
+(nextDirection = desiredDirection;) Tj
+T*
+(```) Tj
+T*
+( ) Tj
+T*
+(- Immediately points to the selected target.) Tj
+T*
+(- Good when you want sharp retarget behavior on impact.) Tj
+T*
+( ) Tj
+T*
+(### Smooth Turn-Rate Steering \\(continuous homing\\)) Tj
+T*
+( ) Tj
+T*
+(Code pattern:) Tj
+T*
+( ) Tj
+T*
+(```csharp) Tj
+T*
+(float turnRadians = Mathf.Deg2Rad * homingTurnSpeedDegrees * deltaTime;) Tj
+T*
+(Vector2 nextDirection = Vector3.RotateTowards\\(currentDirection, desiredDirection, turnRadians, 0f\\);) Tj
+T*
+(```) Tj
+T*
+( ) Tj
+T*
+(Math meaning:) Tj
+T*
+( ) Tj
+T*
+(- You cap angular change each tick.) Tj
+T*
+(- Let `omega` be max angular speed \\(rad/s\\), `dt` be timestep.) Tj
+T*
+(- Max angle step this tick: `theta_max = omega * dt`.) Tj
+T*
+( ) Tj
+T*
+(In code:) Tj
+T*
+( ) Tj
+T*
+(- `homingTurnSpeedDegrees` is deg/s.) Tj
+T*
+(- `Mathf.Deg2Rad * homingTurnSpeedDegrees` converts to rad/s.) Tj
+T*
+(- Multiply by `deltaTime` to get allowed radians this frame.) Tj
+T*
+( ) Tj
+T*
+(Why this matters:) Tj
+T*
+( ) Tj
+T*
+(- Produces curved trajectories instead of instant snapping every frame.) Tj
+T*
+(- Gives a tunable feel: low value = wide arcs, high value = aggressive turning.) Tj
+T*
+( ) Tj
+T*
+(## 4\\) Velocity Update) Tj
+T*
+( ) Tj
+T*
+(Code pattern:) Tj
+T*
+( ) Tj
+T*
+(```csharp) Tj
+T*
+(_weaponRb.linearVelocity = nextDirection * _currentSpeed;) Tj
+T*
+(```) Tj
+T*
+( ) Tj
+T*
+(Math meaning:) Tj
+T*
+( ) Tj
+T*
+(- Velocity vector is direction multiplied by scalar speed.) Tj
+T*
+( ) Tj
+T*
+(Formula:) Tj
+T*
+( ) Tj
+T*
+(`v = d * s`) Tj
+T*
+( ) Tj
+T*
+(Where:) Tj
+T*
+( ) Tj
+T*
+(- `d` is unit direction.) Tj
+T*
+(- `s` is speed in units per second.) Tj
+T*
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 2244 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 742 Td
+( ) Tj
+T*
+(## 5\\) Rotation Update from Direction) Tj
+T*
+( ) Tj
+T*
+(Code pattern:) Tj
+T*
+( ) Tj
+T*
+(```csharp) Tj
+T*
+(float angle = Mathf.Atan2\\(nextDirection.y, nextDirection.x\\) * Mathf.Rad2Deg;) Tj
+T*
+(transform.rotation = Quaternion.Euler\\(0, 0, angle + projectileRotationOffset\\);) Tj
+T*
+(```) Tj
+T*
+( ) Tj
+T*
+(Math meaning:) Tj
+T*
+( ) Tj
+T*
+(- `atan2\\(y, x\\)` gives heading angle of vector `\\(x, y\\)`.) Tj
+T*
+(- Convert rad -> deg for Unity rotation APIs.) Tj
+T*
+(- Add sprite offset if your sprite forward axis is not +X.) Tj
+T*
+( ) Tj
+T*
+(In this project:) Tj
+T*
+( ) Tj
+T*
+(- `ProjectileRotationOffset = -90f` because spear art orientation requires correction.) Tj
+T*
+( ) Tj
+T*
+(## 6\\) Why Pooling Needed `OnTriggerStay2D`) Tj
+T*
+( ) Tj
+T*
+(When a pooled spear is re-enabled, enemies may already overlap the homing trigger.) Tj
+T*
+( ) Tj
+T*
+(- `OnTriggerEnter2D` may not fire immediately for pre-existing overlaps.) Tj
+T*
+(- `OnTriggerStay2D` guarantees overlapping enemies are tracked on subsequent physics ticks.) Tj
+T*
+( ) Tj
+T*
+(So pooling-safe target collection uses both callbacks.) Tj
+T*
+( ) Tj
+T*
+(## 7\\) Stability Guards You Should Always Keep) Tj
+T*
+( ) Tj
+T*
+(- Skip homing if target list is empty.) Tj
+T*
+(- Ignore null/inactive enemies.) Tj
+T*
+(- Ignore near-zero direction vectors before normalize.) Tj
+T*
+(- Keep list deduplicated.) Tj
+T*
+( ) Tj
+T*
+(These prevent jitter, invalid vectors, and stale pooled references.) Tj
+T*
+( ) Tj
+T*
+(## 8\\) Practical Tuning Cheat Sheet) Tj
+T*
+( ) Tj
+T*
+(- `homingTurnSpeedDegrees = 180` -> very soft turns.) Tj
+T*
+(- `homingTurnSpeedDegrees = 360` -> moderate turns.) Tj
+T*
+(- `homingTurnSpeedDegrees = 720` -> aggressive turns.) Tj
+T*
+(- `homingTurnSpeedDegrees = 1080+` -> almost snap-like.) Tj
+T*
+( ) Tj
+T*
+(Start around `540-720` and tune by feel.) Tj
+T*
+( ) Tj
+T*
+(## 9\\) Mapping to Current Code) Tj
+T*
+( ) Tj
+T*
+(- Target selection: `WeaponSpear.TryGetNearestTarget\\(...\\)`) Tj
+T*
+(- Steering: `WeaponSpear.SteerTowardsTarget\\(...\\)`) Tj
+T*
+(- Continuous homing loop: `WeaponSpear.FixedUpdate\\(\\)` -> `UpdateContinuousHoming\\(\\)`) Tj
+T*
+(- Pool-safe enemy tracking: `WeaponTriggerHoming.OnTriggerEnter2D/OnTriggerStay2D`) Tj
+T*
+ET
+endstream
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000129 00000 n 
+0000000199 00000 n 
+0000000325 00000 n 
+0000002236 00000 n 
+0000002362 00000 n 
+0000004134 00000 n 
+0000004260 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
+startxref
+6556
+%%EOF

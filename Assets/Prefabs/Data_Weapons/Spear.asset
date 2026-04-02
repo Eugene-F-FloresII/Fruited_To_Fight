@@ -21,5 +21,5 @@ MonoBehaviour:
   WeaponDamage: 45
   WeaponPierce: 5
   WeaponSpeed: 20
-  WeaponAtkSpeed: 0.3
+  WeaponAtkSpeed: 1
   WeaponKnockback: 0
