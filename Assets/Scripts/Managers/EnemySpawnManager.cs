@@ -74,11 +74,12 @@ namespace Managers
                   EnemyController enemy = GetPooledEnemy();
                  if (enemy == null) break;
 
-                 enemy.gameObject.transform.position = GetEdgeSpawnPosition();
-                 enemy.gameObject.transform.rotation = Quaternion.identity;
-                 enemy.InitializePlayer(_playerController);
-              } 
-          }
+                 var enemyTransform = enemy.gameObject.transform;
+                 enemyTransform.position = GetEdgeSpawnPosition();
+                 enemyTransform.rotation = Quaternion.identity;
+                 enemy.InitializePlayer(_playerController); 
+             } 
+         }
          
         private void PoolEnemies()
         {

@@ -133,7 +133,6 @@ namespace Controllers
             catch (OperationCanceledException)
             {
                 Debug.Log("Player Knocked Back");
-                _isKnockedBack = false;
             }
             finally
             {

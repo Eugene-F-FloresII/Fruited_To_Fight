@@ -26,6 +26,7 @@ namespace Gameplay.Weapons
         private EnemyController _currentHomingTarget;
         private bool _isHoming;
         private float _nextRetargetTime;
+        private float _currentKnockbackForce;
         
         private const float ProjectileRotationOffset = -90f;
 
@@ -40,19 +41,9 @@ namespace Gameplay.Weapons
         private void OnEnable()
         {
             UpdateWeaponStats();
-            _currentHomingTarget = null;
-            _isHoming = false;
-            _nextRetargetTime = 0f;
-
-            if (_weaponRb != null)
-            {
-                _weaponTriggerRb.linearVelocity = Vector2.zero;
-                _weaponTriggerRb.angularVelocity = 0f;
-                _weaponRb.linearVelocity = Vector2.zero;
-                _weaponRb.angularVelocity = 0f;
-            }
-
+           ProcessWeaponHoming();
             StopDespawnTimer();
+            
             _despawnCts = new CancellationTokenSource();
             DespawnProjectileWeapon(_despawnCts.Token).Forget();
         }
@@ -60,17 +51,7 @@ namespace Gameplay.Weapons
         private void OnDisable()
         {
             StopDespawnTimer();
-            _currentHomingTarget = null;
-            _isHoming = false;
-            _nextRetargetTime = 0f;
-
-            if (_weaponRb != null)
-            {
-                _weaponTriggerRb.linearVelocity = Vector2.zero;
-                _weaponTriggerRb.angularVelocity = 0f;
-                _weaponRb.linearVelocity = Vector2.zero;
-                _weaponRb.angularVelocity = 0f;
-            }
+            ProcessWeaponHoming();
         }
 
         private void FixedUpdate()
@@ -82,7 +63,7 @@ namespace Gameplay.Weapons
         {
             if (other.TryGetComponent(out EnemyController enemy))
             { 
-                enemy.TakeDamage(CurrentDamage);
+                enemy.TakeDamage(CurrentDamage, this);
                 CurrentPierce--;
                 OnPierceValueChanged();
                 
@@ -93,12 +74,33 @@ namespace Gameplay.Weapons
             }
         }
 
+        public float GetWeaponKnockback()
+        {
+            return _currentKnockbackForce;
+        }
+
         private void UpdateWeaponStats()
         {
             CurrentDamage = _weaponConfig.WeaponDamage;
             CurrentPierce = _weaponConfig.WeaponPierce;
             CurrentSpeed = _weaponConfig.WeaponSpeed;
             _canHome = _weaponConfig.WeaponHoming;
+            _currentKnockbackForce = _weaponConfig.WeaponKnockback;
+        }
+
+        private void ProcessWeaponHoming()
+        {
+            _currentHomingTarget = null;
+            _isHoming = false;
+            _nextRetargetTime = 0f;
+
+            if (_weaponRb != null)
+            {
+                _weaponTriggerRb.linearVelocity = Vector2.zero;
+                _weaponTriggerRb.angularVelocity = 0f;
+                _weaponRb.linearVelocity = Vector2.zero;
+                _weaponRb.angularVelocity = 0f;
+            }
         }
 
         private void StopDespawnTimer()

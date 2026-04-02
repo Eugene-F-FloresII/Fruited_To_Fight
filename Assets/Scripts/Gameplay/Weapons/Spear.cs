@@ -9,7 +9,7 @@ namespace Gameplay.Weapons
         {
             if (other.TryGetComponent(out EnemyController enemy))
             { 
-                enemy.TakeDamage(CurrentDamage);
+                enemy.TakeDamage(CurrentDamage, this);
                 
                 CurrentPierce--;
                 

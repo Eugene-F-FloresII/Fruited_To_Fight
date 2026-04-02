@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Data;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Gameplay.Weapons;
 using Unity.VisualScripting;
 using UnityEngine.AddressableAssets;
 
@@ -24,8 +25,11 @@ namespace Controllers
         
         protected SpriteRenderer SpriteRenderer;
         private EnemyConfig _enemyConfig;
+        private Rigidbody2D _enemyRb;
+        private Vector2 _projectileDirection;
+        private Vector2 _knockbackVelocity;
         
-        
+        private bool _isKnockedBack;
         private float _currentHealth;
         private float _currentSpeed;
         private float _playerPosX;
@@ -33,6 +37,7 @@ namespace Controllers
         private float _currentKnockbackForce;
 
         private CancellationTokenSource _hitEffectCts;
+        private CancellationTokenSource _knockbackCts;
         
         private readonly string _velocityX = "VelocityX";
         private readonly string _velocityY = "VelocityY";
@@ -49,8 +54,7 @@ namespace Controllers
 
         private void OnDisable()
         {
-            _hitEffectCts?.Cancel();
-            _hitEffectCts?.Dispose();
+            DisposeTokens();
 
             SpriteRenderer.material = _defaultMaterial;
         }
@@ -68,8 +72,14 @@ namespace Controllers
             ChasePlayer();
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, ProjectileWeapon projectile)
         {
+            _projectileDirection = (transform.position - projectile.transform.position).normalized;
+            
+            _knockbackCts =  new CancellationTokenSource();
+            
+            EnemyKnockBack(_projectileDirection, projectile.GetWeaponKnockback(), 0.3f, _knockbackCts.Token).Forget();
+            
             _currentHealth -= damage;
             
             _hitEffectCts = new CancellationTokenSource();
@@ -90,6 +100,14 @@ namespace Controllers
 
         private void ChasePlayer()
         {
+            if (_isKnockedBack)
+            {
+                // Decay knockback over time
+                _knockbackVelocity = Vector2.Lerp(_knockbackVelocity, Vector2.zero, 10f * Time.fixedDeltaTime);
+                transform.position += (Vector3)_knockbackVelocity * Time.fixedDeltaTime;
+                return;
+            }
+            
             _playerPosX = _playerController.transform.position.x;
             _playerPosY = _playerController.transform.position.y;
             
@@ -105,7 +123,17 @@ namespace Controllers
             _currentHealth = _enemyConfig.EnemyHealth;
             _currentKnockbackForce = _enemyConfig.EnemyKnockbackForce;
             _currentSpeed = _enemyConfig.EnemyMoveSpeed;
+            _enemyRb = GetComponent<Rigidbody2D>();
             SpriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        private void DisposeTokens()
+        {
+            _hitEffectCts?.Cancel();
+            _hitEffectCts?.Dispose();
+
+            _knockbackCts?.Cancel();
+            _knockbackCts?.Dispose();
         }
 
         protected virtual async UniTask HitEffect(CancellationToken token)
@@ -134,6 +162,28 @@ namespace Controllers
             _enemyConfig = await _enemyConfigReference.LoadAssetAsync<EnemyConfig>().ToUniTask();
 
             UpdateEnemyStats();
+        }
+        
+        private async UniTask EnemyKnockBack(Vector2 direction, float force, float duration, CancellationToken token)
+        {
+            try
+            {
+                _enemyRb.linearVelocity = Vector2.zero;
+                _enemyRb.AddForce(direction * force, ForceMode2D.Impulse);
+                _isKnockedBack = true;
+                await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
+
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log("Enemy Knocked Back");
+              
+            }
+            finally
+            {
+                _isKnockedBack = false;
+                _enemyRb.linearVelocity = Vector2.zero;
+            }
         }
         
         
