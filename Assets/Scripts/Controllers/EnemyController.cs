@@ -5,7 +5,6 @@ using Data;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Gameplay.Weapons;
-using Unity.VisualScripting;
 using UnityEngine.AddressableAssets;
 
 namespace Controllers
