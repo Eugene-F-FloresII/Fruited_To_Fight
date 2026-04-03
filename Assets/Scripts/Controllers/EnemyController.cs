@@ -5,6 +5,7 @@ using Data;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Gameplay.Weapons;
+using Obvious.Soap;
 using Shared.Events;
 using UnityEngine.AddressableAssets;
 
@@ -18,6 +19,7 @@ namespace Controllers
         [Header("Enemy References")]
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private Animator _animator;
+        [SerializeField] private IntVariable _enemyDefeated;
         
         [Header("Material References")]
         [SerializeField] protected Material _hitMaterial;
@@ -88,6 +90,7 @@ namespace Controllers
             if (_currentHealth <= 0)
             {
                 Events_Seed.OnEnemyDeath?.Invoke(transform);
+                _enemyDefeated.Value++;
                 gameObject.SetActive(false);
             }
         }

@@ -115,6 +115,7 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   _playerController: {fileID: 0}
   _animator: {fileID: 1779643901948791470}
+  _enemyDefeated: {fileID: 11400000, guid: ac31289e1640a6e42a0b6305f4a81922, type: 2}
   _hitMaterial: {fileID: 2100000, guid: f6fc82d52acb33e4f93cf7004c6be449, type: 2}
   _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!95 &1779643901948791470
