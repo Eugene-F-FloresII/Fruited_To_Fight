@@ -86,6 +86,7 @@ namespace Controllers
             EnemyKnockBack(_projectileDirection, projectile.GetWeaponKnockback(), 0.3f, _knockbackCts.Token).Forget();
             
             _currentHealth -= damage;
+            Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage));
             
             _hitEffectCts = new CancellationTokenSource();
             HitEffect(_hitEffectCts.Token).Forget();

@@ -7,6 +7,7 @@ namespace Shared.Events
     {
         //for testing
         public static Action<Transform> OnPlayerDetected;
+        public static Action<Vector2, int> OnEnemyHit;
     }
 
 }
