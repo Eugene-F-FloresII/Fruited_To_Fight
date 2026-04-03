@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Collection;
 using Cysharp.Threading.Tasks;
 using Controllers;
 using Data;
@@ -24,8 +26,13 @@ namespace Managers
         private int _enemiesAmountToPool;
         private EnemyConfig _enemyConfig;
          private Queue<EnemyController> _pooledEnemies = new();
-         
-        private void Start()
+
+         private void Awake()
+         {
+             ServiceLocator.Register(this);
+         }
+
+         private void Start()
         {
             LoadEnemyConfigAsync().Forget();
             _camera = Camera.main;
@@ -37,6 +44,8 @@ namespace Managers
             {
                 _enemyConfigReference.ReleaseAsset();
             }
+            
+            ServiceLocator.Unregister<EnemySpawnManager>();
         }
 
         public EnemyController GetPooledEnemy()
@@ -80,6 +89,11 @@ namespace Managers
                  enemy.InitializePlayer(_playerController); 
              } 
          }
+
+        public int GetEnemiesAmount()
+        {
+            return _enemiesAmountToPool;
+        }
          
         private void PoolEnemies()
         {
