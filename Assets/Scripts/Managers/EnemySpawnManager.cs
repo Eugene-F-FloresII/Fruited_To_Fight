@@ -24,8 +24,12 @@ namespace Managers
         [SerializeField] private int _enemiesToSpawn;
         
         private int _enemiesAmountToPool;
+        private int _totalPooledEnemies;
         private EnemyConfig _enemyConfig;
-         private Queue<EnemyController> _pooledEnemies = new();
+        private Queue<EnemyController> _pooledEnemies = new();
+        private bool _isInitialized;
+
+        public bool IsInitialized => _isInitialized;
 
          private void Awake()
          {
@@ -77,41 +81,113 @@ namespace Managers
         
         [Button("Spawn Enemies")]
          public void SpawnEnemies()
-         {
-             for (int i = 0; i < _enemiesToSpawn; i++)
-             {
-                  EnemyController enemy = GetPooledEnemy();
-                 if (enemy == null) break;
+        {
+            SpawnEnemies(_enemiesToSpawn, BuildBaseRuntimeStats());
+        }
 
-                 var enemyTransform = enemy.gameObject.transform;
-                 enemyTransform.position = GetEdgeSpawnPosition();
-                 enemyTransform.rotation = Quaternion.identity;
-                 enemy.InitializePlayer(_playerController); 
-             } 
-         }
+        public int SpawnEnemies(int enemyCount, EnemyRuntimeStats runtimeStats)
+        {
+            if (!_isInitialized)
+            {
+                Debug.LogWarning("EnemySpawnManager is not initialized yet.", this);
+                return 0;
+            }
+
+            if (_camera == null)
+            {
+                _camera = Camera.main;
+            }
+
+            if (_camera == null || _playerController == null)
+            {
+                Debug.LogWarning("EnemySpawnManager is missing camera or player reference.", this);
+                return 0;
+            }
+
+            int spawnCount = Mathf.Max(0, enemyCount);
+            EnsurePoolCapacity(spawnCount);
+
+            int spawnedEnemies = 0;
+
+            for (int i = 0; i < spawnCount; i++)
+            {
+                EnemyController enemy = GetPooledEnemy();
+                if (enemy == null)
+                {
+                    break;
+                }
+
+                Transform enemyTransform = enemy.gameObject.transform;
+                enemyTransform.position = GetEdgeSpawnPosition();
+                enemyTransform.rotation = Quaternion.identity;
+                enemy.InitializePlayer(_playerController);
+                enemy.ApplyRuntimeStats(runtimeStats);
+
+                spawnedEnemies++;
+            }
+
+            return spawnedEnemies;
+        }
 
         public int GetEnemiesAmount()
         {
-            return _enemiesAmountToPool;
+            return _enemiesToSpawn;
         }
          
         private void PoolEnemies()
         {
             _pooledEnemies = new Queue<EnemyController>();
-            EnemyController pool;
+            _totalPooledEnemies = 0;
 
             for (int i = 0; i < _enemiesAmountToPool; i++)
             {
-                pool = Instantiate(_pooledEnemy, _pooledTransform);
-                pool.gameObject.SetActive(false);
-                _pooledEnemies.Enqueue(pool);
+                CreatePooledEnemy();
             }
+        }
+
+        private void EnsurePoolCapacity(int requiredCount)
+        {
+            if (requiredCount <= _totalPooledEnemies)
+            {
+                return;
+            }
+
+            int enemiesToCreate = requiredCount - _totalPooledEnemies;
+            for (int i = 0; i < enemiesToCreate; i++)
+            {
+                CreatePooledEnemy();
+            }
+        }
+
+        private void CreatePooledEnemy()
+        {
+            EnemyController pooledEnemy = Instantiate(_pooledEnemy, _pooledTransform);
+            pooledEnemy.gameObject.SetActive(false);
+            _pooledEnemies.Enqueue(pooledEnemy);
+            _totalPooledEnemies++;
         }
         
         private void UpdateEnemyStats()
         {
             _enemiesAmountToPool = _enemyConfig.EnemyAmountToPool;
+            _enemiesToSpawn = _enemyConfig.EnemyAmountToPool;
             _pooledEnemy = _enemyConfig.EnemyPrefab;
+        }
+
+        private EnemyRuntimeStats BuildBaseRuntimeStats()
+        {
+            if (_enemyConfig == null)
+            {
+                return default;
+            }
+
+            return new EnemyRuntimeStats(
+                _enemyConfig.EnemyHealth,
+                _enemyConfig.EnemyDamage,
+                _enemyConfig.EnemyMoveSpeed,
+                _enemyConfig.EnemyAtkSpeed,
+                _enemyConfig.EnemyKnockbackForce
+            );
         }
 
         private Vector2 GetEdgeSpawnPosition() { 
@@ -136,7 +212,7 @@ namespace Managers
     
             UpdateEnemyStats();
             PoolEnemies();
-            SpawnEnemies();
+            _isInitialized = true;
         }
 
     }

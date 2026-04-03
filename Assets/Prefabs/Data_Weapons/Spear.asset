@@ -18,8 +18,8 @@ MonoBehaviour:
   WeaponName: Spear
   WeaponHoming: 1
   WeaponRange: 6
-  WeaponDamage: 45
+  WeaponDamage: 100
   WeaponPierce: 5
   WeaponSpeed: 20
-  WeaponAtkSpeed: 1
+  WeaponAtkSpeed: 0.5
   WeaponKnockback: 5

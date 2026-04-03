@@ -33,7 +33,9 @@ namespace Controllers
         
         private bool _isKnockedBack;
         private float _currentHealth;
+        private float _currentDamage;
         private float _currentSpeed;
+        private float _currentAttackSpeed;
         private float _playerPosX;
         private float _playerPosY;
         private float _currentKnockbackForce;
@@ -46,12 +48,13 @@ namespace Controllers
 
         private void Awake()
         {
+            CacheComponents();
             LoadEnemyConfigAsync().Forget();
         }
 
         private void OnEnable()
         {
-            UpdateEnemyStats();
+            ResetStatsFromConfig();
         }
 
         private void OnDisable()
@@ -100,6 +103,15 @@ namespace Controllers
             return _currentKnockbackForce;
         }
 
+        public void ApplyRuntimeStats(EnemyRuntimeStats runtimeStats)
+        {
+            _currentHealth = runtimeStats.Health;
+            _currentDamage = runtimeStats.Damage;
+            _currentSpeed = runtimeStats.MoveSpeed;
+            _currentAttackSpeed = runtimeStats.AttackSpeed;
+            _currentKnockbackForce = runtimeStats.KnockbackForce;
+        }
+
         public void InitializePlayer(PlayerController playerController) =>  _playerController = playerController; 
 
         private void ChasePlayer()
@@ -122,11 +134,22 @@ namespace Controllers
             gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, _playerController.transform.position, _currentSpeed * Time.deltaTime);
         }
 
-        private void UpdateEnemyStats()
+        private void ResetStatsFromConfig()
         {
+            if (_enemyConfig == null)
+            {
+                return;
+            }
+
             _currentHealth = _enemyConfig.EnemyHealth;
+            _currentDamage = _enemyConfig.EnemyDamage;
             _currentKnockbackForce = _enemyConfig.EnemyKnockbackForce;
             _currentSpeed = _enemyConfig.EnemyMoveSpeed;
+            _currentAttackSpeed = _enemyConfig.EnemyAtkSpeed;
+        }
+
+        private void CacheComponents()
+        {
             _enemyRb = GetComponent<Rigidbody2D>();
             SpriteRenderer = GetComponent<SpriteRenderer>();
         }
@@ -165,7 +188,7 @@ namespace Controllers
         {
             _enemyConfig = await _enemyConfigReference.LoadAssetAsync<EnemyConfig>().ToUniTask();
 
-            UpdateEnemyStats();
+            ResetStatsFromConfig();
         }
         
         private async UniTask EnemyKnockBack(Vector2 direction, float force, float duration, CancellationToken token)
