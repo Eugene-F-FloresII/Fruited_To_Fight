@@ -15,3 +15,6 @@ MonoBehaviour:
   CharacterId: 0
   CharacterName: Orange
   CharacterSpeed: 10
+  CharacterHealth: 0
+  CharacterKnockbackResistance: 6
+  CharacterArmor: 0

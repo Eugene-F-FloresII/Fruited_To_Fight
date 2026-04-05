@@ -9,7 +9,10 @@ namespace Data
         
         public string CharacterName;
         public float CharacterSpeed;
-        
+        public float CharacterHealth;
+        public float CharacterKnockbackResistance;
+        public float CharacterArmor;
+
     }
 
 }

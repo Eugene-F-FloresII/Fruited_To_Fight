@@ -22,8 +22,10 @@ namespace Controllers
         [SerializeField] private Rigidbody2D _rb;
         [SerializeField] private BoxCollider2D _boxCollider;
         
+        [Header("Player Settings")]
+        [SerializeField] private float _maxKnockbackForce = 10f;
         
-        [Header("Player States")]
+        
         private IdleState _idleState;
         private RunningState _runningState;
         private PlayerStateMachine _playerStateMachine;
@@ -88,7 +90,7 @@ namespace Controllers
                 
                 _knockBackCts = new CancellationTokenSource();
                 
-                PlayerKnockBack(_enemyDirection, enemy.GetKnockBackForce(), 0.5f, _knockBackCts.Token).Forget();
+                PlayerKnockBack(_enemyDirection, enemy.GetKnockBackForce() , enemy.GetKnockBackForce(), _knockBackCts.Token).Forget();
             }
         }
 
@@ -124,10 +126,11 @@ namespace Controllers
             try
             {
                 _rb.linearVelocity = Vector2.zero;
-                _rb.AddForce(direction * force, ForceMode2D.Impulse);
+                _rb.AddForce(direction * CalculateKnockbackForce(force), ForceMode2D.Impulse);
                 Events_Character.RequestShake(_cameraShakeForce);
+                
                 _isKnockedBack = true;
-                await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
+                await UniTask.Delay(TimeSpan.FromSeconds(CalculateKnockbackResistance(duration, CharacterConfig.CharacterKnockbackResistance)), cancellationToken: token);
 
             }
             catch (OperationCanceledException)
@@ -144,6 +147,31 @@ namespace Controllers
         private void UpdatePlayerStats()
         {
             _playerCharacterAnimator = _playerCharacter.CharacterAnimator;
+        }
+
+        private float CalculateKnockbackResistance(float maxKnockbackForce,float knockbackResistance)
+        {
+            if (maxKnockbackForce < knockbackResistance)
+            {
+                return 0.4f;
+            }
+            
+            var first = maxKnockbackForce -  knockbackResistance;
+            var second = first + (maxKnockbackForce * 0.5f);
+            var third = second / maxKnockbackForce;
+
+            return third;
+            
+        }
+
+        private float CalculateKnockbackForce(float knockbackforce)
+        {
+            if (knockbackforce > _maxKnockbackForce)
+            {
+                return _maxKnockbackForce;
+            }
+
+            return knockbackforce;
         }
         
     }
