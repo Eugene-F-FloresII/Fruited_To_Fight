@@ -1,16 +1,20 @@
+using Shared.Enums;
 using UnityEngine;
-
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Data
 {
     [CreateAssetMenu(menuName = "Data/Create Weapon Config", fileName = "WeaponConfig")]
     public class WeaponConfig : ScriptableObject
     {
-        [Header("Weapon Settings")]
+        [Header("Weapon Settings")] 
+        public AssetReferenceT<GameObject> WeaponSpawner;
         public GameObject WeaponPrefab;
-        public int WeaponID;
-        public int WeaponAmountToPool;
         public string WeaponName;
+        public int WeaponID;
+        public WeaponType WeaponType;
+        public int WeaponAmountToPool;
         public bool WeaponHoming;
         
         [Header("Weapon Statistics")]

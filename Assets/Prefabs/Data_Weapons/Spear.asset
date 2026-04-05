@@ -12,10 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a48276087a0ef4c81d7cec4d0e92fb, type: 3}
   m_Name: Spear
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponConfig
+  WeaponSpawner:
+    m_AssetGUID: 97813bd3a29d84e4fba57f4447ded630
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   WeaponPrefab: {fileID: 7903187229947716330, guid: dad15acf0d267934498d69240f441483, type: 3}
-  WeaponID: 0
-  WeaponAmountToPool: 20
   WeaponName: Spear
+  WeaponID: 0
+  WeaponType: 0
+  WeaponAmountToPool: 20
   WeaponHoming: 1
   WeaponRange: 6
   WeaponDamage: 100

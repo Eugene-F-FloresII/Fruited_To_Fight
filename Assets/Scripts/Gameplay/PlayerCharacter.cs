@@ -21,29 +21,37 @@ namespace Gameplay
 
         private void Awake()
         {
-            CharacterWeaponReady(_weaponConfig, _characterConfig);
+            CharacterWeaponReady(_characterConfig);
         }
 
         private void OnEnable()
         {
             Events_Character.OnCharacterChosen += ChosenCharacter;
+            Events_Weapons.OnSpawnedWeapon += OnSpawnedWeapon;
         }
 
+        
         private void OnDisable()
         {
             Events_Character.OnCharacterChosen -= ChosenCharacter;
+            Events_Weapons.OnSpawnedWeapon -= OnSpawnedWeapon;
         }
-
-        private void CharacterWeaponReady(WeaponConfig weaponConfig, CharacterConfig characterConfig)
+        
+        private void OnSpawnedWeapon(GameObject obj)
+        {
+            _weapons.Add(obj);
+        }
+        
+        private void CharacterWeaponReady(CharacterConfig characterConfig)
         {
             foreach (GameObject character in _characters) character.SetActive(false);
-            foreach (GameObject weapon in _weapons)  weapon.SetActive(false);
+          //  foreach (GameObject weapon in _weapons)  weapon.SetActive(false);
             
-            _weapons[weaponConfig.WeaponID].SetActive(true);
+           // _weapons[weaponConfig.WeaponID].SetActive(true);
             _characters[characterConfig.CharacterId].SetActive(true);
             
             if (_characters[characterConfig.CharacterId].TryGetComponent(out Animator characterAnimator)) CharacterAnimator = characterAnimator;
-            if (_weapons[weaponConfig.WeaponID].TryGetComponent(out Animator weaponAnimator)) WeaponAnimator = weaponAnimator;
+           // if (_weapons[weaponConfig.WeaponID].TryGetComponent(out Animator weaponAnimator)) WeaponAnimator = weaponAnimator;
         }
 
         private void ChosenCharacter(CharacterConfig characterConfig)
