@@ -127,6 +127,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 993018371299998778, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447984617900072167, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447984617900072167, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447984617900072167, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447984617900072167, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3686615709258302877, guid: b05d30b34220dee449935913348e8f49, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

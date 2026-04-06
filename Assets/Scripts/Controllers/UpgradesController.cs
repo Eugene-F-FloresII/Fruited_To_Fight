@@ -26,11 +26,11 @@ namespace Controllers
         [SerializeField] private IntVariable _firstAtkSpeedLevels;
         [SerializeField] private IntVariable _secondDamageLevels;
         [SerializeField] private IntVariable _secondRangeLevels;
-        [SerializeField] private IntVariable _atkSpeedLevels;
+        [SerializeField] private IntVariable _secondAtkSpeedLevels;
 
         private bool _configureFirstWeapon;
-        private bool _isFirstOccupied;
-        private bool _isSecondOccupied;
+        private bool _isFirstOccupied = false;
+        private bool _isSecondOccupied = false;
 
         private float _firstWeaponInitialDamage;
         private int _firstWeaponInitialPierce;
@@ -38,15 +38,30 @@ namespace Controllers
         private float _firstWeaponInitialKnockback;
         private float _firstWeaponInitialSpeed;
         private float _firstWeaponInitialAtkSpeed;
+        
+        private float _secondWeaponInitialDamage;
+        private int _secondWeaponInitialPierce;
+        private float _secondWeaponInitialRange;
+        private float _secondWeaponInitialKnockback;
+        private float _secondWeaponInitialSpeed;
+        private float _secondWeaponInitialAtkSpeed;
 
 
         private float _firstDamagePercentage = 0.25f;
         private float _firstRangePercentage = 0.25f;
         private float _firstSpeedPercentage = 0.25f;
         
-        private int _priceDamageUpgrade = 10;
-        private int _priceRangeUpgrade = 7;
-        private int _priceSpeedUpgrade = 9;
+        private float _secondDamagePercentage = 0.25f;
+        private float _secondRangePercentage = 0.25f;
+        private float _secondSpeedPercentage = 0.25f;
+        
+        private int _firstPriceDamageUpgrade = 10;
+        private int _firstPriceRangeUpgrade = 7;
+        private int _firstPriceSpeedUpgrade = 9;
+        
+        private int _secondPriceDamageUpgrade = 10;
+        private int _secondPriceRangeUpgrade = 7;
+        private int _secondPriceSpeedUpgrade = 9;
         
         private void OnEnable()
         {
@@ -58,10 +73,12 @@ namespace Controllers
             Events_Weapons.OnChosenWeapon -= CurrentWeapon;
         }
 
+        #region First Weapon Upgrade
+        
         public void UpgradeFirstWeaponDamage(int seed)
         { 
            
-            if (_priceDamageUpgrade > seed)
+            if (_firstPriceDamageUpgrade > seed)
             {
                 Debug.Log("Not enough seeds");
                 return;
@@ -78,12 +95,12 @@ namespace Controllers
                 _firstDamageLevels.Value = 1;
             }
             
-            int bought = _priceDamageUpgrade - seed;
+            int bought = _firstPriceDamageUpgrade - seed;
             _seeds.Value = bought;
             
             _firstWeaponConfig.WeaponDamage = (_firstWeaponConfig.WeaponDamage + (_firstWeaponInitialDamage * _firstDamagePercentage));
             _firstWeaponConfig.WeaponPierce = (_firstWeaponConfig.WeaponPierce + Mathf.RoundToInt(_firstWeaponInitialPierce * _firstDamagePercentage));
-            _priceDamageUpgrade += (int)(_priceDamageUpgrade * _firstDamagePercentage);
+            _firstPriceDamageUpgrade += (int)(_firstPriceDamageUpgrade * _firstDamagePercentage);
             _firstDamagePercentage += _firstDamagePercentage;
             _firstDamageLevels.Value++;
             
@@ -92,7 +109,7 @@ namespace Controllers
         public void UpgradeFirstWeaponRange(int seed)
         { 
            
-            if (_priceRangeUpgrade > seed)
+            if (_firstPriceRangeUpgrade > seed)
             {
                 Debug.Log("Not enough seeds");
                 return;
@@ -109,12 +126,12 @@ namespace Controllers
                 _firstRangeLevels.Value = 1;
             }
             
-            int bought = _priceRangeUpgrade - seed;
+            int bought = _firstPriceRangeUpgrade - seed;
             _seeds.Value = bought;
             
             _firstWeaponConfig.WeaponRange = (_firstWeaponConfig.WeaponRange  + (_firstWeaponInitialRange * _firstRangePercentage));
             _firstWeaponConfig.WeaponKnockback = (_firstWeaponConfig.WeaponKnockback + Mathf.RoundToInt(_firstWeaponInitialKnockback * _firstRangePercentage));
-            _priceRangeUpgrade += (int)(_priceRangeUpgrade * _firstRangePercentage);
+            _firstPriceRangeUpgrade += (int)(_firstPriceRangeUpgrade * _firstRangePercentage);
             _firstRangePercentage += _firstRangePercentage;
             _firstRangeLevels.Value++;
             
@@ -123,7 +140,7 @@ namespace Controllers
         public void UpgradeFirstWeaponSpeed(int seed)
         { 
            
-            if (_priceSpeedUpgrade > seed)
+            if (_firstPriceSpeedUpgrade > seed)
             {
                 Debug.Log("Not enough seeds");
                 return;
@@ -140,18 +157,113 @@ namespace Controllers
                 _firstAtkSpeedLevels.Value = 1;
             }
             
-            int bought = _priceSpeedUpgrade - seed;
+            int bought = _firstPriceSpeedUpgrade - seed;
             _seeds.Value = bought;
             
             _firstWeaponConfig.WeaponSpeed = (_firstWeaponConfig.WeaponSpeed  + (_firstWeaponInitialSpeed * _firstSpeedPercentage));
             _firstWeaponConfig.WeaponAtkSpeed = (_firstWeaponConfig.WeaponAtkSpeed + Mathf.RoundToInt(_firstWeaponInitialAtkSpeed * _firstSpeedPercentage));
-            _priceSpeedUpgrade += (int)(_priceSpeedUpgrade * _firstSpeedPercentage);
+            _firstPriceSpeedUpgrade += (int)(_firstPriceSpeedUpgrade * _firstSpeedPercentage);
             _firstSpeedPercentage += _firstSpeedPercentage;
             _firstAtkSpeedLevels.Value++;
         }
         
+        #endregion
 
+        #region Second Weapon Upgrade
 
+        public void UpgradeSecondWeaponDamage(int seed)
+        { 
+           
+            if (_secondPriceDamageUpgrade > seed)
+            {
+                Debug.Log("Not enough seeds");
+                return;
+            }
+
+            if (_secondDamageLevels.Value > 3)
+            {
+                Debug.Log("Max Level Upgrade");
+                return;
+            }
+
+            if (_secondDamageLevels.Value <= 0)
+            {
+                _secondDamageLevels.Value = 1;
+            }
+            
+            int bought = _secondPriceDamageUpgrade - seed;
+            _seeds.Value = bought;
+            
+            _secondWeaponConfig.WeaponDamage = (_secondWeaponConfig.WeaponDamage + (_secondWeaponInitialDamage * _secondDamagePercentage));
+            _secondWeaponConfig.WeaponPierce = (_secondWeaponConfig.WeaponPierce + Mathf.RoundToInt(_secondWeaponInitialPierce * _secondDamagePercentage));
+            _secondPriceDamageUpgrade += (int)(_secondPriceDamageUpgrade * _secondDamagePercentage);
+            _secondDamagePercentage += _secondDamagePercentage;
+            _secondDamageLevels.Value++;
+            
+        }
+        
+        public void UpgradeSecondWeaponRange(int seed)
+        { 
+           
+            if (_secondPriceRangeUpgrade > seed)
+            {
+                Debug.Log("Not enough seeds");
+                return;
+            }
+
+            if (_secondRangeLevels.Value > 3)
+            {
+                Debug.Log("Max Level Upgrade");
+                return;
+            }
+
+            if (_secondRangeLevels.Value <= 0)
+            {
+                _secondRangeLevels.Value = 1;
+            }
+            
+            int bought = _secondPriceRangeUpgrade - seed;
+            _seeds.Value = bought;
+            
+            _secondWeaponConfig.WeaponRange = (_secondWeaponConfig.WeaponRange  + (_secondWeaponInitialRange * _secondRangePercentage));
+            _secondWeaponConfig.WeaponKnockback = (_secondWeaponConfig.WeaponKnockback + Mathf.RoundToInt(_secondWeaponInitialKnockback * _secondRangePercentage));
+            _secondPriceRangeUpgrade += (int)(_secondPriceRangeUpgrade * _secondRangePercentage);
+            _secondRangePercentage += _secondRangePercentage;
+            _secondRangeLevels.Value++;
+            
+        }
+        
+        public void UpgradeSecondWeaponSpeed(int seed)
+        { 
+           
+            if (_secondPriceSpeedUpgrade > seed)
+            {
+                Debug.Log("Not enough seeds");
+                return;
+            }
+
+            if (_secondAtkSpeedLevels.Value > 3)
+            {
+                Debug.Log("Max Level Upgrade");
+                return;
+            }
+            
+            if (_secondAtkSpeedLevels.Value <= 0)
+            {
+                _secondAtkSpeedLevels.Value = 1;
+            }
+            
+            int bought = _secondPriceSpeedUpgrade - seed;
+            _seeds.Value = bought;
+            
+            _secondWeaponConfig.WeaponSpeed = (_secondWeaponConfig.WeaponSpeed  + (_secondWeaponInitialSpeed * _secondSpeedPercentage));
+            _secondWeaponConfig.WeaponAtkSpeed = (_secondWeaponConfig.WeaponAtkSpeed + Mathf.RoundToInt(_secondWeaponInitialAtkSpeed * _secondSpeedPercentage));
+            _secondPriceSpeedUpgrade += (int)(_secondPriceSpeedUpgrade * _secondSpeedPercentage);
+            _secondSpeedPercentage += _secondSpeedPercentage;
+            _secondAtkSpeedLevels.Value++;
+        }
+
+        #endregion
         private async void CurrentWeapon(string label)
         {
             var handle = Addressables.LoadAssetAsync<WeaponConfig>(label); // label
@@ -173,10 +285,13 @@ namespace Controllers
             {
                 _firstWeaponConfig = weaponConfig;
                 SetUpFirstWeaponConfig();
+                _isFirstOccupied = true;
             }
             else if (!_isSecondOccupied)
             {
                 _secondWeaponConfig = weaponConfig;
+                SetUpSecondWeaponConfig();
+                _isSecondOccupied = true;
             }
             else
             {
@@ -192,6 +307,16 @@ namespace Controllers
             _firstWeaponInitialKnockback = _firstWeaponConfig.WeaponKnockback;
             _firstWeaponInitialSpeed = _firstWeaponConfig.WeaponSpeed;
             _firstWeaponInitialAtkSpeed = _firstWeaponConfig.WeaponAtkSpeed;
+        }
+        
+        private void SetUpSecondWeaponConfig()
+        {
+            _secondWeaponInitialDamage = _secondWeaponConfig.WeaponDamage;
+            _secondWeaponInitialPierce = _secondWeaponConfig.WeaponPierce;
+            _secondWeaponInitialRange = _secondWeaponConfig.WeaponRange;
+            _secondWeaponInitialKnockback = _secondWeaponConfig.WeaponKnockback;
+            _secondWeaponInitialSpeed = _secondWeaponConfig.WeaponSpeed;
+            _secondWeaponInitialAtkSpeed = _secondWeaponConfig.WeaponAtkSpeed;
         }
         
     }
