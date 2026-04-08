@@ -24,6 +24,11 @@ namespace Data
         public float WeaponSpeed;
         public float WeaponAtkSpeed;
         public float WeaponKnockback;
+        
+        [Header("Weapon Upgrade Desc")]
+        [TextArea] public string DamageDescription;
+        [TextArea] public string RangeDescription;
+        [TextArea] public string SpeedDescription;
     }
 
 }

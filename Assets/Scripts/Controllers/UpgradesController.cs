@@ -7,6 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Cysharp.Threading.Tasks;
 using Obvious.Soap;
+using PrimeTween;
 using Shared.Events;
 
 namespace Controllers
@@ -27,6 +28,10 @@ namespace Controllers
         [SerializeField] private IntVariable _secondDamageLevels;
         [SerializeField] private IntVariable _secondRangeLevels;
         [SerializeField] private IntVariable _secondAtkSpeedLevels;
+
+        [Header("Upgrade Panel")]
+        [SerializeField] private CanvasGroup _upgradesCanvasGroup;
+        [SerializeField] private RectTransform _upgradesPanelRectTransform;
 
         private bool _configureFirstWeapon;
         private bool _isFirstOccupied = false;
@@ -54,6 +59,8 @@ namespace Controllers
         private float _secondDamagePercentage = 0.25f;
         private float _secondRangePercentage = 0.25f;
         private float _secondSpeedPercentage = 0.25f;
+
+        private Sequence _showPanelSequence;
         
         private int _firstPriceDamageUpgrade = 10;
         private int _firstPriceRangeUpgrade = 7;
@@ -62,15 +69,85 @@ namespace Controllers
         private int _secondPriceDamageUpgrade = 10;
         private int _secondPriceRangeUpgrade = 7;
         private int _secondPriceSpeedUpgrade = 9;
+
+        private void Awake()
+        {
+            if (_upgradesCanvasGroup == null)
+            {
+                _upgradesCanvasGroup = GetComponent<CanvasGroup>();
+            }
+
+            if (_upgradesPanelRectTransform == null)
+            {
+                _upgradesPanelRectTransform = GetComponent<RectTransform>();
+            }
+        }
         
         private void OnEnable()
         {
             Events_Weapons.OnChosenWeapon += CurrentWeapon;
+            Events_Round.OnRoundEnded += ShowUpgradePanel;
+            Events_Round.OnRoundStarted += HideUpgradePanel;
         }
 
         private void OnDisable()
         {
             Events_Weapons.OnChosenWeapon -= CurrentWeapon;
+            Events_Round.OnRoundEnded -= ShowUpgradePanel;
+            Events_Round.OnRoundStarted -= HideUpgradePanel;
+
+            if (_showPanelSequence.isAlive)
+            {
+                _showPanelSequence.Stop();
+            }
+        }
+
+        private void ShowUpgradePanel(int _)
+        {
+            if (_upgradesCanvasGroup == null)
+            {
+                return;
+            }
+
+            _upgradesCanvasGroup.alpha = 1f;
+            _upgradesCanvasGroup.interactable = true;
+            _upgradesCanvasGroup.blocksRaycasts = true;
+
+            if (_upgradesPanelRectTransform == null)
+            {
+                return;
+            }
+
+            if (_showPanelSequence.isAlive)
+            {
+                _showPanelSequence.Stop();
+            }
+
+            _upgradesPanelRectTransform.localScale = Vector3.one * 0.9f;
+            _showPanelSequence = Tween.Scale(_upgradesPanelRectTransform, Vector3.one * 1.05f, 0.22f, Ease.OutBack)
+                .Chain(Tween.Scale(_upgradesPanelRectTransform, Vector3.one, 0.14f, Ease.InOutSine));
+        }
+
+        private void HideUpgradePanel(int _)
+        {
+            if (_upgradesCanvasGroup == null)
+            {
+                return;
+            }
+
+            if (_showPanelSequence.isAlive)
+            {
+                _showPanelSequence.Stop();
+            }
+
+            _upgradesCanvasGroup.alpha = 0f;
+            _upgradesCanvasGroup.interactable = false;
+            _upgradesCanvasGroup.blocksRaycasts = false;
+
+            if (_upgradesPanelRectTransform != null)
+            {
+                _upgradesPanelRectTransform.localScale = Vector3.one;
+            }
         }
 
         #region First Weapon Upgrade
@@ -285,12 +362,14 @@ namespace Controllers
             {
                 _firstWeaponConfig = weaponConfig;
                 SetUpFirstWeaponConfig();
+                Events_Upgrades.OnChosenWeapon?.Invoke(_firstWeaponConfig, true);
                 _isFirstOccupied = true;
             }
             else if (!_isSecondOccupied)
             {
                 _secondWeaponConfig = weaponConfig;
                 SetUpSecondWeaponConfig();
+                Events_Upgrades.OnChosenWeapon?.Invoke(_secondWeaponConfig, false);
                 _isSecondOccupied = true;
             }
             else

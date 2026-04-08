@@ -127,25 +127,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 993018371299998778, guid: b05d30b34220dee449935913348e8f49, type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3447984617900072167, guid: b05d30b34220dee449935913348e8f49, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3447984617900072167, guid: b05d30b34220dee449935913348e8f49, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3447984617900072167, guid: b05d30b34220dee449935913348e8f49, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3447984617900072167, guid: b05d30b34220dee449935913348e8f49, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
+    - target: {fileID: 2710568798610842672, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: _textSpeed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3686615709258302877, guid: b05d30b34220dee449935913348e8f49, type: 3}
       propertyPath: m_LocalPosition.x
@@ -192,8 +176,7 @@ PrefabInstance:
       value: Game Systems
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 1075653149596014664, guid: b05d30b34220dee449935913348e8f49, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b05d30b34220dee449935913348e8f49, type: 3}

@@ -12529,7 +12529,7 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   _firstRoundSpawnCount: 10
   _spawnIncrementPerRound: 1
-  _nextRoundDelaySeconds: 2
+  _nextRoundDelaySeconds: 10
   _currentRound: {fileID: 11400000, guid: a2420f190c4aea844900cc6cda5faeea, type: 2}
   _maxRounds: {fileID: 11400000, guid: dd6611b2ef6460644aef18dc8ba16894, type: 2}
   _healthGrowthPerRound: 1.15

@@ -21,7 +21,7 @@ MonoBehaviour:
   WeaponPrefab: {fileID: 7903187229947716330, guid: dad15acf0d267934498d69240f441483, type: 3}
   WeaponName: Spear
   WeaponID: 0
-  WeaponType: 0
+  WeaponType: 1
   WeaponAmountToPool: 20
   WeaponHoming: 1
   WeaponRange: 6
@@ -30,3 +30,6 @@ MonoBehaviour:
   WeaponSpeed: 20
   WeaponAtkSpeed: 0.5
   WeaponKnockback: 5
+  DamageDescription: Make your spear even stronger!
+  RangeDescription: Strike foes from afar!
+  SpeedDescription: Defeat enemies faster!

@@ -143,6 +143,7 @@ namespace Managers
         private void EndCurrentRound()
         {
             _roundStarted = false;
+            Events_Round.OnRoundEnded?.Invoke(_currentRound.Value);
         }
 
         private async UniTaskVoid StartNextRoundAfterDelay()
@@ -184,6 +185,7 @@ namespace Managers
             }
 
             _currentRound.Value++;
+            Events_Round.OnRoundStarted?.Invoke(_currentRound.Value);
 
             int spawnCount = BuildSpawnCount(_currentRound.Value);
             EnemyRuntimeStats runtimeStats = BuildRuntimeStats(_currentRound.Value);
