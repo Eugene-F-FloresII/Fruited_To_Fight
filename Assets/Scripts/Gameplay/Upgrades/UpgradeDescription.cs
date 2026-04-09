@@ -16,18 +16,22 @@ namespace Gameplay.Upgrades
         private CancellationTokenSource _descriptionCts;
         private WeaponConfig _firstWeaponConfig;
         private WeaponConfig _secondWeaponConfig;
+        private bool _hasHovered;
+        private UpgradesPanelType _lastHoveredType;
 
         private void OnEnable()
         {
             Events_Upgrades.OnHoveredUpgrade += CatchDescription;
             Events_Upgrades.OnChosenWeapon += CacheWeapon;
+            Events_Upgrades.OnActiveUpgradeWeaponSlotChanged += HandleActiveWeaponSlotChanged;
         }
 
         private void OnDisable()
         {
             Events_Upgrades.OnHoveredUpgrade -= CatchDescription;
             Events_Upgrades.OnChosenWeapon -= CacheWeapon;
-            
+            Events_Upgrades.OnActiveUpgradeWeaponSlotChanged -= HandleActiveWeaponSlotChanged;
+             
             _descriptionCts?.Cancel();
             _descriptionCts?.Dispose();
         }
@@ -51,14 +55,28 @@ namespace Gameplay.Upgrades
 
         private void CatchDescription(UpgradesPanelType upgradesPanelType, bool isFirstWeapon)
         {
+            _hasHovered = true;
+            _lastHoveredType = upgradesPanelType;
+
             var weaponConfig = isFirstWeapon ? _firstWeaponConfig : _secondWeaponConfig;
             var description = ResolveDescription(weaponConfig, upgradesPanelType);
 
             _descriptionCts?.Cancel();
             _descriptionCts?.Dispose();
             _descriptionCts = new CancellationTokenSource();
-            
+             
             UpdateDescription(description, _descriptionCts.Token).Forget();
+        }
+
+        private void HandleActiveWeaponSlotChanged(UpgradesWeaponSlot slot)
+        {
+            if (!_hasHovered)
+            {
+                return;
+            }
+
+            bool isFirstWeapon = slot == UpgradesWeaponSlot.First;
+            CatchDescription(_lastHoveredType, isFirstWeapon);
         }
 
         private string ResolveDescription(WeaponConfig weaponConfig, UpgradesPanelType upgradesPanelType)
