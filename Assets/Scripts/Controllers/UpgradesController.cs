@@ -102,6 +102,25 @@ namespace Controllers
             }
         }
 
+        public WeaponConfig FirstWeaponConfig()
+        {
+            if (_firstWeaponConfig == null)
+            {
+                return null;
+            }
+            return _firstWeaponConfig;
+        }
+
+        public WeaponConfig SecondWeaponConfig()
+        {
+            if (_secondWeaponConfig == null)
+            {
+                return null;
+            }
+
+            return _secondWeaponConfig;
+        }
+
         private void ShowUpgradePanel(int _)
         {
             if (_upgradesCanvasGroup == null)
