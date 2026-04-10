@@ -76,6 +76,9 @@ namespace Controllers
         private int _secondPriceDamageUpgrade = 10;
         private int _secondPriceRangeUpgrade = 7;
         private int _secondPriceSpeedUpgrade = 9;
+        
+        private int _maxLevel = 4;
+        public int MaxLevel => _maxLevel;
 
         private void Awake()
         {
@@ -495,7 +498,7 @@ namespace Controllers
                 return false;
             }
 
-            if (_firstDamageLevels.Value > 3)
+            if (_firstDamageLevels.Value >= _maxLevel)
             {
                 Debug.Log("Max Level Upgrade");
                 return false;
@@ -527,7 +530,7 @@ namespace Controllers
                 return false;
             }
 
-            if (_firstRangeLevels.Value > 3)
+            if (_firstRangeLevels.Value >= _maxLevel)
             {
                 Debug.Log("Max Level Upgrade");
                 return false;
@@ -559,7 +562,7 @@ namespace Controllers
                 return false;
             }
 
-            if (_firstAtkSpeedLevels.Value > 3)
+            if (_firstAtkSpeedLevels.Value > _maxLevel)
             {
                 Debug.Log("Max Level Upgrade");
                 return false;
@@ -594,7 +597,7 @@ namespace Controllers
                 return false;
             }
 
-            if (_secondDamageLevels.Value > 3)
+            if (_secondDamageLevels.Value >= _maxLevel)
             {
                 Debug.Log("Max Level Upgrade");
                 return false;
@@ -610,7 +613,7 @@ namespace Controllers
             
             _secondWeaponConfig.WeaponDamage = (_secondWeaponConfig.WeaponDamage + (_secondWeaponInitialDamage * _secondDamagePercentage));
             _secondWeaponConfig.WeaponPierce = (_secondWeaponConfig.WeaponPierce + Mathf.RoundToInt(_secondWeaponInitialPierce * _secondDamagePercentage));
-            _secondPriceDamageUpgrade += (int)(_secondPriceDamageUpgrade * _secondDamagePercentage);
+            _secondPriceDamageUpgrade += (int)(_firstPriceDamageUpgrade * _secondDamagePercentage);
             _secondDamagePercentage += _secondDamagePercentage;
             _secondDamageLevels.Value++;
             return true;
@@ -626,7 +629,7 @@ namespace Controllers
                 return false;
             }
 
-            if (_secondRangeLevels.Value > 3)
+            if (_secondRangeLevels.Value >= _maxLevel)
             {
                 Debug.Log("Max Level Upgrade");
                 return false;
@@ -658,7 +661,7 @@ namespace Controllers
                 return false;
             }
 
-            if (_secondAtkSpeedLevels.Value > 3)
+            if (_secondAtkSpeedLevels.Value >= _maxLevel)
             {
                 Debug.Log("Max Level Upgrade");
                 return false;
@@ -674,7 +677,7 @@ namespace Controllers
             
             _secondWeaponConfig.WeaponSpeed = (_secondWeaponConfig.WeaponSpeed  + (_secondWeaponInitialSpeed * _secondSpeedPercentage));
             _secondWeaponConfig.WeaponAtkSpeed = (_secondWeaponConfig.WeaponAtkSpeed + Mathf.RoundToInt(_secondWeaponInitialAtkSpeed * _secondSpeedPercentage));
-            _secondPriceSpeedUpgrade += (int)(_secondPriceSpeedUpgrade * _secondSpeedPercentage);
+            _secondPriceSpeedUpgrade += (int)(_secondPriceSpeedUpgrade * _firstSpeedPercentage);
             _secondSpeedPercentage += _secondSpeedPercentage;
             _secondAtkSpeedLevels.Value++;
             return true;

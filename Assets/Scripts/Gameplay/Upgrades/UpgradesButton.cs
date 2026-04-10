@@ -6,6 +6,7 @@ using Shared.Enums;
 using Shared.Events;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace Gameplay.Upgrades
@@ -20,6 +21,8 @@ namespace Gameplay.Upgrades
         [SerializeField] private TextMeshProUGUI _upgradesTextPercentage;
         [SerializeField] private TextMeshProUGUI _upgradesTextLevel;
         [SerializeField] private TextMeshProUGUI _upgradesTextPrice;
+        [SerializeField] private GameObject _disabledGameObject;
+        [SerializeField] private Button _button;
         
         [Header("SOAP References")]
         [SerializeField] private IntVariable _firstDamageLevels;
@@ -42,6 +45,12 @@ namespace Gameplay.Upgrades
         {
             ResolveUpgradesController();
             _baseScale = transform.localScale;
+            if (_button == null)
+            {
+                _button = GetComponent<Button>();
+            }
+            
+            ResetDisabledState();
         }
 
         private void OnEnable()
@@ -90,6 +99,7 @@ namespace Gameplay.Upgrades
         private void HandleActiveWeaponSlotChanged(UpgradesWeaponSlot _)
         {
             RefreshTexts();
+            ResetDisabledState();
         }
 
         private void HandleUpgradeDataChanged(UpgradesWeaponSlot slot, UpgradesPanelType upgradesPanelType)
@@ -137,22 +147,61 @@ namespace Gameplay.Upgrades
             UpgradesPanelType upgradesPanelType = _upgradesPanelConfig.UpgradesPanelType;
 
             int level = _upgradesController.GetUpgradeLevel(slot, upgradesPanelType);
-            int price = _upgradesController.GetUpgradePrice(slot, upgradesPanelType);
-            float percentage = _upgradesController.GetUpgradePercentage(slot, upgradesPanelType);
+            bool isMaxLevel = level >= _upgradesController.MaxLevel;
 
-            if (_upgradesTextLevel != null)
+            if (isMaxLevel)
             {
-                _upgradesTextLevel.text = $"Level {level}";
+                if (_upgradesTextLevel != null)
+                {
+                    _upgradesTextLevel.text = "Maxed";
+                }
+
+                if (_upgradesTextPrice != null)
+                {
+                    _upgradesTextPrice.text = "Maxed";
+                }
+
+                if (_upgradesTextPercentage != null)
+                {
+                    _upgradesTextPercentage.text = "Maxed";
+                }
+            }
+            else
+            {
+                int price = _upgradesController.GetUpgradePrice(slot, upgradesPanelType);
+                float percentage = _upgradesController.GetUpgradePercentage(slot, upgradesPanelType);
+
+                if (_upgradesTextLevel != null)
+                {
+                    _upgradesTextLevel.text = $"Level {level}";
+                }
+
+                if (_upgradesTextPrice != null)
+                {
+                    _upgradesTextPrice.text = $"{price} seeds";
+                }
+
+                if (_upgradesTextPercentage != null)
+                {
+                    _upgradesTextPercentage.text = $"{Mathf.RoundToInt(percentage * 100f)}%";
+                }
             }
 
-            if (_upgradesTextPrice != null)
+            if (_button != null)
             {
-                _upgradesTextPrice.text = $"{price} seeds";
+                _button.interactable = !isMaxLevel;
+                if (_disabledGameObject != null)
+                {
+                    _disabledGameObject.SetActive(isMaxLevel);
+                }
             }
-
-            if (_upgradesTextPercentage != null)
+        }
+        
+        public void ResetDisabledState()
+        {
+            if (_disabledGameObject != null)
             {
-                _upgradesTextPercentage.text = $"{Mathf.RoundToInt(percentage * 100f)}%";
+                _disabledGameObject.SetActive(false);
             }
         }
 
@@ -189,6 +238,11 @@ namespace Gameplay.Upgrades
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (_disabledGameObject != null && _disabledGameObject.activeSelf)
+            {
+                return;
+            }
+
             if (_upgradesPanelConfig == null)
             {
                 Debug.LogError($"{nameof(UpgradesButton)}: Missing {nameof(UpgradesPanelConfig)} reference.");
@@ -222,6 +276,8 @@ namespace Gameplay.Upgrades
 
             PlayScaleTween(_baseScale, _unhoverEase);
         }
+
+
 
         public void OnPointerClick(PointerEventData eventData)
         {
