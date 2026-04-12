@@ -1,0 +1,364 @@
+fileFormatVersion: 2
+guid: 4f4dec7a1e3b05843b574ea909788edd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1848442420239034961
+    second: EurangoTheMango_idle_0
+  - first:
+      213: 373239609154533295
+    second: EurangoTheMango_idle_1
+  - first:
+      213: 8681812404103366122
+    second: EurangoTheMango_idle_2
+  - first:
+      213: -2016588276537925919
+    second: EurangoTheMango_idle_3
+  - first:
+      213: -7299371846165142083
+    second: EurangoTheMango_idle_4
+  - first:
+      213: -5861914211765669327
+    second: EurangoTheMango_idle_5
+  - first:
+      213: -8071154106841914251
+    second: EurangoTheMango_idle_6
+  - first:
+      213: 2568379777472161878
+    second: EurangoTheMango_idle_7
+  - first:
+      213: -4883850826772324773
+    second: EurangoTheMango_idle_8
+  - first:
+      213: -5722786044882758006
+    second: EurangoTheMango_idle_9
+  - first:
+      213: -8725981746532126461
+    second: EurangoTheMango_idle_10
+  - first:
+      213: 868198593316322413
+    second: EurangoTheMango_idle_11
+  - first:
+      213: 128252829280822597
+    second: EurangoTheMango_idle_12
+  - first:
+      213: 8237625834653678140
+    second: EurangoTheMango_idle_13
+  - first:
+      213: -4702849087650551617
+    second: EurangoTheMango_idle_14
+  - first:
+      213: 3911542186144196265
+    second: EurangoTheMango_idle_15
+  - first:
+      213: 2162381581009773742
+    second: EurangoTheMango_idle_16
+  - first:
+      213: 6823437157986961700
+    second: EurangoTheMango_idle_17
+  - first:
+      213: 2035408908084040652
+    second: EurangoTheMango_idle_18
+  - first:
+      213: -5148566528864108442
+    second: EurangoTheMango_idle_19
+  - first:
+      213: 5417095705538133929
+    second: EurangoTheMango_idle_20
+  - first:
+      213: 4506749647393292292
+    second: EurangoTheMango_idle_21
+  - first:
+      213: 5650980524056920085
+    second: EurangoTheMango_idle_22
+  - first:
+      213: -8202014719264849600
+    second: EurangoTheMango_idle_23
+  - first:
+      213: -7692926757294514341
+    second: EurangoTheMango_idle_24
+  - first:
+      213: 1657432744675003649
+    second: EurangoTheMango_idle_25
+  - first:
+      213: 4103018723925578224
+    second: EurangoTheMango_idle_26
+  - first:
+      213: 4770394976236363384
+    second: EurangoTheMango_idle_27
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: EurangoTheMango_idle_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa593e989630956e0800000000000000
+      internalID: -1848442420239034961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EurangoTheMango_idle_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa7f2cf62730e2500800000000000000
+      internalID: 373239609154533295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EurangoTheMango_idle_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae54921226efb7870800000000000000
+      internalID: 8681812404103366122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EurangoTheMango_idle_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ee5db695a3a304e0800000000000000
+      internalID: -2016588276537925919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EurangoTheMango_idle_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db5e6d9cafb63ba90800000000000000
+      internalID: -7299371846165142083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EurangoTheMango_idle_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 132b4e7051c46aea0800000000000000
+      internalID: -5861914211765669327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EurangoTheMango_idle_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 574a0464a108dff80800000000000000
+      internalID: -8071154106841914251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 23b61acfdace5dd4292f0e3ea84ee5d9
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":7.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":80.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.10000000149011612},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":9,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      EurangoTheMango_idle_0: -1848442420239034961
+      EurangoTheMango_idle_1: 373239609154533295
+      EurangoTheMango_idle_2: 8681812404103366122
+      EurangoTheMango_idle_3: -2016588276537925919
+      EurangoTheMango_idle_4: -7299371846165142083
+      EurangoTheMango_idle_5: -5861914211765669327
+      EurangoTheMango_idle_6: -8071154106841914251
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
