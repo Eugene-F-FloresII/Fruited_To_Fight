@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using PrimeTween;
 
 
-namespace Gameplay.Enemies
+namespace Controllers
 {
     public class EnemiesDefeatedController : MonoBehaviour
     {

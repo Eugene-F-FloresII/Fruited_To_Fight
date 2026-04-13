@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using Collection;
 using Collection.PlayerStateMachine;
 using Data;
 using Gameplay;
@@ -42,6 +43,11 @@ namespace Controllers
 
         private CancellationTokenSource _knockBackCts;
 
+        private void Awake()
+        {
+            ServiceLocator.Register(this);
+        }
+
         private void Start()
         {
             _playerStateMachine = new PlayerStateMachine();
@@ -68,6 +74,11 @@ namespace Controllers
             
             _knockBackCts?.Cancel();  
             _knockBackCts?.Dispose();  
+        }
+
+        private void OnDestroy()
+        {
+            ServiceLocator.Unregister<PlayerController>();
         }
 
         private void Update()
