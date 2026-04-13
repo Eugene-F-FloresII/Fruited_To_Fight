@@ -131,6 +131,11 @@ namespace Managers
 
             _enemiesRemainingInRound--;
 
+            if (_enemiesRemainingInRound <= 0)
+            {
+                Events_Seed.OnEnemiesDefeated?.Invoke();
+            }
+            
             if (_enemiesRemainingInRound > 0)
             {
                 return;
