@@ -203,7 +203,7 @@ namespace Managers
             return 1f + (_overallRangeLevel.Value * _percentageIncreasePerLevel);
         }
 
-        private float GetSpeedMultiplier()
+        public float GetSpeedMultiplier()
         {
             // Example: each level adds 10% damage
             return 1f + (_overallDamageLevel.Value * _percentageIncreasePerLevel);

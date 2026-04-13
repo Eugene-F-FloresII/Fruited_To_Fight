@@ -17,7 +17,7 @@ namespace Gameplay.Upgrades
         private WeaponConfig _firstWeaponConfig;
         private WeaponConfig _secondWeaponConfig;
         private bool _hasHovered;
-        private UpgradesPanelType _lastHoveredType;
+        private UpgradesCategoryType _lastHoveredType;
 
         private void OnEnable()
         {
@@ -53,13 +53,13 @@ namespace Gameplay.Upgrades
             _secondWeaponConfig = weaponConfig;
         }
 
-        private void CatchDescription(UpgradesPanelType upgradesPanelType, bool isFirstWeapon)
+        private void CatchDescription(UpgradesCategoryType upgradesCategoryType, bool isFirstWeapon)
         {
             _hasHovered = true;
-            _lastHoveredType = upgradesPanelType;
+            _lastHoveredType = upgradesCategoryType;
 
             var weaponConfig = isFirstWeapon ? _firstWeaponConfig : _secondWeaponConfig;
-            var description = ResolveDescription(weaponConfig, upgradesPanelType);
+            var description = ResolveDescription(weaponConfig, upgradesCategoryType);
 
             _descriptionCts?.Cancel();
             _descriptionCts?.Dispose();
@@ -79,18 +79,18 @@ namespace Gameplay.Upgrades
             CatchDescription(_lastHoveredType, isFirstWeapon);
         }
 
-        private string ResolveDescription(WeaponConfig weaponConfig, UpgradesPanelType upgradesPanelType)
+        private string ResolveDescription(WeaponConfig weaponConfig, UpgradesCategoryType upgradesCategoryType)
         {
             if (weaponConfig == null)
             {
                 return "Choose a weapon first.";
             }
 
-            string description = upgradesPanelType switch
+            string description = upgradesCategoryType switch
             {
-                UpgradesPanelType.Damage => weaponConfig.DamageDescription,
-                UpgradesPanelType.Range => weaponConfig.RangeDescription,
-                UpgradesPanelType.Speed => weaponConfig.SpeedDescription,
+                UpgradesCategoryType.Damage => weaponConfig.DamageDescription,
+                UpgradesCategoryType.Range => weaponConfig.RangeDescription,
+                UpgradesCategoryType.Speed => weaponConfig.SpeedDescription,
                 _ => string.Empty
             };
 

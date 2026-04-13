@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Shared.Enums
 {
-    public enum UpgradesPanelType
+    public enum UpgradesCategoryType
     {
         Damage,
         Range,

@@ -505,6 +505,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3854389167948340839, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3854389167948340839, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3854389167948340839, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9213201429636185041, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
       propertyPath: m_Name
       value: DamageUpgrade
