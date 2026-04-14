@@ -1,5 +1,6 @@
 using System;
 using Data;
+using Obvious.Soap;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Controllers
     public class DefendingController : MonoBehaviour
     {
         [SerializeField] private CharacterConfig _characterConfig;
-
+        [SerializeField] private FloatVariable _characterHealth;
         private float _initialHealth;
 
         private void Awake()
@@ -23,10 +24,10 @@ namespace Controllers
             if (other.TryGetComponent(out EnemyController enemyController))
             {
                 
-                _characterConfig.CharacterHealth -= enemyController.GotHitByEnemy();
+                _characterHealth.Value -= enemyController.GotHitByEnemy();
                 enemyController.KillEnemy();
                 
-                if (_characterConfig.CharacterHealth <= 0)
+                if (_characterHealth.Value <= 0)
                 {
                     GameOver();
                 }
@@ -37,6 +38,7 @@ namespace Controllers
         private void ConfigureStats()
         {
             _initialHealth = _characterConfig.CharacterHealth;
+            _characterHealth.Value = _initialHealth;
         }
 
         private void ResetStats()

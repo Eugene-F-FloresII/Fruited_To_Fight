@@ -24849,7 +24849,7 @@ CapsuleCollider2D:
     m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1975
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -24867,8 +24867,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0007664363, y: 0.9899024}
-  m_Size: {x: 0.9259119, y: 2.085037}
+  m_Offset: {x: -0.017745972, y: 0.8479726}
+  m_Size: {x: 1.086355, y: 2.3688965}
   m_Direction: 0
 --- !u!50 &1725762688
 Rigidbody2D:
@@ -24991,6 +24991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefendingController
   _characterConfig: {fileID: 11400000, guid: c53da67410041904ea32f13284dcd23a, type: 2}
+  _characterHealth: {fileID: 11400000, guid: d2405c66f039f3d4591d779b8f4fc94b, type: 2}
 --- !u!4 &1725762692
 Transform:
   m_ObjectHideFlags: 0
