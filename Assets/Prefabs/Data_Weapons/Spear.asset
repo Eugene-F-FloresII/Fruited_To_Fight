@@ -24,8 +24,8 @@ MonoBehaviour:
   WeaponType: 1
   WeaponAmountToPool: 20
   WeaponHoming: 0
-  WeaponRange: 3
-  WeaponDamage: 100
+  WeaponRange: 2
+  WeaponDamage: 75
   WeaponPierce: 3
   WeaponSpeed: 10
   WeaponAtkSpeed: 1
