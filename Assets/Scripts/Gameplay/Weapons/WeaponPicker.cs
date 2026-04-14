@@ -2,20 +2,115 @@ using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Shared.Events;
+using PrimeTween;
+using UnityEngine.UI;
 
 namespace Gameplay.Weapons
 {
     public class WeaponPicker : MonoBehaviour
     {
+        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private float _animationDuration = 0.3f;
+        [SerializeField] private float _buttonStaggerDelay = 0.4f;
+        [SerializeField] private float _buttonAnimationDuration = 0.2f;
+        
+        [Header("Button References")]
+        [SerializeField] private Button _spearButton;
+        [SerializeField] private Button _staffButton;
+
+        private int _countIndex;
+
+        private void Awake()
+        {
+            if (_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
+        }
+
         private void Start()
         {
             Time.timeScale = 0;
+            TurnOnCanvasGroup();
+        }
+
+        private void Update()
+        {
+            if (_countIndex == 2)
+            {
+                TurnOffCanvasGroup();
+                Time.timeScale = 1;
+                _countIndex = 0;
+            }
         }
 
         public void OnPickedSpear()
         {
             Events_Weapons.OnChosenWeapon?.Invoke("SpearConfig");
-            Time.timeScale = 1;
+            
+            // Scale down on click immediately
+            Tween.Scale(_spearButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true)
+                .OnComplete(() => _spearButton.gameObject.SetActive(false));
+            
+            _countIndex++;
+        }
+
+        public void OnPickedStaff()
+        {
+            Events_Weapons.OnChosenWeapon?.Invoke("StaffConfig");
+            
+            // Scale down on click immediately
+            Tween.Scale(_staffButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true)
+                .OnComplete(() => _staffButton.gameObject.SetActive(false));
+            
+            _countIndex++;
+        }
+
+        public void TurnOffCanvasGroup()
+        {
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
+            
+            Tween.StopAll(transform);
+            Tween.StopAll(_spearButton.transform);
+            Tween.StopAll(_staffButton.transform);
+
+            // Staggered deactivation sequence
+            var seq = Sequence.Create(useUnscaledTime: true);
+            
+            if (_spearButton.gameObject.activeSelf)
+                seq.Group(Tween.Scale(_spearButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
+            
+            if (_staffButton.gameObject.activeSelf)
+                seq.Chain(Tween.Delay(_buttonStaggerDelay, useUnscaledTime: true))
+                   .Group(Tween.Scale(_staffButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
+
+            seq.Chain(Tween.Alpha(_canvasGroup, 0, _animationDuration, useUnscaledTime: true))
+               .Group(Tween.Scale(transform, 0, _animationDuration, Ease.InBack, useUnscaledTime: true));
+        }
+        
+        public void TurnOnCanvasGroup()
+        {
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
+            
+            Tween.StopAll(transform);
+            Tween.StopAll(_spearButton.transform);
+            Tween.StopAll(_staffButton.transform);
+            
+            // Set initial state manually
+            _canvasGroup.alpha = 0f;
+            transform.localScale = Vector3.zero;
+            
+            _spearButton.gameObject.SetActive(true);
+            _staffButton.gameObject.SetActive(true);
+            _spearButton.transform.localScale = Vector3.zero;
+            _staffButton.transform.localScale = Vector3.zero;
+
+            // Activation sequence: After Panel Animation
+            Sequence.Create(useUnscaledTime: true)
+                .Group(Tween.Alpha(_canvasGroup, 1f, _animationDuration, useUnscaledTime: true))
+                .Group(Tween.Scale(transform, 1f, _animationDuration, Ease.OutBack, useUnscaledTime: true))
+                .Chain(Tween.Scale(_spearButton.transform, 1f, _buttonAnimationDuration, Ease.OutBack, useUnscaledTime: true))
+                .Chain(Tween.Delay(_buttonStaggerDelay, useUnscaledTime: true))
+                .Chain(Tween.Scale(_staffButton.transform, 1f, _buttonAnimationDuration, Ease.OutBack, useUnscaledTime: true));
         }
         
     }

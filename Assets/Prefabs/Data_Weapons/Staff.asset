@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45a48276087a0ef4c81d7cec4d0e92fb, type: 3}
-  m_Name: Spear
+  m_Name: Staff
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponConfig
   WeaponSpawner:
-    m_AssetGUID: 97813bd3a29d84e4fba57f4447ded630
+    m_AssetGUID: e732d01dbf9ae4945b393e07fc230965
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
-  WeaponPrefab: {fileID: 7903187229947716330, guid: dad15acf0d267934498d69240f441483, type: 3}
-  WeaponName: Spear
-  WeaponID: 0
+  WeaponPrefab: {fileID: 5432684180257592977, guid: 9c3780723b4b33647a94175ddabc350a, type: 3}
+  WeaponName: Staff
+  WeaponID: 1
   WeaponType: 1
   WeaponAmountToPool: 20
-  WeaponHoming: 0
-  WeaponRange: 4
-  WeaponDamage: 100
-  WeaponPierce: 3
-  WeaponSpeed: 10
+  WeaponHoming: 1
+  WeaponRange: 6
+  WeaponDamage: 45
+  WeaponPierce: 5
+  WeaponSpeed: 15
   WeaponAtkSpeed: 0.8
-  WeaponKnockback: 5
-  DamageDescription: Make your spear even stronger!
-  RangeDescription: Strike foes from afar!
-  SpeedDescription: Defeat enemies faster!
+  WeaponKnockback: 2
+  DamageDescription: 
+  RangeDescription: 
+  SpeedDescription: 
