@@ -244,6 +244,7 @@ Transform:
   m_Children:
   - {fileID: 8057373900752904030}
   - {fileID: 4612188857370067010}
+  - {fileID: 5396334690049424036}
   - {fileID: 8083352837637179623}
   - {fileID: 1910022959166021599}
   - {fileID: 5944003789220971081}
@@ -263,9 +264,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Character
   _weaponConfig: {fileID: 11400000, guid: bc3223387b63c8c4b9fd3200fe413aa9, type: 2}
-  _characterConfig: {fileID: 11400000, guid: 020ab314f3fece64f869897a1f2e79bd, type: 2}
+  _characterConfig: {fileID: 11400000, guid: 82bb8e723ea69e94594615db7323af78, type: 2}
   _characters:
   - {fileID: 3316362820369665144}
+  - {fileID: 2658389254136133278}
   _weapons: []
   CharacterAnimator: {fileID: 0}
   WeaponAnimator: {fileID: 0}
@@ -281,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b39aa6cb62bfb849a74411d4e75228e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  CharacterConfig: {fileID: 11400000, guid: 020ab314f3fece64f869897a1f2e79bd, type: 2}
+  CharacterConfig: {fileID: 11400000, guid: 82bb8e723ea69e94594615db7323af78, type: 2}
   MovementInput: {fileID: -1680190386980627800, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
   _playerCharacter: {fileID: 3127359511337143219}
   _rb: {fileID: 1999794825571847956}
@@ -449,7 +451,7 @@ Transform:
   m_GameObject: {fileID: 1346479218096908552}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.48, y: 0, z: 0}
+  m_LocalPosition: {x: 1.116, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -596,7 +598,7 @@ Transform:
   m_GameObject: {fileID: 4985407411695124859}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.66, y: 0, z: 0}
+  m_LocalPosition: {x: -1.441, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -650,6 +652,86 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponLoader
   _rightHandSpawner: {fileID: 6399585422123843344}
   _leftHandSpawner: {fileID: 8299234789902769203}
+--- !u!1001 &666666557018013384
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6029804757836756755}
+    m_Modifications:
+    - target: {fileID: 3288761610315696214, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_Name
+      value: Character_Eurango
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8984837581189055668, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+--- !u!1 &2658389254136133278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3288761610315696214, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+  m_PrefabInstance: {fileID: 666666557018013384}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5396334690049424036 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+  m_PrefabInstance: {fileID: 666666557018013384}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6560713935276549897
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -701,6 +783,10 @@ PrefabInstance:
     - target: {fileID: 8433624696560249713, guid: b687fe24a458f8f40863138bfd3a2886, type: 3}
       propertyPath: m_Name
       value: Character_Orange
+      objectReference: {fileID: 0}
+    - target: {fileID: 8433624696560249713, guid: b687fe24a458f8f40863138bfd3a2886, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
