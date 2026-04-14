@@ -17,6 +17,6 @@ MonoBehaviour:
   EnemyAmountToPool: 50
   EnemyHealth: 500
   EnemyDamage: 10
-  EnemyMoveSpeed: 5
+  EnemyMoveSpeed: 2
   EnemyAtkSpeed: 10
   EnemyKnockbackForce: 12
