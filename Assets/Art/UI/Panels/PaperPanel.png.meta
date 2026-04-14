@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 2cde39d646d0aef46a235475f5f9d955
+guid: b7e546a2a6fe6e841a38dc4454773047
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1930241796097160097
-    second: UniversalButton_0
-  - first:
-      213: 4654541218834083190
-    second: UniversalButton_1
+      213: 6963453326957425418
+    second: PaperPanel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,45 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UniversalButton_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 64
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 14, y: 5, z: 14, w: 5}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f5c440530576635e0800000000000000
-      internalID: -1930241796097160097
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UniversalButton_hover
+      name: PaperPanel_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 32
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 14, y: 5, z: 14, w: 5}
+      border: {x: 32, y: 32, z: 32, w: 32}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 67de405e390489040800000000000000
-      internalID: 4654541218834083190
+      spriteID: a033f4b28e723a060800000000000000
+      internalID: 6963453326957425418
       vertices: []
       indices: 
       edges: []
@@ -150,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 61b7543c251a6834cb033f2e81364ffc
+    spriteID: 0fd0d6426078d3e4ba915793f22a4fa3
     internalID: 0
     vertices: []
     indices: 
@@ -158,12 +133,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":2.0},"gridSpriteSize":{"x":64.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      UniversalButton_0: -1930241796097160097
-      UniversalButton_hover: 4654541218834083190
+      PaperPanel_0: 6963453326957425418
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
