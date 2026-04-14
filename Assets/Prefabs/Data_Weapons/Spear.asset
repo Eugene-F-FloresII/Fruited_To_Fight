@@ -27,8 +27,8 @@ MonoBehaviour:
   WeaponRange: 3
   WeaponDamage: 100
   WeaponPierce: 3
-  WeaponSpeed: 6
-  WeaponAtkSpeed: 0.125
+  WeaponSpeed: 10
+  WeaponAtkSpeed: 2
   WeaponKnockback: 3
   DamageDescription: Make your spear even stronger!
   RangeDescription: Strike foes from afar!

@@ -29,7 +29,7 @@ namespace Managers
         private float _overallSpeed;
         private float _overallAtkSpeed;
         private float _overallKnockbackForce;
-        private int _overallMaxLevel = 2;
+        private int _overallMaxLevel = 3;
         
         private int _priceDamageUpgrade = 10;
         private int _priceRangeUpgrade = 7;
@@ -163,12 +163,12 @@ namespace Managers
             if (_overallSpeedLevel.Value > _overallMaxLevel) _isSpeedMaxed = true;
             
             _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed * GetSpeedMultiplier();
-            _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed * GetSpeedMultiplier();
+            _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed / GetSpeedMultiplier();
             
             if (_secondWeaponConfig != null)
             {
                 _secondWeaponConfig.WeaponSpeed = _secondWeaponInitialSpeed * GetSpeedMultiplier();
-                _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed * GetSpeedMultiplier();
+                _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed / GetSpeedMultiplier();
             }
             
 
@@ -325,7 +325,7 @@ namespace Managers
             config.WeaponRange  = initialRange  * GetRangeMultiplier();
             config.WeaponKnockback = initialKnockback * GetRangeMultiplier();
             config.WeaponSpeed  = initialSpeed  * GetSpeedMultiplier();
-            config.WeaponAtkSpeed = initialAtkSpeed * GetSpeedMultiplier();
+            config.WeaponAtkSpeed = initialAtkSpeed / GetSpeedMultiplier();
         }
 
         
