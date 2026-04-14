@@ -10,6 +10,10 @@ namespace Shared.Events
         public static Action<UpgradesWeaponSlot> OnActiveUpgradeWeaponSlotChanged { get; set; }
         public static Action<UpgradesWeaponSlot, UpgradesCategoryType> OnUpgradeDataChanged { get; set; }
         public static Action<WeaponConfig, bool> OnChosenWeapon { get; set;}
+        public static Action OnActivateUpgradePanel {get; set;}
+        
+        public static Action OnRoundStarted {get; set;}
+       
     }
 
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using Obvious.Soap;
+using Unity.Android.Gradle.Manifest;
 
 namespace Managers
 {
@@ -51,6 +52,7 @@ namespace Managers
         {
             _roundFlowCts = new CancellationTokenSource();
             InitializeRoundFlow(_roundFlowCts.Token).Forget();
+            
         }
 
         private void OnDisable()
@@ -149,6 +151,7 @@ namespace Managers
         {
             _roundStarted = false;
             Events_Round.OnRoundEnded?.Invoke(_currentRound.Value);
+            Events_Upgrades.OnActivateUpgradePanel?.Invoke();
         }
 
         private async UniTaskVoid StartNextRoundAfterDelay()
@@ -188,9 +191,10 @@ namespace Managers
                 HandleMaxRoundsReached();
                 return;
             }
-
+            
             _currentRound.Value++;
             Events_Round.OnRoundStarted?.Invoke(_currentRound.Value);
+            Events_Upgrades.OnRoundStarted?.Invoke();
 
             int spawnCount = BuildSpawnCount(_currentRound.Value);
             EnemyRuntimeStats runtimeStats = BuildRuntimeStats(_currentRound.Value);

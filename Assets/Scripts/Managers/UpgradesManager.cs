@@ -76,13 +76,13 @@ namespace Managers
 
         public int UpgradeOverallDamage(int seed)
         {
-            if (_priceDamageUpgrade > seed)
+            if (GetSeedPriceDamageUpgrade() > seed)
             {
                 Debug.Log("Not enough seeds");
                 return seed;
             }
 
-            if (_overallDamageLevel > _overallMaxLevel)
+            if (_overallDamageLevel.Value >= _overallMaxLevel)
             {
                 _isDamageMaxed = true;
                 return seed;
@@ -90,54 +90,87 @@ namespace Managers
 
             int currency = seed - GetSeedPriceDamageUpgrade();
             
+            _overallDamageLevel.Value++;
+            
+            if (_overallDamageLevel.Value >= _overallMaxLevel) _isDamageMaxed = true;
+            
             _firstWeaponConfig.WeaponDamage = _firstWeaponInitialDamage * GetDamageMultiplier();
             _firstWeaponConfig.WeaponPierce = _firstWeaponInitialPierce * Mathf.RoundToInt(GetDamageMultiplier());
-            _overallDamageLevel.Value++;
+
+            if (_secondWeaponConfig != null)
+            {
+                _secondWeaponConfig.WeaponDamage = _secondWeaponInitialDamage * GetDamageMultiplier();
+                _secondWeaponConfig.WeaponPierce = _secondWeaponInitialPierce * Mathf.RoundToInt(GetDamageMultiplier());
+            }
+            
+            
 
             return currency;
         }
         
         public int UpgradeOverallRange(int seed)
         {
-            if (_priceRangeUpgrade > seed)
+            if (GetSeedPriceRangeUpgrade() >= seed)
             {
                 Debug.Log("Not enough seeds");
                 return seed;
             }
 
-            if (_overallRangeLevel > _overallMaxLevel)
+            if (_overallRangeLevel.Value >= _overallMaxLevel)
             {
                 _isRangedMaxed = true;
                 return seed;
             }
 
             int currency = seed - GetSeedPriceRangeUpgrade();
+            
+            _overallRangeLevel.Value++;
+            
+            if (_overallRangeLevel.Value > _overallMaxLevel) _isRangedMaxed = true;
+            
             _firstWeaponConfig.WeaponRange = _firstWeaponInitialRange * GetRangeMultiplier();
             _firstWeaponConfig.WeaponKnockback = _firstWeaponInitialKnockback * GetRangeMultiplier();
-            _overallRangeLevel.Value++;
+
+            if (_secondWeaponConfig != null)
+            {
+                _secondWeaponConfig.WeaponRange = _secondWeaponInitialRange * GetRangeMultiplier();
+                _secondWeaponConfig.WeaponKnockback = _secondWeaponInitialKnockback * GetRangeMultiplier();
+            }
+            
+            
 
             return currency;
         }
         
         public int UpgradeOverallSpeed(int seed)
         {
-            if (_priceSpeedUpgrade > seed)
+            if (GetSeedPriceSpeedUpgrade() > seed)
             {
                 Debug.Log("Not enough seeds");
                 return seed;
             }
-
-            if (_overallSpeedLevel > _overallMaxLevel)
+            
+            if (_overallSpeedLevel.Value >= _overallMaxLevel)
             {
                 _isSpeedMaxed = true;
                 return seed;
             }
 
             int currency = seed - GetSeedPriceSpeedUpgrade();
+            _overallSpeedLevel.Value++;
+            
+            
+            if (_overallSpeedLevel.Value >= _overallMaxLevel) _isSpeedMaxed = true;
             
             _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed * GetSpeedMultiplier();
             _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed * GetSpeedMultiplier();
-            _overallSpeedLevel.Value++;
+            
+            if (_secondWeaponConfig != null)
+            {
+                _secondWeaponConfig.WeaponSpeed = _secondWeaponInitialSpeed * GetSpeedMultiplier();
+                _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed * GetSpeedMultiplier();
+            }
+            
 
             return currency;
         }
@@ -157,6 +190,10 @@ namespace Managers
             _firstWeaponConfig.WeaponKnockback = _firstWeaponInitialKnockback;
             _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed;
             _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed;
+
+            _overallDamageLevel.Value = 1;
+            _overallRangeLevel.Value = 1;
+            _overallSpeedLevel.Value = 1;
 
             _isDamageMaxed = false;
             _isRangedMaxed = false;
@@ -206,7 +243,7 @@ namespace Managers
         public float GetSpeedMultiplier()
         {
             // Example: each level adds 10% damage
-            return 1f + (_overallDamageLevel.Value * _percentageIncreasePerLevel);
+            return 1f + (_overallSpeedLevel.Value * _percentageIncreasePerLevel);
         }
 
         
