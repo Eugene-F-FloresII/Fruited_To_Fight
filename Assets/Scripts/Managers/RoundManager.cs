@@ -30,6 +30,7 @@ namespace Managers
         
         private EnemyConfig _enemyConfig;
         private EnemySpawnManager _enemySpawnManager;
+        private UpgradesManager _upgradesManager;
         
         private int _enemiesRemainingInRound;
         private bool _roundStarted;
@@ -52,6 +53,8 @@ namespace Managers
         {
             _roundFlowCts = new CancellationTokenSource();
             InitializeRoundFlow(_roundFlowCts.Token).Forget();
+            
+            _upgradesManager = ServiceLocator.Get<UpgradesManager>();
             
         }
 
@@ -151,7 +154,13 @@ namespace Managers
         {
             _roundStarted = false;
             Events_Round.OnRoundEnded?.Invoke(_currentRound.Value);
-            Events_Upgrades.OnActivateUpgradePanel?.Invoke();
+
+            if (_upgradesManager == null) _upgradesManager = ServiceLocator.Get<UpgradesManager>();
+            
+            if (_upgradesManager != null && !_upgradesManager.AreAllLevelsMaxed())
+            { 
+                Events_Upgrades.OnActivateUpgradePanel?.Invoke();
+            }
         }
 
         private async UniTaskVoid StartNextRoundAfterDelay()
@@ -194,7 +203,14 @@ namespace Managers
             
             _currentRound.Value++;
             Events_Round.OnRoundStarted?.Invoke(_currentRound.Value);
-            Events_Upgrades.OnRoundStarted?.Invoke();
+            
+            if (_upgradesManager == null) _upgradesManager = ServiceLocator.Get<UpgradesManager>();
+
+            if (_upgradesManager != null && !_upgradesManager.AreAllLevelsMaxed())
+            { 
+                Events_Upgrades.OnRoundStarted?.Invoke();
+            }
+           
 
             int spawnCount = BuildSpawnCount(_currentRound.Value);
             EnemyRuntimeStats runtimeStats = BuildRuntimeStats(_currentRound.Value);

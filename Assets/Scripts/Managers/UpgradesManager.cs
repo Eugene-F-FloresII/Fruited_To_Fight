@@ -29,7 +29,7 @@ namespace Managers
         private float _overallSpeed;
         private float _overallAtkSpeed;
         private float _overallKnockbackForce;
-        private int _overallMaxLevel = 3;
+        private int _overallMaxLevel = 2;
         
         private int _priceDamageUpgrade = 10;
         private int _priceRangeUpgrade = 7;
@@ -82,7 +82,7 @@ namespace Managers
                 return seed;
             }
 
-            if (_overallDamageLevel.Value >= _overallMaxLevel)
+            if (_overallDamageLevel.Value > _overallMaxLevel)
             {
                 _isDamageMaxed = true;
                 return seed;
@@ -92,7 +92,7 @@ namespace Managers
             
             _overallDamageLevel.Value++;
             
-            if (_overallDamageLevel.Value >= _overallMaxLevel) _isDamageMaxed = true;
+            if (_overallDamageLevel.Value > _overallMaxLevel) _isDamageMaxed = true;
             
             _firstWeaponConfig.WeaponDamage = _firstWeaponInitialDamage * GetDamageMultiplier();
             _firstWeaponConfig.WeaponPierce = _firstWeaponInitialPierce * Mathf.RoundToInt(GetDamageMultiplier());
@@ -116,7 +116,7 @@ namespace Managers
                 return seed;
             }
 
-            if (_overallRangeLevel.Value >= _overallMaxLevel)
+            if (_overallRangeLevel.Value > _overallMaxLevel)
             {
                 _isRangedMaxed = true;
                 return seed;
@@ -150,7 +150,7 @@ namespace Managers
                 return seed;
             }
             
-            if (_overallSpeedLevel.Value >= _overallMaxLevel)
+            if (_overallSpeedLevel.Value > _overallMaxLevel)
             {
                 _isSpeedMaxed = true;
                 return seed;
@@ -160,7 +160,7 @@ namespace Managers
             _overallSpeedLevel.Value++;
             
             
-            if (_overallSpeedLevel.Value >= _overallMaxLevel) _isSpeedMaxed = true;
+            if (_overallSpeedLevel.Value > _overallMaxLevel) _isSpeedMaxed = true;
             
             _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed * GetSpeedMultiplier();
             _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed * GetSpeedMultiplier();
@@ -201,20 +201,14 @@ namespace Managers
 
         }
 
-        public bool GetDamageLevelMaxed()
+        public bool AreAllLevelsMaxed()
         {
-            return _isDamageMaxed;
+            return GetDamageLevelMaxed() && GetRangedLevelMaxed() && GetSpeedLevelMaxed();
         }
 
-        public bool GetRangedLevelMaxed()
-        {
-            return _isRangedMaxed;
-        }
-
-        public bool GetSpeedLevelMaxed()
-        {
-            return _isSpeedMaxed;
-        }
+        public bool GetDamageLevelMaxed() => _overallDamageLevel.Value >= _overallMaxLevel;
+        public bool GetRangedLevelMaxed() => _overallRangeLevel.Value >= _overallMaxLevel;
+        public bool GetSpeedLevelMaxed() => _overallSpeedLevel.Value >= _overallMaxLevel;
 
         public int GetSeedPriceDamageUpgrade()
         {
