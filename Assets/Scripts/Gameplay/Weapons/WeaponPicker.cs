@@ -17,6 +17,7 @@ namespace Gameplay.Weapons
         [Header("Button References")]
         [SerializeField] private Button _spearButton;
         [SerializeField] private Button _staffButton;
+        [SerializeField] private Button _tomahawkButton;
 
         private int _countIndex;
 
@@ -62,6 +63,17 @@ namespace Gameplay.Weapons
             
             _countIndex++;
         }
+        
+        public void OnPickedTomahawk()
+        {
+            Events_Weapons.OnChosenWeapon?.Invoke("TomahawkConfig");
+            
+            // Scale down on click immediately
+            Tween.Scale(_tomahawkButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true)
+                .OnComplete(() => _tomahawkButton.gameObject.SetActive(false));
+            
+            _countIndex++;
+        }
 
         public void TurnOffCanvasGroup()
         {
@@ -71,6 +83,7 @@ namespace Gameplay.Weapons
             Tween.StopAll(transform);
             Tween.StopAll(_spearButton.transform);
             Tween.StopAll(_staffButton.transform);
+            Tween.StopAll(_tomahawkButton.transform);
 
             // Staggered deactivation sequence
             var seq = Sequence.Create(useUnscaledTime: true);
@@ -81,6 +94,10 @@ namespace Gameplay.Weapons
             if (_staffButton.gameObject.activeSelf)
                 seq.Chain(Tween.Delay(_buttonStaggerDelay, useUnscaledTime: true))
                    .Group(Tween.Scale(_staffButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
+
+            if (_tomahawkButton.gameObject.activeSelf)
+                seq.Chain(Tween.Delay(_buttonStaggerDelay, useUnscaledTime: true))
+                   .Group(Tween.Scale(_tomahawkButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
 
             seq.Chain(Tween.Alpha(_canvasGroup, 0, _animationDuration, useUnscaledTime: true))
                .Group(Tween.Scale(transform, 0, _animationDuration, Ease.InBack, useUnscaledTime: true));
@@ -94,6 +111,7 @@ namespace Gameplay.Weapons
             Tween.StopAll(transform);
             Tween.StopAll(_spearButton.transform);
             Tween.StopAll(_staffButton.transform);
+            Tween.StopAll(_tomahawkButton.transform);
             
             // Set initial state manually
             _canvasGroup.alpha = 0f;
@@ -101,8 +119,10 @@ namespace Gameplay.Weapons
             
             _spearButton.gameObject.SetActive(true);
             _staffButton.gameObject.SetActive(true);
+            _tomahawkButton.gameObject.SetActive(true);
             _spearButton.transform.localScale = Vector3.zero;
             _staffButton.transform.localScale = Vector3.zero;
+            _tomahawkButton.transform.localScale = Vector3.zero;
 
             // Activation sequence: After Panel Animation
             Sequence.Create(useUnscaledTime: true)
@@ -110,7 +130,9 @@ namespace Gameplay.Weapons
                 .Group(Tween.Scale(transform, 1f, _animationDuration, Ease.OutBack, useUnscaledTime: true))
                 .Chain(Tween.Scale(_spearButton.transform, 1f, _buttonAnimationDuration, Ease.OutBack, useUnscaledTime: true))
                 .Chain(Tween.Delay(_buttonStaggerDelay, useUnscaledTime: true))
-                .Chain(Tween.Scale(_staffButton.transform, 1f, _buttonAnimationDuration, Ease.OutBack, useUnscaledTime: true));
+                .Chain(Tween.Scale(_staffButton.transform, 1f, _buttonAnimationDuration, Ease.OutBack, useUnscaledTime: true))
+                .Chain(Tween.Delay(_buttonStaggerDelay, useUnscaledTime: true))
+                .Chain(Tween.Scale(_tomahawkButton.transform, 1f, _buttonAnimationDuration, Ease.OutBack, useUnscaledTime: true));
         }
         
     }

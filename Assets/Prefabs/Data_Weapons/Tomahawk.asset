@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45a48276087a0ef4c81d7cec4d0e92fb, type: 3}
+  m_Name: Tomahawk
+  m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponConfig
+  WeaponSpawner:
+    m_AssetGUID: 31b2a488b2bceb84b9855553c4aff388
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  WeaponPrefab: {fileID: 5521510721269681469, guid: 31a7e3e5b249e5d499f3e9d9823033af, type: 3}
+  WeaponName: Tomahawk
+  WeaponID: 2
+  WeaponType: 1
+  WeaponAmountToPool: 20
+  WeaponHoming: 1
+  WeaponRange: 4
+  WeaponDamage: 50
+  WeaponPierce: 2
+  WeaponSpeed: 12
+  WeaponAtkSpeed: 0.9
+  WeaponKnockback: 5
+  DamageDescription: 
+  RangeDescription: 
+  SpeedDescription: 
