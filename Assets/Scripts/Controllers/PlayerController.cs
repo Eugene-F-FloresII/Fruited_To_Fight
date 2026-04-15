@@ -125,12 +125,19 @@ namespace Controllers
             Vector2 moveInput =  MovementInput.action.ReadValue<Vector2>();
             _moveDirection = moveInput.normalized;
             
+            if (_playerCharacterAnimator == null) UpdatePlayerStats();
+            if (_playerCharacterAnimator == null) return;
+
             _playerCharacterAnimator.SetFloat(_velocityX, _moveDirection.x);
             _playerCharacterAnimator.SetFloat(_velocityY, _moveDirection.y);
             _rb.linearVelocity = moveInput.normalized * CharacterConfig.CharacterSpeed;
         }
         
-        private void ChosenCharacter(CharacterConfig characterConfig) => CharacterConfig = characterConfig;
+        private void ChosenCharacter(CharacterConfig characterConfig)
+        {
+            CharacterConfig = characterConfig;
+            UpdatePlayerStats();
+        }
 
         private async UniTask PlayerKnockBack(Vector2 direction, float force, float duration, CancellationToken token)
         {

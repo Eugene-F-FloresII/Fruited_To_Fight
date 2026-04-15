@@ -45,18 +45,16 @@ namespace Gameplay
         private void CharacterWeaponReady(CharacterConfig characterConfig)
         {
             foreach (GameObject character in _characters) character.SetActive(false);
-          //  foreach (GameObject weapon in _weapons)  weapon.SetActive(false);
             
-           // _weapons[weaponConfig.WeaponID].SetActive(true);
             _characters[characterConfig.CharacterId].SetActive(true);
             
-            if (_characters[characterConfig.CharacterId].TryGetComponent(out Animator characterAnimator)) CharacterAnimator = characterAnimator;
-           // if (_weapons[weaponConfig.WeaponID].TryGetComponent(out Animator weaponAnimator)) WeaponAnimator = weaponAnimator;
+            CharacterAnimator = _characters[characterConfig.CharacterId].GetComponentInChildren<Animator>();
         }
 
         private void ChosenCharacter(CharacterConfig characterConfig)
         {
             _characterConfig = characterConfig;
+            CharacterWeaponReady(_characterConfig);
         }
     }
 
