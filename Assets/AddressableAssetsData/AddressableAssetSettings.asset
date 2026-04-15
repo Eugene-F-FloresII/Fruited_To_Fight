@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 2992e0799de6d22478a9bbee20abcc7a
   m_currentHash:
     serializedVersion: 2
-    Hash: 84a08a163d7d85a4b07c2169bc679735
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -102,6 +102,8 @@ MonoBehaviour:
     - default
     - Spear
     - SpearConfig
+    - StaffConfig
+    - Fireball
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 0c70afc2454749243a855e125e9b3ac2, type: 2}

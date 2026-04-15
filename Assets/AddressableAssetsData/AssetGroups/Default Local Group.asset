@@ -30,10 +30,22 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cd373512670cf341824ec6a5281b3d8
+    m_Address: Assets/Prefabs/Data_Weapons/Staff.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - StaffConfig
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 97813bd3a29d84e4fba57f4447ded630
     m_Address: Assets/Prefabs/WeaponPrefabs/SpearSpawner.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c3780723b4b33647a94175ddabc350a
+    m_Address: Assets/Prefabs/Weapon/FireBall.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Fireball
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bc3223387b63c8c4b9fd3200fe413aa9
     m_Address: Assets/Prefabs/Data_Weapons/Spear.asset
@@ -46,6 +58,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Spear
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e732d01dbf9ae4945b393e07fc230965
+    m_Address: Assets/Prefabs/Weapon/StaffSpawner.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3f98cc3d43238a947aa6a142a2b489e0, type: 2}

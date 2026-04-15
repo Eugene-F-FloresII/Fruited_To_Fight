@@ -17,7 +17,7 @@ namespace Controllers
         [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
         
         [Header("Enemy References")]
-        [SerializeField] private PlayerController _playerController;
+        [SerializeField] private DefendingController _defendingController;
         [SerializeField] private Animator _animator;
         [SerializeField] private IntVariable _enemyDefeated;
         
@@ -77,6 +77,13 @@ namespace Controllers
             ChasePlayer();
         }
 
+        public void KillEnemy()
+        {
+            Events_Seed.OnEnemyDeath?.Invoke(transform);
+            _enemyDefeated.Value++;
+            gameObject.SetActive(false);
+        }
+
         public void TakeDamage(float damage, ProjectileWeapon projectile)
         {
             _projectileDirection = (transform.position - projectile.transform.position).normalized;
@@ -93,15 +100,18 @@ namespace Controllers
 
             if (_currentHealth <= 0)
             {
-                Events_Seed.OnEnemyDeath?.Invoke(transform);
-                _enemyDefeated.Value++;
-                gameObject.SetActive(false);
+                KillEnemy();
             }
         }
 
         public float GetKnockBackForce()
         {
             return _currentKnockbackForce;
+        }
+
+        public int GotHitByEnemy()
+        {
+            return (int)_enemyConfig.EnemyDamage;
         }
 
         public void ApplyRuntimeStats(EnemyRuntimeStats runtimeStats)
@@ -113,7 +123,7 @@ namespace Controllers
             _currentKnockbackForce = runtimeStats.KnockbackForce;
         }
 
-        public void InitializePlayer(PlayerController playerController) =>  _playerController = playerController; 
+        public void InitializePlayer(DefendingController defendingController) =>  _defendingController = defendingController; 
 
         private void ChasePlayer()
         {
@@ -125,14 +135,14 @@ namespace Controllers
                 return;
             }
             
-            _playerPosX = _playerController.transform.position.x;
-            _playerPosY = _playerController.transform.position.y;
+            _playerPosX = _defendingController.transform.position.x;
+            _playerPosY = _defendingController.transform.position.y;
             
             _animator.SetFloat(_velocityX, _playerPosX);
             _animator.SetFloat(_velocityY, _playerPosY);
             
             
-            gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, _playerController.transform.position, _currentSpeed * Time.deltaTime);
+            gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, _defendingController.transform.position, _currentSpeed * Time.deltaTime);
         }
 
         private void ResetStatsFromConfig()
@@ -163,6 +173,8 @@ namespace Controllers
             _knockbackCts?.Cancel();
             _knockbackCts?.Dispose();
         }
+        
+        
 
         protected virtual async UniTask HitEffect(CancellationToken token)
         {
