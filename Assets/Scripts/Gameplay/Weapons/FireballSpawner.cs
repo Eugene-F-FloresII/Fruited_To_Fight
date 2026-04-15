@@ -6,7 +6,6 @@ using Data;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Shared.Events;
-using UnityEditor.PackageManager;
 
 namespace Gameplay.Weapons
 {

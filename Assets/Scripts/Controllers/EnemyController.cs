@@ -96,8 +96,12 @@ namespace Controllers
         {
             _projectileDirection = (transform.position - projectile.transform.position).normalized;
             
-            _knockbackCts?.Cancel();
-            _knockbackCts?.Dispose();
+            if (_knockbackCts != null)
+            {
+                _knockbackCts.Cancel();
+                _knockbackCts.Dispose();
+                _knockbackCts = null;
+            }
             _knockbackCts =  new CancellationTokenSource();
             
             EnemyKnockBack(_projectileDirection, projectile.GetWeaponKnockback(), 0.3f, _knockbackCts.Token).Forget();
@@ -105,8 +109,12 @@ namespace Controllers
             _currentHealth -= damage;
             Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage));
             
-            _hitEffectCts?.Cancel();
-            _hitEffectCts?.Dispose();
+            if (_hitEffectCts != null)
+            {
+                _hitEffectCts.Cancel();
+                _hitEffectCts.Dispose();
+                _hitEffectCts = null;
+            }
             _hitEffectCts = new CancellationTokenSource();
             HitEffect(_hitEffectCts.Token).Forget();
             
@@ -126,6 +134,7 @@ namespace Controllers
 
         public int GotHitByEnemy()
         {
+            if (_enemyConfig == null) return 0;
             return (int)_enemyConfig.EnemyDamage;
         }
 
@@ -150,6 +159,8 @@ namespace Controllers
                 return;
             }
             
+            if (_defendingController == null) return;
+
             _playerPosX = _defendingController.transform.position.x;
             _playerPosY = _defendingController.transform.position.y;
             
@@ -182,15 +193,21 @@ namespace Controllers
 
         private void DisposeTokens()
         {
-            _hitEffectCts?.Cancel();
-            _hitEffectCts?.Dispose();
+            if (_hitEffectCts != null)
+            {
+                _hitEffectCts.Cancel();
+                _hitEffectCts.Dispose();
+                _hitEffectCts = null;
+            }
 
-            _knockbackCts?.Cancel();
-            _knockbackCts?.Dispose();
+            if (_knockbackCts != null)
+            {
+                _knockbackCts.Cancel();
+                _knockbackCts.Dispose();
+                _knockbackCts = null;
+            }
         }
         
-        
-
         protected virtual async UniTask HitEffect(CancellationToken token)
         {
             if (_hitMaterial != null && SpriteRenderer != null)

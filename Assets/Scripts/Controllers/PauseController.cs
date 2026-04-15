@@ -79,18 +79,15 @@ namespace Controllers
             
             // Reload the base scene (Gameplay) which is at index 0 in Build Settings.
             // This ensures we restart from the beginning and all additive scenes are reloaded correctly.
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("Gameplay");
         }
 
         public void ExitGame()
         {
             Events_Game.OnGameExited?.Invoke();
             
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+            Time.timeScale = 1f; // Always reset time scale before loading scene
+            SceneManager.LoadScene("MainMenu");
         }
 
         public void TurnOffCanvasGroup()

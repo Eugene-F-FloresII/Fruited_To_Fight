@@ -45,6 +45,7 @@ namespace Controllers
             Events_Upgrades.OnActivateUpgradePanel += TurnOnCanvasGroup;
             Events_Upgrades.OnRoundStarted += TurnOffCanvasGroup;
             Events_Game.OnGameRestarted += OnGameRestarted;
+            Events_Game.OnGameExited += OnGameRestarted;
         }
 
         private void OnDisable()
@@ -52,6 +53,7 @@ namespace Controllers
             Events_Upgrades.OnActivateUpgradePanel -= TurnOnCanvasGroup;
             Events_Upgrades.OnRoundStarted -= TurnOffCanvasGroup;
             Events_Game.OnGameRestarted -= OnGameRestarted;
+            Events_Game.OnGameExited -= OnGameRestarted;
         }
 
         private void OnGameRestarted()

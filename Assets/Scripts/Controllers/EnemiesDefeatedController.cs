@@ -27,6 +27,7 @@ namespace Controllers
                 _enemiesDefeatedCount.OnValueChanged += OnEnemyDefeated;
             }
             Shared.Events.Events_Game.OnGameRestarted += OnGameRestarted;
+            Shared.Events.Events_Game.OnGameExited += OnGameRestarted;
         }
 
         private void OnDisable()
@@ -36,6 +37,7 @@ namespace Controllers
                 _enemiesDefeatedCount.OnValueChanged -= OnEnemyDefeated;
             }
             Shared.Events.Events_Game.OnGameRestarted -= OnGameRestarted;
+            Shared.Events.Events_Game.OnGameExited -= OnGameRestarted;
         }
 
         private void OnGameRestarted()

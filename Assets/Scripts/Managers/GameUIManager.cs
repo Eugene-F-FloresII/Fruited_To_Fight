@@ -24,14 +24,26 @@ namespace Managers
             ServiceLocator.Unregister<GameUIManager>();
         }
 
-        public void TurnOffGameUI()
+        private void OnEnable()
+        {
+            Shared.Events.Events_Game.OnGameExited += TurnOffCanvasGroup;
+            Shared.Events.Events_Game.OnGameRestarted += TurnOffCanvasGroup;
+        }
+
+        private void OnDisable()
+        {
+            Shared.Events.Events_Game.OnGameExited -= TurnOffCanvasGroup;
+            Shared.Events.Events_Game.OnGameRestarted -= TurnOffCanvasGroup;
+        }
+
+        public void TurnOffCanvasGroup()
         {
             _gameUI.alpha = 0f;
             _gameUI.blocksRaycasts = false;
             _gameUI.interactable = false;
         }
         
-        public void TurnOnGameUI()
+        public void TurnOnCanvasGroup()
         {
             _gameUI.alpha = 1f;
             _gameUI.blocksRaycasts = true;

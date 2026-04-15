@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using Obvious.Soap;
+using UnityEngine.SceneManagement;
 
 
 namespace Managers
@@ -235,6 +236,8 @@ namespace Managers
             _isTransitioning = false;
 
             Debug.Log("Max rounds reached. Run complete.", this);
+            Events_Game.OnGameExited?.Invoke();
+            SceneManager.LoadScene("MainMenu");
         }
 
         private int BuildSpawnCount(int roundIndex)

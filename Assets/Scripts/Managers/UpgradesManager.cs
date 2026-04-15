@@ -29,7 +29,7 @@ namespace Managers
         private float _overallSpeed;
         private float _overallAtkSpeed;
         private float _overallKnockbackForce;
-        private int _overallMaxLevel = 3;
+        private int _overallMaxLevel = 5;
         
         private int _priceDamageUpgrade = 10;
         private int _priceRangeUpgrade = 7;
@@ -63,12 +63,14 @@ namespace Managers
         {
             Events_Weapons.OnChosenWeapon += InitializeCurrentWeapon;
             Events_Game.OnGameRestarted += ResetAllUpgrades;
+            Events_Game.OnGameExited += ResetAllUpgrades;
         }
 
         private void OnDisable()
         {
             Events_Weapons.OnChosenWeapon -= InitializeCurrentWeapon;
             Events_Game.OnGameRestarted -= ResetAllUpgrades;
+            Events_Game.OnGameExited -= ResetAllUpgrades;
         }
 
         private void OnDestroy()

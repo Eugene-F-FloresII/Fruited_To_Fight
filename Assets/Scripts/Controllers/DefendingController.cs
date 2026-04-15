@@ -3,6 +3,7 @@ using Data;
 using Obvious.Soap;
 using Shared.Events;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Controllers
 {
@@ -20,11 +21,13 @@ namespace Controllers
         private void OnEnable()
         {
             Events_Game.OnGameRestarted += OnGameRestarted;
+            Events_Game.OnGameExited += OnGameRestarted;
         }
 
         private void OnDisable()
         {
             Events_Game.OnGameRestarted -= OnGameRestarted;
+            Events_Game.OnGameExited -= OnGameRestarted;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -52,6 +55,7 @@ namespace Controllers
 
         private void OnGameRestarted()
         {
+            ResetStats();
             ConfigureStats();
         }
 
@@ -69,6 +73,8 @@ namespace Controllers
             Debug.Log("Corndalf ded");
             gameObject.SetActive(false);
             ResetStats();
+            Events_Game.OnGameExited?.Invoke();
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
