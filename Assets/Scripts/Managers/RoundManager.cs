@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using Obvious.Soap;
-
+using Unity.Android.Gradle.Manifest;
 
 namespace Managers
 {

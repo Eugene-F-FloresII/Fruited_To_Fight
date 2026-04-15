@@ -15,7 +15,7 @@ namespace Managers
     {
         [Header("Enemy Spawn References")] 
         [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
-        [SerializeField] private DefendingController _defendingController;
+        [SerializeField] private PlayerController _playerController;
         [SerializeField] private Camera _camera;
         
         [Header("Enemy Oranges Settings")]
@@ -98,7 +98,7 @@ namespace Managers
                 _camera = Camera.main;
             }
 
-            if (_camera == null || _defendingController == null)
+            if (_camera == null || _playerController == null)
             {
                 Debug.LogWarning("EnemySpawnManager is missing camera or player reference.", this);
                 return 0;
@@ -120,7 +120,7 @@ namespace Managers
                 Transform enemyTransform = enemy.gameObject.transform;
                 enemyTransform.position = GetEdgeSpawnPosition();
                 enemyTransform.rotation = Quaternion.identity;
-                enemy.InitializePlayer(_defendingController);
+                enemy.InitializePlayer(_playerController);
                 enemy.ApplyRuntimeStats(runtimeStats);
 
                 spawnedEnemies++;

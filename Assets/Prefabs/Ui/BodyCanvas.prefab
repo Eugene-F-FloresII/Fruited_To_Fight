@@ -125,42 +125,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4691846477975912319, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4691846477975912319, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4691846477975912319, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4691846477975912319, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6467953376023464785, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8491525562044627716, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8491525562044627716, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8491525562044627716, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8491525562044627716, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8619051872527336860, guid: dacdd01b91891ae49b6e7af1399a3330, type: 3}
       propertyPath: m_Name
       value: PickWeaponPanel
