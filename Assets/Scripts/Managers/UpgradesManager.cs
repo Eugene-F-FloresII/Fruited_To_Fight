@@ -295,21 +295,38 @@ namespace Managers
         
         private void SetUpSecondWeaponConfig()
         {
-            _secondWeaponInitialDamage = _secondWeaponConfig.WeaponDamage;
-            _secondWeaponInitialPierce = _secondWeaponConfig.WeaponPierce;
-            _secondWeaponInitialRange = _secondWeaponConfig.WeaponRange;
-            _secondWeaponInitialKnockback = _secondWeaponConfig.WeaponKnockback;
-            _secondWeaponInitialSpeed = _secondWeaponConfig.WeaponSpeed;
-            _secondWeaponInitialAtkSpeed = _secondWeaponConfig.WeaponAtkSpeed;
-            
-            ApplyAllUpgrades(_secondWeaponConfig,
-                _secondWeaponInitialDamage,
-                _secondWeaponInitialRange,
-                _secondWeaponInitialSpeed,
-                _secondWeaponInitialPierce,
-                _secondWeaponInitialKnockback, 
-                _secondWeaponInitialAtkSpeed);
-            
+            if (_secondWeaponConfig == _firstWeaponConfig)
+            {
+                // Both weapons share the same ScriptableObject.
+                // We copy the initial stats already captured from the first weapon 
+                // to ensure our baseline for future upgrades remains correct.
+                _secondWeaponInitialDamage = _firstWeaponInitialDamage;
+                _secondWeaponInitialPierce = _firstWeaponInitialPierce;
+                _secondWeaponInitialRange = _firstWeaponInitialRange;
+                _secondWeaponInitialKnockback = _firstWeaponInitialKnockback;
+                _secondWeaponInitialSpeed = _firstWeaponInitialSpeed;
+                _secondWeaponInitialAtkSpeed = _firstWeaponInitialAtkSpeed;
+                
+                // We don't call ApplyAllUpgrades here because it's the same instance 
+                // and it was already upgraded during SetUpFirstWeaponConfig.
+            }
+            else
+            {
+                _secondWeaponInitialDamage = _secondWeaponConfig.WeaponDamage;
+                _secondWeaponInitialPierce = _secondWeaponConfig.WeaponPierce;
+                _secondWeaponInitialRange = _secondWeaponConfig.WeaponRange;
+                _secondWeaponInitialKnockback = _secondWeaponConfig.WeaponKnockback;
+                _secondWeaponInitialSpeed = _secondWeaponConfig.WeaponSpeed;
+                _secondWeaponInitialAtkSpeed = _secondWeaponConfig.WeaponAtkSpeed;
+                
+                ApplyAllUpgrades(_secondWeaponConfig,
+                    _secondWeaponInitialDamage,
+                    _secondWeaponInitialRange,
+                    _secondWeaponInitialSpeed,
+                    _secondWeaponInitialPierce,
+                    _secondWeaponInitialKnockback, 
+                    _secondWeaponInitialAtkSpeed);
+            }
         }
         
         private void ApplyAllUpgrades(WeaponConfig config, 

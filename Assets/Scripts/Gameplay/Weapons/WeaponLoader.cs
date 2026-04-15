@@ -66,6 +66,21 @@ namespace Gameplay.Weapons
                 return null;
             }
 
+            // Check if the asset is already loaded
+            if (weaponConfig.WeaponSpawner.Asset != null)
+            {
+                return weaponConfig.WeaponSpawner.Asset as GameObject;
+            }
+
+            // Check if there is an ongoing load operation
+            if (weaponConfig.WeaponSpawner.OperationHandle.IsValid())
+            {
+                var existingHandle = weaponConfig.WeaponSpawner.OperationHandle.Convert<GameObject>();
+                await existingHandle.Task;
+                return existingHandle.Result;
+            }
+
+            // Start a new load if not already loading or loaded
             var handle = weaponConfig.WeaponSpawner.LoadAssetAsync<GameObject>();
             await handle.Task;
 

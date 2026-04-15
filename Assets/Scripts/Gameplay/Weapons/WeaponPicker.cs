@@ -46,9 +46,8 @@ namespace Gameplay.Weapons
         {
             Events_Weapons.OnChosenWeapon?.Invoke("SpearConfig");
             
-            // Scale down on click immediately
-            Tween.Scale(_spearButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true)
-                .OnComplete(() => _spearButton.gameObject.SetActive(false));
+            // Bounce on click
+            Tween.PunchScale(_spearButton.transform, new Vector3(-0.2f, -0.2f, 0), _buttonAnimationDuration, useUnscaledTime: true);
             
             _countIndex++;
         }
@@ -57,9 +56,8 @@ namespace Gameplay.Weapons
         {
             Events_Weapons.OnChosenWeapon?.Invoke("StaffConfig");
             
-            // Scale down on click immediately
-            Tween.Scale(_staffButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true)
-                .OnComplete(() => _staffButton.gameObject.SetActive(false));
+            // Bounce on click
+            Tween.PunchScale(_staffButton.transform, new Vector3(-0.2f, -0.2f, 0), _buttonAnimationDuration, useUnscaledTime: true);
             
             _countIndex++;
         }
@@ -68,9 +66,8 @@ namespace Gameplay.Weapons
         {
             Events_Weapons.OnChosenWeapon?.Invoke("TomahawkConfig");
             
-            // Scale down on click immediately
-            Tween.Scale(_tomahawkButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true)
-                .OnComplete(() => _tomahawkButton.gameObject.SetActive(false));
+            // Bounce on click
+            Tween.PunchScale(_tomahawkButton.transform, new Vector3(-0.2f, -0.2f, 0), _buttonAnimationDuration, useUnscaledTime: true);
             
             _countIndex++;
         }
