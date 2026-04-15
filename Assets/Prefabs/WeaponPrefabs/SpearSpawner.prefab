@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 3085726764258735245}
   - component: {fileID: 6883880016600152331}
   - component: {fileID: 1501303039299796727}
-  - component: {fileID: 663142787010339898}
+  - component: {fileID: 4625824203402677796}
   - component: {fileID: 899070817516979274}
   m_Layer: 7
   m_Name: SpearSpawner
@@ -223,7 +223,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1
---- !u!114 &663142787010339898
+--- !u!114 &4625824203402677796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,13 +232,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4951161623196988664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 861da9d7e60ff9c408056db15bc36b8a, type: 3}
+  m_Script: {fileID: 11500000, guid: ceb4bb6376a90e94ea1f9bc6d1b8c50e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.WeaponHands
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.SpearSpawner
   _weaponConfig: {fileID: 11400000, guid: bc3223387b63c8c4b9fd3200fe413aa9, type: 2}
   _enemies: []
   _pooledProjectile: {fileID: 0}
   _pooledTransform: {fileID: 3964961008253599873}
+  _audioClip: {fileID: 8300000, guid: e5738f050fc14c44c92ee55456003374, type: 3}
 --- !u!50 &899070817516979274
 Rigidbody2D:
   serializedVersion: 5

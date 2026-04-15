@@ -12,7 +12,7 @@ namespace Gameplay.Weapons
     public class ProjectileSpawner : MonoBehaviour
     {
         [Header("Weapon Config")]
-        [SerializeField] private WeaponConfig _weaponConfig;
+        [SerializeField] protected WeaponConfig _weaponConfig;
         
         [Header("Enemies in Range")]
         [SerializeField] private List<EnemyController> _enemies = new();
@@ -26,9 +26,9 @@ namespace Gameplay.Weapons
         private CancellationTokenSource _attackCts;
         
         private int _amountToPool;
-        private float _currentAtkSpeed;
+        protected float _currentAtkSpeed;
         private float _currentRange;
-        private readonly float _projectileRotationOffset = -90f;
+        protected readonly float _projectileRotationOffset = -90f;
         
         private Queue<GameObject> _pooledObjects;
         private void Awake()
@@ -103,7 +103,7 @@ namespace Gameplay.Weapons
             }
         }
 
-        private void StopAttackLoop()
+        protected void StopAttackLoop()
         {
             if (_attackCts == null)
             {
@@ -138,7 +138,7 @@ namespace Gameplay.Weapons
             return null;
         }
 
-        private EnemyController GetNearestEnemy()
+        protected EnemyController GetNearestEnemy()
         {
             _enemies.RemoveAll(e => e == null || !e.gameObject.activeInHierarchy);
 
@@ -165,7 +165,7 @@ namespace Gameplay.Weapons
             return nearestEnemy;
         }
 
-        private async UniTask AttackEnemyAsync(CancellationToken token)
+        protected virtual async UniTask AttackEnemyAsync(CancellationToken token)
         {
             try
             {
@@ -214,6 +214,7 @@ namespace Gameplay.Weapons
                 StopAttackLoop();
             }
         }
+        
         
     }
 

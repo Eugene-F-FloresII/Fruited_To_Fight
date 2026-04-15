@@ -1,6 +1,7 @@
 using System;
 using Obvious.Soap;
 using PrimeTween;
+using Shared.Events;
 using UnityEngine;
 
 
@@ -10,6 +11,7 @@ namespace Gameplay
     {
         [Header("Health Bar References")]
         [SerializeField] private GameObject _healthBar;
+        [SerializeField] private AudioClip _audioClip;
 
 
         [Header("SOAP reference")]
@@ -53,6 +55,8 @@ namespace Gameplay
             {
                 if (_healthBar != null)
                 {
+                    Events_Sound.PlaySound?.Invoke(_audioClip);
+                    
                     _shakeTween.Stop();
                     _healthBar.transform.localPosition = _baseLocalPosition;
                     // Increased strength slightly and added frequency for a more noticeable shake

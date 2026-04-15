@@ -1,5 +1,80 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &42174319268512813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1827943668784247559}
+  - component: {fileID: 6439672349688823112}
+  - component: {fileID: 8207214344773837766}
+  m_Layer: 0
+  m_Name: Img_Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1827943668784247559
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42174319268512813}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3662201642664509593}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 287}
+  m_SizeDelta: {x: 848.59, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6439672349688823112
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42174319268512813}
+  m_CullTransparentMesh: 1
+--- !u!114 &8207214344773837766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42174319268512813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -8655552814372086904, guid: 3e08c4010eabbd84383b13542c9916e6, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2382145418428135154
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,6 +181,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1827943668784247559}
   - {fileID: 8612585184798188409}
   - {fileID: 7661351597025478818}
   - {fileID: 9137339364970669270}
@@ -317,7 +393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: -20}
+  m_AnchoredPosition: {x: 0.000061035156, y: 22}
   m_SizeDelta: {x: 900, y: 70}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8462638002504195387
@@ -348,7 +424,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You're getting stronger!
+  m_text: Thou HAST become stronger.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a5dc0285d5764344abc7c3c269e80fbd, type: 2}
   m_sharedMaterial: {fileID: -4237411156429526564, guid: a5dc0285d5764344abc7c3c269e80fbd, type: 2}
@@ -357,14 +433,14 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278887090
-  m_fontColor: {r: 0.6981132, g: 0.63422316, b: 0.040833, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
-    topLeft: {r: 0.18490559, g: 0.18490559, b: 0.18490559, a: 1}
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 0.9924528, g: 0.7545298, b: 0, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
@@ -375,8 +451,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 68
+  m_fontSizeBase: 68
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -512,6 +588,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 9019582420042816599}
+    - target: {fileID: 6054689149410479814, guid: d58be223138338743aaeae5c02222111, type: 3}
+      propertyPath: _audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
+    - target: {fileID: 6054689149410479814, guid: d58be223138338743aaeae5c02222111, type: 3}
+      propertyPath: _clickAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e7daa6301297e974ca7af926a668b46c, type: 3}
+    - target: {fileID: 6054689149410479814, guid: d58be223138338743aaeae5c02222111, type: 3}
+      propertyPath: _hoverAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
     - target: {fileID: 6670469608466505365, guid: d58be223138338743aaeae5c02222111, type: 3}
       propertyPath: m_Name
       value: RangeUpgrade
@@ -638,6 +726,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 9019582420042816599}
+    - target: {fileID: 8597101850220342146, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
+      propertyPath: _audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
+    - target: {fileID: 8597101850220342146, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
+      propertyPath: _clickAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e7daa6301297e974ca7af926a668b46c, type: 3}
+    - target: {fileID: 8597101850220342146, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
+      propertyPath: _hoverAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
     - target: {fileID: 9213201429636185041, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
       propertyPath: m_Name
       value: DamageUpgrade
@@ -790,6 +890,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7661351597025478818}
     m_Modifications:
+    - target: {fileID: 3611000002941934889, guid: 9b6996f5543496e4f89f87fd63096d8f, type: 3}
+      propertyPath: _audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
+    - target: {fileID: 3611000002941934889, guid: 9b6996f5543496e4f89f87fd63096d8f, type: 3}
+      propertyPath: _clickAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e7daa6301297e974ca7af926a668b46c, type: 3}
+    - target: {fileID: 3611000002941934889, guid: 9b6996f5543496e4f89f87fd63096d8f, type: 3}
+      propertyPath: _hoverAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
     - target: {fileID: 4217636621545147770, guid: 9b6996f5543496e4f89f87fd63096d8f, type: 3}
       propertyPath: m_Name
       value: SpeedUpgrade

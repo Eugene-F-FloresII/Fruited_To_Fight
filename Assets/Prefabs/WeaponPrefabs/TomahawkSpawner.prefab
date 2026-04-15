@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 847841250441099614}
   - component: {fileID: 9078719809397637452}
   - component: {fileID: 7783670969557622614}
-  - component: {fileID: 6399422591683494405}
+  - component: {fileID: 3170793368376714273}
   - component: {fileID: 5592227978150955389}
   m_Layer: 7
   m_Name: TomahawkSpawner
@@ -132,7 +132,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1
---- !u!114 &6399422591683494405
+--- !u!114 &3170793368376714273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,13 +141,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3340461549419726477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 861da9d7e60ff9c408056db15bc36b8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1947455c855fcea47a436b624433cc01, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.WeaponHands
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.TomahawkSpawner
   _weaponConfig: {fileID: 11400000, guid: e25e6241b0aceac4c9b816e19d8c1f7b, type: 2}
   _enemies: []
   _pooledProjectile: {fileID: 0}
   _pooledTransform: {fileID: 1079802579191167156}
+  _audioClip: {fileID: 8300000, guid: 52dd961d8edb5a04ca40cb15f265ebc3, type: 3}
 --- !u!50 &5592227978150955389
 Rigidbody2D:
   serializedVersion: 5

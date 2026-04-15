@@ -447,6 +447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedCollector
   _seedCollected: {fileID: 11400000, guid: 4036d8a9afb68704cb37959d5bb41968, type: 2}
+  _audioClip: {fileID: 8300000, guid: 4c61dda5bbe5c5540afdaa3e00e02144, type: 3}
 --- !u!1 &1346479218096908552
 GameObject:
   m_ObjectHideFlags: 0

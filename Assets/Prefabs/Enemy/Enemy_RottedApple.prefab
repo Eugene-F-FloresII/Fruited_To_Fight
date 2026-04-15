@@ -118,6 +118,8 @@ MonoBehaviour:
   _enemyDefeated: {fileID: 11400000, guid: ac31289e1640a6e42a0b6305f4a81922, type: 2}
   _hitMaterial: {fileID: 2100000, guid: f6fc82d52acb33e4f93cf7004c6be449, type: 2}
   _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  _hitAudioClip: {fileID: 8300000, guid: 559c4182b25e92c4885555ae5153643e, type: 3}
+  _deathAudioClip: {fileID: 8300000, guid: 2fa393a65a257194b9480846fe0de7b5, type: 3}
 --- !u!50 &5198369919099662748
 Rigidbody2D:
   serializedVersion: 5

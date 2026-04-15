@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthBar
   _healthBar: {fileID: 6571462843311876634}
+  _audioClip: {fileID: 8300000, guid: 1e2b8b5b2224ca64a94c5b3e0fd2b78b, type: 3}
   _characterHealth: {fileID: 11400000, guid: d2405c66f039f3d4591d779b8f4fc94b, type: 2}
 --- !u!1 &6938211040471038723
 GameObject:

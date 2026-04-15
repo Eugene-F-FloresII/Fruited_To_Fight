@@ -1,4 +1,5 @@
 using Obvious.Soap;
+using Shared.Events;
 using UnityEngine;
 
 namespace Gameplay.Seed
@@ -6,6 +7,7 @@ namespace Gameplay.Seed
     public class SeedCollector : MonoBehaviour
     {
         [SerializeField] private IntVariable _seedCollected;
+        [SerializeField] private AudioClip _audioClip;
 
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -17,6 +19,9 @@ namespace Gameplay.Seed
                 }
 
                 _seedCollected.Value++;
+                
+                Events_Sound.PlaySound?.Invoke(_audioClip);
+                
                 seed.gameObject.SetActive(false);
             }
         }

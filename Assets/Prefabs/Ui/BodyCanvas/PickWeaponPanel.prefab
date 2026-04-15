@@ -1581,6 +1581,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323eeb0095ab3694eb36871efe5c84d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.ButtonAnimator.ScaleUpDown
+  _hoverAudioClip: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
+  _clickAudioClip: {fileID: 8300000, guid: e7daa6301297e974ca7af926a668b46c, type: 3}
   _scaleFactor: 1.5
   _duration: 0.5
   _ease: 6
@@ -1734,6 +1736,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323eeb0095ab3694eb36871efe5c84d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.ButtonAnimator.ScaleUpDown
+  _hoverAudioClip: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
+  _clickAudioClip: {fileID: 8300000, guid: e7daa6301297e974ca7af926a668b46c, type: 3}
   _scaleFactor: 1.5
   _duration: 0.5
   _ease: 6
@@ -2727,6 +2731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323eeb0095ab3694eb36871efe5c84d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.ButtonAnimator.ScaleUpDown
+  _hoverAudioClip: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
+  _clickAudioClip: {fileID: 8300000, guid: e7daa6301297e974ca7af926a668b46c, type: 3}
   _scaleFactor: 1.5
   _duration: 0.5
   _ease: 6

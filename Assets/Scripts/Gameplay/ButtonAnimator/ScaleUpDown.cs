@@ -2,12 +2,18 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using PrimeTween;
 using Cysharp.Threading.Tasks;
+using Shared.Events;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 
 namespace Gameplay.ButtonAnimator
 {
     [RequireComponent(typeof(RectTransform))]
-    public class ScaleUpDown : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class ScaleUpDown : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
+        [SerializeField] private AudioClip _hoverAudioClip;
+        [SerializeField] private AudioClip _clickAudioClip;
+        
         [SerializeField] private float _scaleFactor = 1.5f;
         [SerializeField] private float _duration = 0.5f;
         [SerializeField] private Ease _ease = Ease.OutQuad;
@@ -35,6 +41,13 @@ namespace Gameplay.ButtonAnimator
             }
             _currentTween.Stop();
             _currentTween = Tween.Scale(_rectTransform, _scaleFactor, _duration, _ease);
+            
+            Events_Sound.PlaySound?.Invoke(_hoverAudioClip);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Events_Sound.PlaySound?.Invoke(_clickAudioClip);
         }
 
         public void OnPointerExit(PointerEventData eventData)

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 21014998223286775}
   - component: {fileID: 3271039653007392293}
   - component: {fileID: 463720974518500535}
-  - component: {fileID: 8969910861525554715}
+  - component: {fileID: 3354106929324020850}
   - component: {fileID: 1552226248234724494}
   m_Layer: 7
   m_Name: StaffSpawner
@@ -132,7 +132,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1
---- !u!114 &8969910861525554715
+--- !u!114 &3354106929324020850
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,13 +141,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5399525038416986603}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 861da9d7e60ff9c408056db15bc36b8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 819caaa11ea648d428379e4cd958fada, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.WeaponHands
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.FireballSpawner
   _weaponConfig: {fileID: 11400000, guid: 3cd373512670cf341824ec6a5281b3d8, type: 2}
   _enemies: []
   _pooledProjectile: {fileID: 0}
   _pooledTransform: {fileID: 8426704519022382382}
+  _audioClip: {fileID: 8300000, guid: 47be42555ce790a4983d5415ae64881a, type: 3}
 --- !u!50 &1552226248234724494
 Rigidbody2D:
   serializedVersion: 5
@@ -186,7 +187,7 @@ GameObject:
   - component: {fileID: 4616292732478368856}
   - component: {fileID: 2868869112814955529}
   m_Layer: 7
-  m_Name: Spear
+  m_Name: Staff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -24,6 +24,11 @@ namespace Controllers
         [Header("Material References")]
         [SerializeField] protected Material _hitMaterial;
         [SerializeField] protected Material _defaultMaterial;
+
+        [Header("SFX clips")] 
+        [SerializeField] private AudioClip _hitAudioClip;
+        [SerializeField] private AudioClip _deathAudioClip;
+        
         
         protected SpriteRenderer SpriteRenderer;
         private EnemyConfig _enemyConfig;
@@ -79,6 +84,7 @@ namespace Controllers
 
         public void KillEnemy()
         {
+            Events_Sound.PlaySound?.Invoke(_deathAudioClip);
             Events_Seed.OnEnemyDeath?.Invoke(transform);
             _enemyDefeated.Value++;
             gameObject.SetActive(false);
@@ -97,10 +103,13 @@ namespace Controllers
             
             _hitEffectCts = new CancellationTokenSource();
             HitEffect(_hitEffectCts.Token).Forget();
-
+            
+            Events_Sound.PlaySound?.Invoke(_hitAudioClip);
+            
             if (_currentHealth <= 0)
             {
                 KillEnemy();
+                
             }
         }
 
