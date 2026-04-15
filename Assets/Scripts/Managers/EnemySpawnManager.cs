@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Controllers;
 using Data;
 using NaughtyAttributes;
+using Shared.Enums;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
@@ -17,6 +18,11 @@ namespace Managers
         [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
         [SerializeField] private DefendingController _defendingController;
         [SerializeField] private Camera _camera;
+
+        [Header("Spawn Settings")]
+        [SerializeField] private SpawnMode _spawnMode = SpawnMode.CameraEdge;
+        [SerializeField] [ShowIf("_spawnMode", SpawnMode.AroundTarget)] private float _minSpawnDistance = 10f;
+        [SerializeField] [ShowIf("_spawnMode", SpawnMode.AroundTarget)] private float _maxSpawnDistance = 15f;
         
         [Header("Enemy Oranges Settings")]
         [SerializeField] private EnemyController _pooledEnemy;
@@ -118,7 +124,10 @@ namespace Managers
                 }
 
                 Transform enemyTransform = enemy.gameObject.transform;
-                enemyTransform.position = GetEdgeSpawnPosition();
+                enemyTransform.position = _spawnMode == SpawnMode.CameraEdge 
+                    ? GetEdgeSpawnPosition() 
+                    : GetAroundTargetSpawnPosition();
+                
                 enemyTransform.rotation = Quaternion.identity;
                 enemy.InitializePlayer(_defendingController);
                 enemy.ApplyRuntimeStats(runtimeStats);
@@ -127,6 +136,20 @@ namespace Managers
             }
 
             return spawnedEnemies;
+        }
+
+        private Vector2 GetAroundTargetSpawnPosition()
+        {
+            if (_defendingController == null)
+            {
+                return GetEdgeSpawnPosition();
+            }
+
+            Vector2 center = _defendingController.transform.position;
+            float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+            float distance = Random.Range(_minSpawnDistance, _maxSpawnDistance);
+
+            return center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
         }
 
         public int GetEnemiesAmount()

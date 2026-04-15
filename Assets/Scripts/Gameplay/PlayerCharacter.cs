@@ -4,7 +4,7 @@ using Shared.Events;
 using UnityEngine;
 
 namespace Gameplay
-{
+{       
     public class PlayerCharacter : MonoBehaviour
     {
         [Header("Configurations")]

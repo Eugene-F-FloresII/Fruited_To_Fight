@@ -29,12 +29,20 @@ namespace Gameplay.ButtonAnimator
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (Mathf.Approximately(_rectTransform.localScale.x, _scaleFactor))
+            {
+                return;
+            }
             _currentTween.Stop();
             _currentTween = Tween.Scale(_rectTransform, _scaleFactor, _duration, _ease);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            if (Mathf.Approximately(_rectTransform.localScale.x, _initialScaleX))
+            {
+                return;
+            }
             _currentTween.Stop();
             _currentTween = Tween.Scale(_rectTransform, _initialScaleX, _duration, _ease);
         }
