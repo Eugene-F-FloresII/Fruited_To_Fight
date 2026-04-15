@@ -13,7 +13,10 @@ namespace Controllers
 
         private void Start()
         {
-            _roundText.text = "Round: " + _currentRound.Value + " / " + _maxRounds.Value;
+            if (_roundText != null && _currentRound != null && _maxRounds != null)
+            {
+                _roundText.text = "Round: " + _currentRound.Value + " / " + _maxRounds.Value;
+            }
         }
 
         private void OnEnable()

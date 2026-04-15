@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using Shared.Events;
-using UnityEditor.PackageManager;
 
 namespace Gameplay.Seed
 {

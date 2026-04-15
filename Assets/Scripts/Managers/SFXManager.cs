@@ -41,10 +41,10 @@ namespace Managers
         private void OnPlaySound(AudioClip clip)
         {
             if (clip == null) return;
-            PlaySoundAsync(clip).Forget();
+            PlaySoundAsync(clip, this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        private async UniTaskVoid PlaySoundAsync(AudioClip clip)
+        private async UniTaskVoid PlaySoundAsync(AudioClip clip, System.Threading.CancellationToken cancellationToken)
         {
             AudioSource source = GetSource();
             
@@ -57,7 +57,9 @@ namespace Managers
             source.Play();
 
             // Wait until the clip finishes (using unscaled time to be safe)
-            await UniTask.Delay((int)(clip.length * 1000), ignoreTimeScale: true);
+            bool canceled = await UniTask.Delay((int)(clip.length * 1000), ignoreTimeScale: true, cancellationToken: cancellationToken).SuppressCancellationThrow();
+
+            if (canceled || source == null) return;
 
             // Return to pool
             source.Stop();

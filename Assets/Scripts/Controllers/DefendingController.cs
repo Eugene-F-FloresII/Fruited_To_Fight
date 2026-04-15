@@ -1,9 +1,8 @@
 using System;
 using Data;
 using Obvious.Soap;
-using Unity.VisualScripting;
+using Shared.Events;
 using UnityEngine;
-
 
 namespace Controllers
 {
@@ -18,12 +17,20 @@ namespace Controllers
             ConfigureStats();
         }
 
+        private void OnEnable()
+        {
+            Events_Game.OnGameRestarted += OnGameRestarted;
+        }
+
+        private void OnDisable()
+        {
+            Events_Game.OnGameRestarted -= OnGameRestarted;
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out EnemyController enemyController))
             {
-                
                 _characterHealth.Value -= enemyController.GotHitByEnemy();
                 enemyController.KillEnemy();
                 
@@ -34,26 +41,34 @@ namespace Controllers
             }
         }
 
-
         private void ConfigureStats()
         {
-            _initialHealth = _characterConfig.CharacterHealth;
-            _characterHealth.Value = _initialHealth;
+            if (_characterConfig != null)
+            {
+                _initialHealth = _characterConfig.CharacterHealth;
+                _characterHealth.Value = _initialHealth;
+            }
+        }
+
+        private void OnGameRestarted()
+        {
+            ConfigureStats();
         }
 
         private void ResetStats()
         {
-            _characterConfig.CharacterHealth = _initialHealth;
-            
+            if (_characterConfig != null)
+            {
+                _characterConfig.CharacterHealth = _initialHealth;
+            }
         }
 
         private void GameOver()
         {
-            //Game over
+            // Game over logic
             Debug.Log("Corndalf ded");
             gameObject.SetActive(false);
             ResetStats();
         }
     }
-
 }

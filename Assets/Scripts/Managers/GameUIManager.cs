@@ -13,16 +13,9 @@ namespace Managers
         {
             ServiceLocator.Register(this);
             
-            if (_userInterfaceGameObjects != null)
+            if (_userInterfaceGameObjects == null)
             {
-                foreach (GameObject go in _userInterfaceGameObjects)
-                {
-                    DontDestroyOnLoad(go);
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObjects in" + gameObject.name);
+                Debug.LogError("No GameObjects in " + gameObject.name);
             }
         }
 

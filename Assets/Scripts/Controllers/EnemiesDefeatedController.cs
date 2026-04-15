@@ -26,6 +26,7 @@ namespace Controllers
             {
                 _enemiesDefeatedCount.OnValueChanged += OnEnemyDefeated;
             }
+            Shared.Events.Events_Game.OnGameRestarted += OnGameRestarted;
         }
 
         private void OnDisable()
@@ -34,37 +35,56 @@ namespace Controllers
             {
                 _enemiesDefeatedCount.OnValueChanged -= OnEnemyDefeated;
             }
+            Shared.Events.Events_Game.OnGameRestarted -= OnGameRestarted;
+        }
+
+        private void OnGameRestarted()
+        {
+            if (_enemiesDefeatedCount != null)
+            {
+                _enemiesDefeatedCount.Value = 0;
+                UpdateUI(0);
+            }
         }
 
         private void OnEnemyDefeated(int i)
         {
-            if (_enemiesDefeatedText !=  null && _enemiesDefeatedCount != null)
-            {
-                _enemiesDefeatedText.text = "ENEMIES DEFEATED: " + _enemiesDefeatedCount.Value;
-            }
-            
+            UpdateUI(i);
             IncreaseScale().Forget();
+        }
+
+        private void UpdateUI(int count)
+        {
+            if (_enemiesDefeatedText != null)
+            {
+                _enemiesDefeatedText.text = "ENEMIES DEFEATED: " + count;
+            }
         }
 
         private void InitializeEnemyDefeated()
         {
-            if (_enemiesDefeatedGameObject == null)
+            if (_enemiesDefeatedGameObject == null && _enemiesDefeatedText != null)
             { 
-                _enemiesDefeatedGameObject = _enemiesDefeatedText.gameObject.transform;
-
+                _enemiesDefeatedGameObject = _enemiesDefeatedText.transform;
             }
         }
         
-        private async UniTask IncreaseScale()
+        private async UniTaskVoid IncreaseScale()
         {
             if (_enemiesDefeatedGameObject == null)
             {
                 return;
             }
 
-            Tween scaleCollectedUp = Tween.Scale(_enemiesDefeatedGameObject, Vector3.one * 1.3f, duration: 0.3f, Ease.OutBack);
-            Tween scaleCollectionUp = Tween.Scale(_enemiesDefeatedGameObject, Vector3.one, duration: 0.3f, Ease.InBack);
-            await UniTask.WhenAll(scaleCollectedUp.ToUniTask(), scaleCollectionUp.ToUniTask());
+            bool canceled = await Tween.Scale(_enemiesDefeatedGameObject, Vector3.one * 1.3f, duration: 0.3f, Ease.OutBack)
+                .ToUniTask(this)
+                .SuppressCancellationThrow();
+
+            if (canceled || _enemiesDefeatedGameObject == null) return;
+            
+            await Tween.Scale(_enemiesDefeatedGameObject, Vector3.one, duration: 0.3f, Ease.InBack)
+                .ToUniTask(this)
+                .SuppressCancellationThrow();
             
         }
     }

@@ -143,8 +143,11 @@ namespace Controllers
         {
             try
             {
-                _rb.linearVelocity = Vector2.zero;
-                _rb.AddForce(direction * CalculateKnockbackForce(force), ForceMode2D.Impulse);
+                if (_rb != null)
+                {
+                    _rb.linearVelocity = Vector2.zero;
+                    _rb.AddForce(direction * CalculateKnockbackForce(force), ForceMode2D.Impulse);
+                }
                 Events_Character.RequestShake(_cameraShakeForce);
                 
                 _isKnockedBack = true;
@@ -158,7 +161,10 @@ namespace Controllers
             finally
             {
                 _isKnockedBack = false;
-                _rb.linearVelocity = Vector2.zero;
+                if (_rb != null)
+                {
+                    _rb.linearVelocity = Vector2.zero;
+                }
             }
         }
         

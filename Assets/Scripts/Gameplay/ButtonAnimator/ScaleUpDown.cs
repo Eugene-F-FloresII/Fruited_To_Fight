@@ -1,10 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using PrimeTween;
-using Cysharp.Threading.Tasks;
 using Shared.Events;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 
 namespace Gameplay.ButtonAnimator
 {
@@ -14,33 +11,26 @@ namespace Gameplay.ButtonAnimator
         [SerializeField] private AudioClip _hoverAudioClip;
         [SerializeField] private AudioClip _clickAudioClip;
         
-        [SerializeField] private float _scaleFactor = 1.5f;
-        [SerializeField] private float _duration = 0.5f;
+        [SerializeField] private float _scaleFactor = 1.15f;
+        [SerializeField] private float _duration = 0.2f;
         [SerializeField] private Ease _ease = Ease.OutQuad;
 
         private RectTransform _rectTransform;
         private Tween _currentTween;
 
-        private float _initialScaleX;
-        private float _initialScaleY;
-        private float _initialScaleZ;
+        private Vector3 _initialScale;
+
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
-            _initialScaleX = _rectTransform.localScale.x;
-            _initialScaleY = _rectTransform.localScale.y;
-            _initialScaleZ = _rectTransform.localScale.z;
-            
+            _initialScale = _rectTransform.localScale;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (Mathf.Approximately(_rectTransform.localScale.x, _scaleFactor))
-            {
-                return;
-            }
             _currentTween.Stop();
-            _currentTween = Tween.Scale(_rectTransform, _scaleFactor, _duration, _ease);
+            // Using useUnscaledTime: true to ensure UI animation works even when paused
+            _currentTween = Tween.Scale(_rectTransform, _scaleFactor, _duration, _ease, useUnscaledTime: true);
             
             Events_Sound.PlaySound?.Invoke(_hoverAudioClip);
         }
@@ -52,12 +42,9 @@ namespace Gameplay.ButtonAnimator
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (Mathf.Approximately(_rectTransform.localScale.x, _initialScaleX))
-            {
-                return;
-            }
             _currentTween.Stop();
-            _currentTween = Tween.Scale(_rectTransform, _initialScaleX, _duration, _ease);
+            // Using useUnscaledTime: true for consistent behavior
+            _currentTween = Tween.Scale(_rectTransform, _initialScale, _duration, _ease, useUnscaledTime: true);
         }
 
         private void OnDestroy()

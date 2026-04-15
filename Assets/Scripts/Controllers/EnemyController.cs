@@ -66,11 +66,13 @@ namespace Controllers
         {
             DisposeTokens();
 
-            SpriteRenderer.material = _defaultMaterial;
+            if (SpriteRenderer != null)
+                SpriteRenderer.material = _defaultMaterial;
         }
 
         private void OnDestroy()
         {
+            DisposeTokens();
             if(_enemyConfigReference.IsValid())
             {
                 _enemyConfigReference.ReleaseAsset();
@@ -94,6 +96,8 @@ namespace Controllers
         {
             _projectileDirection = (transform.position - projectile.transform.position).normalized;
             
+            _knockbackCts?.Cancel();
+            _knockbackCts?.Dispose();
             _knockbackCts =  new CancellationTokenSource();
             
             EnemyKnockBack(_projectileDirection, projectile.GetWeaponKnockback(), 0.3f, _knockbackCts.Token).Forget();
@@ -101,6 +105,8 @@ namespace Controllers
             _currentHealth -= damage;
             Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage));
             
+            _hitEffectCts?.Cancel();
+            _hitEffectCts?.Dispose();
             _hitEffectCts = new CancellationTokenSource();
             HitEffect(_hitEffectCts.Token).Forget();
             
@@ -187,19 +193,20 @@ namespace Controllers
 
         protected virtual async UniTask HitEffect(CancellationToken token)
         {
-            if (_hitMaterial != null)
+            if (_hitMaterial != null && SpriteRenderer != null)
             {
                 try
                 {
                     SpriteRenderer.material = _hitMaterial;
                     await UniTask.Delay(150, cancellationToken: token);
-                    SpriteRenderer.material = _defaultMaterial;
+                    if (SpriteRenderer != null)
+                        SpriteRenderer.material = _defaultMaterial;
                 }
-                catch (MissingReferenceException)
+                catch (OperationCanceledException)
                 {
-                    Debug.Log("Entity Dead");
+                    // Expected on cancellation
                 }
-                catch (TaskCanceledException)
+                catch (Exception e) when (e is MissingReferenceException || e is ObjectDisposedException)
                 {
                     Debug.Log("Entity Dead");
                 }
@@ -217,21 +224,26 @@ namespace Controllers
         {
             try
             {
-                _enemyRb.linearVelocity = Vector2.zero;
-                _enemyRb.AddForce(direction * force, ForceMode2D.Impulse);
+                if (_enemyRb != null)
+                {
+                    _enemyRb.linearVelocity = Vector2.zero;
+                    _enemyRb.AddForce(direction * force, ForceMode2D.Impulse);
+                }
                 _isKnockedBack = true;
                 await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
 
             }
             catch (OperationCanceledException)
             {
-                Debug.Log("Enemy Knocked Back");
-              
+                // Expected on cancellation
             }
             finally
             {
                 _isKnockedBack = false;
-                _enemyRb.linearVelocity = Vector2.zero;
+                if (_enemyRb != null)
+                {
+                    _enemyRb.linearVelocity = Vector2.zero;
+                }
             }
         }
         

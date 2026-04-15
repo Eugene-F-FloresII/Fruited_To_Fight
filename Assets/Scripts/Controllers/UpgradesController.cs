@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 using System.Threading;
 using Collection;
 using Data;
@@ -45,12 +44,23 @@ namespace Controllers
         {
             Events_Upgrades.OnActivateUpgradePanel += TurnOnCanvasGroup;
             Events_Upgrades.OnRoundStarted += TurnOffCanvasGroup;
+            Events_Game.OnGameRestarted += OnGameRestarted;
         }
 
         private void OnDisable()
         {
             Events_Upgrades.OnActivateUpgradePanel -= TurnOnCanvasGroup;
             Events_Upgrades.OnRoundStarted -= TurnOffCanvasGroup;
+            Events_Game.OnGameRestarted -= OnGameRestarted;
+        }
+
+        private void OnGameRestarted()
+        {
+            if (_seedCollected != null)
+            {
+                _seedCollected.Value = 0;
+                TurnOffCanvasGroup();
+            }
         }
 
         public void BuyDamageUpgrade()
@@ -94,16 +104,24 @@ namespace Controllers
 
         private async void TurnOffCanvasGroup()
         {
-            await Tween.Alpha(_canvasGroup, 0f, _animationDuration).ToUniTask();
-            _canvasGroup.interactable  = false;
-            _canvasGroup.blocksRaycasts = false;
+            if (_canvasGroup == null) return;
+            
+            await Tween.Alpha(_canvasGroup, 0f, _animationDuration).ToUniTask(this);
+            
+            if (_canvasGroup != null)
+            {
+                _canvasGroup.interactable = false;
+                _canvasGroup.blocksRaycasts = false;
+            }
         }
         
         private async void TurnOnCanvasGroup()
         {
+            if (_canvasGroup == null) return;
+
             _canvasGroup.interactable  = true;
             _canvasGroup.blocksRaycasts = true;
-            await Tween.Alpha(_canvasGroup, 1f, _animationDuration).ToUniTask();
+            await Tween.Alpha(_canvasGroup, 1f, _animationDuration).ToUniTask(this);
         }
     }
     

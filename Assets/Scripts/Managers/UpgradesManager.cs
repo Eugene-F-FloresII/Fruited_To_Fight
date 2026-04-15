@@ -62,11 +62,13 @@ namespace Managers
         private void OnEnable()
         {
             Events_Weapons.OnChosenWeapon += InitializeCurrentWeapon;
+            Events_Game.OnGameRestarted += ResetAllUpgrades;
         }
 
         private void OnDisable()
         {
             Events_Weapons.OnChosenWeapon -= InitializeCurrentWeapon;
+            Events_Game.OnGameRestarted -= ResetAllUpgrades;
         }
 
         private void OnDestroy()
@@ -94,8 +96,11 @@ namespace Managers
             
             if (_overallDamageLevel.Value > _overallMaxLevel) _isDamageMaxed = true;
             
-            _firstWeaponConfig.WeaponDamage = _firstWeaponInitialDamage * GetDamageMultiplier();
-            _firstWeaponConfig.WeaponPierce = _firstWeaponInitialPierce * Mathf.RoundToInt(GetDamageMultiplier());
+            if (_firstWeaponConfig != null)
+            {
+                _firstWeaponConfig.WeaponDamage = _firstWeaponInitialDamage * GetDamageMultiplier();
+                _firstWeaponConfig.WeaponPierce = _firstWeaponInitialPierce * Mathf.RoundToInt(GetDamageMultiplier());
+            }
 
             if (_secondWeaponConfig != null)
             {
@@ -103,14 +108,12 @@ namespace Managers
                 _secondWeaponConfig.WeaponPierce = _secondWeaponInitialPierce * Mathf.RoundToInt(GetDamageMultiplier());
             }
             
-            
-
             return currency;
         }
         
         public int UpgradeOverallRange(int seed)
         {
-            if (GetSeedPriceRangeUpgrade() >= seed)
+            if (GetSeedPriceRangeUpgrade() > seed)
             {
                 Debug.Log("Not enough seeds");
                 return seed;
@@ -128,8 +131,11 @@ namespace Managers
             
             if (_overallRangeLevel.Value > _overallMaxLevel) _isRangedMaxed = true;
             
-            _firstWeaponConfig.WeaponRange = _firstWeaponInitialRange * GetRangeMultiplier();
-            _firstWeaponConfig.WeaponKnockback = _firstWeaponInitialKnockback * GetRangeMultiplier();
+            if (_firstWeaponConfig != null)
+            {
+                _firstWeaponConfig.WeaponRange = _firstWeaponInitialRange * GetRangeMultiplier();
+                _firstWeaponConfig.WeaponKnockback = _firstWeaponInitialKnockback * GetRangeMultiplier();
+            }
 
             if (_secondWeaponConfig != null)
             {
@@ -137,8 +143,6 @@ namespace Managers
                 _secondWeaponConfig.WeaponKnockback = _secondWeaponInitialKnockback * GetRangeMultiplier();
             }
             
-            
-
             return currency;
         }
         
@@ -159,11 +163,13 @@ namespace Managers
             int currency = seed - GetSeedPriceSpeedUpgrade();
             _overallSpeedLevel.Value++;
             
-            
             if (_overallSpeedLevel.Value > _overallMaxLevel) _isSpeedMaxed = true;
             
-            _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed * GetSpeedMultiplier();
-            _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed / GetSpeedMultiplier();
+            if (_firstWeaponConfig != null)
+            {
+                _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed * GetSpeedMultiplier();
+                _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed / GetSpeedMultiplier();
+            }
             
             if (_secondWeaponConfig != null)
             {
@@ -171,34 +177,40 @@ namespace Managers
                 _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed / GetSpeedMultiplier();
             }
             
-
             return currency;
         }
         
         public void ResetAllUpgrades()
-        { 
-            _secondWeaponConfig.WeaponDamage = _secondWeaponInitialDamage;
-            _secondWeaponConfig.WeaponPierce = _secondWeaponInitialPierce;
-            _secondWeaponConfig.WeaponRange = _secondWeaponInitialRange;
-            _secondWeaponConfig.WeaponKnockback = _secondWeaponInitialKnockback;
-            _secondWeaponConfig.WeaponSpeed = _secondWeaponInitialSpeed;
-            _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed;
-                   
-            _firstWeaponConfig.WeaponDamage = _firstWeaponInitialDamage;
-            _firstWeaponConfig.WeaponPierce = _firstWeaponInitialPierce;
-            _firstWeaponConfig.WeaponRange = _firstWeaponInitialRange;
-            _firstWeaponConfig.WeaponKnockback = _firstWeaponInitialKnockback;
-            _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed;
-            _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed;
+        {
+            if (_secondWeaponConfig != null)
+            {
+                _secondWeaponConfig.WeaponDamage = _secondWeaponInitialDamage;
+                _secondWeaponConfig.WeaponPierce = _secondWeaponInitialPierce;
+                _secondWeaponConfig.WeaponRange = _secondWeaponInitialRange;
+                _secondWeaponConfig.WeaponKnockback = _secondWeaponInitialKnockback;
+                _secondWeaponConfig.WeaponSpeed = _secondWeaponInitialSpeed;
+                _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed;
+            }
 
-            _overallDamageLevel.Value = 1;
-            _overallRangeLevel.Value = 1;
-            _overallSpeedLevel.Value = 1;
+            if (_firstWeaponConfig != null)
+            {
+                _firstWeaponConfig.WeaponDamage = _firstWeaponInitialDamage;
+                _firstWeaponConfig.WeaponPierce = _firstWeaponInitialPierce;
+                _firstWeaponConfig.WeaponRange = _firstWeaponInitialRange;
+                _firstWeaponConfig.WeaponKnockback = _firstWeaponInitialKnockback;
+                _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed;
+                _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed;
+            }
+
+            if (_overallDamageLevel != null) _overallDamageLevel.Value = 1;
+            if (_overallRangeLevel != null) _overallRangeLevel.Value = 1;
+            if (_overallSpeedLevel != null) _overallSpeedLevel.Value = 1;
 
             _isDamageMaxed = false;
             _isRangedMaxed = false;
             _isSpeedMaxed = false;
-
+            
+            Debug.Log("Upgrades and Weapon Configs have been reset to initial values.");
         }
 
         public bool AreAllLevelsMaxed()

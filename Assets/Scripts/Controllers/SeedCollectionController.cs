@@ -23,18 +23,27 @@ namespace Controllers
 
         private void OnEnable()
         {
-            _seedsCollected.OnValueChanged += OnSeedsValueChanged;
+            if (_seedsCollected != null)
+            {
+                _seedsCollected.OnValueChanged += OnSeedsValueChanged;
+            }
             UpdateSeedCollection();
         }
 
         private void OnDisable()
         {
-            _seedsCollected.OnValueChanged -= OnSeedsValueChanged;
+            if (_seedsCollected != null)
+            {
+                _seedsCollected.OnValueChanged -= OnSeedsValueChanged;
+            }
         }
 
         private void OnSeedsValueChanged(int seedsCollected)
         {
-            _seedsCollectedText.text = seedsCollected.ToString();
+            if (_seedsCollectedText != null)
+            {
+                _seedsCollectedText.text = seedsCollected.ToString();
+            }
 
             if (_seedsCollectedGameObject == null || _seedsCollectionGameObject == null)
             {
@@ -50,20 +59,24 @@ namespace Controllers
             _seedsCollectionGameObject = _seedsCollectionText != null ? _seedsCollectionText.transform : null;
         }
 
-        private async UniTask IncreaseScale()
+        private async UniTaskVoid IncreaseScale()
         {
             if (_seedsCollectedGameObject == null || _seedsCollectionGameObject == null)
             {
                 return;
             }
 
-            Tween scaleCollectedUp = Tween.Scale(_seedsCollectedGameObject, Vector3.one * 1.1f, duration: 0.3f, Ease.OutBack);
-            Tween scaleCollectionUp = Tween.Scale(_seedsCollectionGameObject, Vector3.one * 1.1f, duration: 0.3f, Ease.OutBack);
-            await UniTask.WhenAll(scaleCollectedUp.ToUniTask(), scaleCollectionUp.ToUniTask());
+            bool canceled = await UniTask.WhenAll(
+                Tween.Scale(_seedsCollectedGameObject, Vector3.one * 1.1f, duration: 0.3f, Ease.OutBack).ToUniTask(this), 
+                Tween.Scale(_seedsCollectionGameObject, Vector3.one * 1.1f, duration: 0.3f, Ease.OutBack).ToUniTask(this)
+            ).SuppressCancellationThrow();
 
-            Tween scaleCollectedDown = Tween.Scale(_seedsCollectedGameObject, Vector3.one, duration: 0.3f, Ease.InBack);
-            Tween scaleCollectionDown = Tween.Scale(_seedsCollectionGameObject, Vector3.one, duration: 0.3f, Ease.InBack);
-            await UniTask.WhenAll(scaleCollectedDown.ToUniTask(), scaleCollectionDown.ToUniTask());
+            if (canceled || _seedsCollectedGameObject == null || _seedsCollectionGameObject == null) return;
+
+            await UniTask.WhenAll(
+                Tween.Scale(_seedsCollectedGameObject, Vector3.one, duration: 0.3f, Ease.InBack).ToUniTask(this), 
+                Tween.Scale(_seedsCollectionGameObject, Vector3.one, duration: 0.3f, Ease.InBack).ToUniTask(this)
+            ).SuppressCancellationThrow();
         }
     }
 
