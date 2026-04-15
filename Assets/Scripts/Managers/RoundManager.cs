@@ -14,7 +14,6 @@ namespace Managers
     public class RoundManager : MonoBehaviour
     {
         [Header("Round Config")]
-        [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
         [Min(0)] [SerializeField] private int _firstRoundSpawnCount = 10;
         [Min(0)] [SerializeField] private int _spawnIncrementPerRound = 1;
         [SerializeField] private float _nextRoundDelaySeconds = 2f;
@@ -28,7 +27,6 @@ namespace Managers
         [SerializeField] private float _attackSpeedGrowthPerRound = 1.04f;
         [SerializeField] private float _knockbackGrowthPerRound = 1.05f;
         
-        private EnemyConfig _enemyConfig;
         private EnemySpawnManager _enemySpawnManager;
         private UpgradesManager _upgradesManager;
         
@@ -66,11 +64,6 @@ namespace Managers
 
         private void OnDestroy()
         {
-            if (_enemyConfigReference.IsValid())
-            {
-                _enemyConfigReference.ReleaseAsset();
-            }
-
             ServiceLocator.Unregister<RoundManager>();
         }
 
@@ -86,7 +79,6 @@ namespace Managers
                 _currentRound.Value = 0;
                 _hasReachedMaxRounds = false;
 
-                await LoadEnemyConfigAsync(token);
                 await ResolveSpawnManagerAsync(token);
                 StartNextRound();
             }
@@ -94,16 +86,6 @@ namespace Managers
             {
                 Debug.Log("Round flow cancelled.", this);
             }
-        }
-
-        private async UniTask LoadEnemyConfigAsync(CancellationToken token)
-        {
-            if (_enemyConfig != null)
-            {
-                return;
-            }
-
-            _enemyConfig = await _enemyConfigReference.LoadAssetAsync<EnemyConfig>().ToUniTask(cancellationToken: token);
         }
 
         private async UniTask ResolveSpawnManagerAsync(CancellationToken token)
@@ -190,7 +172,7 @@ namespace Managers
 
         private void StartNextRound()
         {
-            if (_enemyConfig == null || _enemySpawnManager == null)
+            if (_enemySpawnManager == null)
             {
                 return;
             }
@@ -213,9 +195,9 @@ namespace Managers
            
 
             int spawnCount = BuildSpawnCount(_currentRound.Value);
-            EnemyRuntimeStats runtimeStats = BuildRuntimeStats(_currentRound.Value);
+            EnemyStatMultipliers multipliers = BuildStatMultipliers(_currentRound.Value);
 
-            _enemiesRemainingInRound = _enemySpawnManager.SpawnEnemies(spawnCount, runtimeStats);
+            _enemiesRemainingInRound = _enemySpawnManager.SpawnEnemies(spawnCount, _currentRound.Value, multipliers);
             _roundStarted = _enemiesRemainingInRound > 0;
 
             if (!_roundStarted)
@@ -263,23 +245,17 @@ namespace Managers
             return Mathf.Max(0, spawnCount);
         }
 
-        private EnemyRuntimeStats BuildRuntimeStats(int roundIndex)
+        private EnemyStatMultipliers BuildStatMultipliers(int roundIndex)
         {
             int growthStep = Mathf.Max(0, roundIndex - 1);
 
-            return new EnemyRuntimeStats(
-                ScaleValue(_enemyConfig.EnemyHealth, _healthGrowthPerRound, growthStep),
-                ScaleValue(_enemyConfig.EnemyDamage, _damageGrowthPerRound, growthStep),
-                ScaleValue(_enemyConfig.EnemyMoveSpeed, _moveSpeedGrowthPerRound, growthStep),
-                ScaleValue(_enemyConfig.EnemyAtkSpeed, _attackSpeedGrowthPerRound, growthStep),
-                ScaleValue(_enemyConfig.EnemyKnockbackForce, _knockbackGrowthPerRound, growthStep)
+            return new EnemyStatMultipliers(
+                Mathf.Pow(Mathf.Max(0.01f, _healthGrowthPerRound), growthStep),
+                Mathf.Pow(Mathf.Max(0.01f, _damageGrowthPerRound), growthStep),
+                Mathf.Pow(Mathf.Max(0.01f, _moveSpeedGrowthPerRound), growthStep),
+                Mathf.Pow(Mathf.Max(0.01f, _attackSpeedGrowthPerRound), growthStep),
+                Mathf.Pow(Mathf.Max(0.01f, _knockbackGrowthPerRound), growthStep)
             );
-        }
-
-        private static float ScaleValue(float baseValue, float growthPerRound, int growthStep)
-        {
-            float safeGrowth = Mathf.Max(0.01f, growthPerRound);
-            return baseValue * Mathf.Pow(safeGrowth, growthStep);
         }
 
         private void DisposeRoundFlowToken()

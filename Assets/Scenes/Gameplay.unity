@@ -242,37 +242,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!1 &470715907
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 470715908}
-  m_Layer: 0
-  m_Name: SpawnPoints
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &470715908
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 470715907}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 919370835}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -24459,20 +24428,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad299783a5f188b469b43206933c447c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.EnemySpawnManager
-  _enemyConfigReference:
-    m_AssetGUID: 04554a6bf8316f744aa06448316d675b
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_SubObjectGUID: 
-    m_EditorAssetChanged: 0
+  _enemyVariants:
+  - ConfigReference:
+      m_AssetGUID: 04554a6bf8316f744aa06448316d675b
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+    UnlockRound: 1
+    BaseWeight: 100
+    WeightGrowthPerRound: -5
+  - ConfigReference:
+      m_AssetGUID: 8c97c827fdf6c36468ce379af9a5e7e3
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+    UnlockRound: 5
+    BaseWeight: 50
+    WeightGrowthPerRound: 2
+  - ConfigReference:
+      m_AssetGUID: b494e7e7d674dd84d894cd2cd594803a
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 1
+    UnlockRound: 9
+    BaseWeight: 20
+    WeightGrowthPerRound: 10
   _defendingController: {fileID: 1725762691}
   _camera: {fileID: 519420031}
   _spawnMode: 1
   _minSpawnDistance: 20
   _maxSpawnDistance: 25
-  _pooledEnemy: {fileID: 0}
-  _pooledTransform: {fileID: 1755282328}
-  _enemiesToSpawn: 100
 --- !u!4 &919370835
 Transform:
   m_ObjectHideFlags: 0
@@ -24486,9 +24474,41 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 470715908}
   - {fileID: 1755282328}
+  - {fileID: 951833652}
+  - {fileID: 1674211564}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &951833651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 951833652}
+  m_Layer: 0
+  m_Name: RottedApple
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &951833652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951833651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 919370835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1080699521
 GameObject:
@@ -24761,12 +24781,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a6947ced72dcc4d82377cd87a713a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.RoundManager
-  _enemyConfigReference:
-    m_AssetGUID: 04554a6bf8316f744aa06448316d675b
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_SubObjectGUID: 
-    m_EditorAssetChanged: 0
   _firstRoundSpawnCount: 10
   _spawnIncrementPerRound: 1
   _nextRoundDelaySeconds: 10
@@ -24925,6 +24939,37 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1674211563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1674211564}
+  m_Layer: 0
+  m_Name: RottedCherry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1674211564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674211563}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 919370835}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1725762691 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 666209899550810880, guid: c362faf015b08714caf16fe1032205c4, type: 3}
@@ -25188,6 +25233,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+--- !u!1001 &8957688402195425196
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.89343
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.00169
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356172011095196944, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6862962747289511402, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
+      propertyPath: m_Name
+      value: Enemy_RottedCherry
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6e7f9063c581186409ee4e087dc4ced2, type: 3}
 --- !u!1001 &9222572665112014229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25264,3 +25366,4 @@ SceneRoots:
   - {fileID: 1112368218}
   - {fileID: 668084220}
   - {fileID: 158643189}
+  - {fileID: 8957688402195425196}

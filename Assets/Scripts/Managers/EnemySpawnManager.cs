@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Controllers;
 using Data;
 using NaughtyAttributes;
+using Obvious.Soap;
 using Shared.Enums;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -14,8 +15,17 @@ namespace Managers
 {
     public class EnemySpawnManager : MonoBehaviour
     {
+        [Serializable]
+        public struct EnemyVariantSettings
+        {
+            public AssetReferenceT<EnemyConfig> ConfigReference;
+            public int UnlockRound;
+            public float BaseWeight;
+            public float WeightGrowthPerRound;
+        }
+
         [Header("Enemy Spawn References")] 
-        [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
+        [SerializeField] private List<EnemyVariantSettings> _enemyVariants;
         [SerializeField] private DefendingController _defendingController;
         [SerializeField] private Camera _camera;
 
@@ -24,15 +34,9 @@ namespace Managers
         [SerializeField] [ShowIf("_spawnMode", SpawnMode.AroundTarget)] private float _minSpawnDistance = 10f;
         [SerializeField] [ShowIf("_spawnMode", SpawnMode.AroundTarget)] private float _maxSpawnDistance = 15f;
         
-        [Header("Enemy Oranges Settings")]
-        [SerializeField] private EnemyController _pooledEnemy;
-        [SerializeField] private Transform _pooledTransform;
-        [SerializeField] private int _enemiesToSpawn;
-        
-        private int _enemiesAmountToPool;
-        private int _totalPooledEnemies;
-        private EnemyConfig _enemyConfig;
-        private Queue<EnemyController> _pooledEnemies = new();
+        private Dictionary<int, Queue<EnemyController>> _enemyPools = new();
+        private Dictionary<int, EnemyConfig> _loadedConfigs = new();
+        private Dictionary<int, Transform> _poolParents = new();
         private bool _isInitialized;
 
         public bool IsInitialized => _isInitialized;
@@ -44,30 +48,33 @@ namespace Managers
 
          private void Start()
         {
-            LoadEnemyConfigAsync().Forget();
+            LoadEnemyConfigsAsync().Forget();
             _camera = Camera.main;
         }
 
         private void OnDestroy()
         {
-            if(_enemyConfigReference.IsValid())
+            foreach (var variant in _enemyVariants)
             {
-                _enemyConfigReference.ReleaseAsset();
+                if (variant.ConfigReference.IsValid())
+                {
+                    variant.ConfigReference.ReleaseAsset();
+                }
             }
             
             ServiceLocator.Unregister<EnemySpawnManager>();
         }
 
-        public EnemyController GetPooledEnemy()
+        public EnemyController GetPooledEnemy(int enemyId)
         {
-            if (_pooledEnemies.Count > 0)
+            if (_enemyPools.TryGetValue(enemyId, out var pool) && pool.Count > 0)
             {
-                int poolSize = _pooledEnemies.Count;
+                int poolSize = pool.Count;
 
                 for (int i = 0; i < poolSize; i++)
                 {
-                    EnemyController enemy = _pooledEnemies.Dequeue();
-                    _pooledEnemies.Enqueue(enemy);
+                    EnemyController enemy = pool.Dequeue();
+                    pool.Enqueue(enemy);
 
                     if (!enemy.gameObject.activeSelf)
                     {
@@ -75,23 +82,19 @@ namespace Managers
                         return enemy;
                     }
                 }
-
-                Debug.LogWarning("All pooled enemies are currently active");
-                return null;
             }
             
-            Debug.LogWarning("No enemies left in pool");
+            // If we reach here, we need to expand the pool
+            if (_loadedConfigs.TryGetValue(enemyId, out var config))
+            {
+                return CreatePooledEnemy(config);
+            }
+
+            Debug.LogWarning($"No pool or config found for EnemyID: {enemyId}");
             return null;
-            
         }
         
-        [Button("Spawn Enemies")]
-         public void SpawnEnemies()
-        {
-            SpawnEnemies(_enemiesToSpawn, BuildBaseRuntimeStats());
-        }
-
-        public int SpawnEnemies(int enemyCount, EnemyRuntimeStats runtimeStats)
+        public int SpawnEnemies(int enemyCount, int currentRound, EnemyStatMultipliers multipliers)
         {
             if (!_isInitialized)
             {
@@ -111,17 +114,15 @@ namespace Managers
             }
 
             int spawnCount = Mathf.Max(0, enemyCount);
-            EnsurePoolCapacity(spawnCount);
-
             int spawnedEnemies = 0;
 
             for (int i = 0; i < spawnCount; i++)
             {
-                EnemyController enemy = GetPooledEnemy();
-                if (enemy == null)
-                {
-                    break;
-                }
+                EnemyConfig config = GetRandomVariantConfig(currentRound);
+                if (config == null) continue;
+
+                EnemyController enemy = GetPooledEnemy(config.EnemyID);
+                if (enemy == null) continue;
 
                 Transform enemyTransform = enemy.gameObject.transform;
                 enemyTransform.position = _spawnMode == SpawnMode.CameraEdge 
@@ -130,12 +131,56 @@ namespace Managers
                 
                 enemyTransform.rotation = Quaternion.identity;
                 enemy.InitializePlayer(_defendingController);
-                enemy.ApplyRuntimeStats(runtimeStats);
+                
+                EnemyRuntimeStats scaledStats = new EnemyRuntimeStats(
+                    config.EnemyHealth * multipliers.HealthMultiplier,
+                    config.EnemyDamage * multipliers.DamageMultiplier,
+                    config.EnemyMoveSpeed * multipliers.MoveSpeedMultiplier,
+                    config.EnemyAtkSpeed * multipliers.AttackSpeedMultiplier,
+                    config.EnemyKnockbackForce * multipliers.KnockbackMultiplier
+                );
+                
+                enemy.ApplyRuntimeStats(scaledStats);
 
                 spawnedEnemies++;
             }
 
             return spawnedEnemies;
+        }
+
+        private EnemyConfig GetRandomVariantConfig(int currentRound)
+        {
+            List<(EnemyConfig config, float weight)> availableVariants = new();
+            float totalWeight = 0;
+
+            foreach (var variant in _enemyVariants)
+            {
+                if (currentRound >= variant.UnlockRound && variant.ConfigReference.Asset != null)
+                {
+                    EnemyConfig config = variant.ConfigReference.Asset as EnemyConfig;
+                    float currentWeight = variant.BaseWeight + (currentRound - variant.UnlockRound) * variant.WeightGrowthPerRound;
+                    currentWeight = Mathf.Max(0, currentWeight);
+                    
+                    availableVariants.Add((config, currentWeight));
+                    totalWeight += currentWeight;
+                }
+            }
+
+            if (availableVariants.Count == 0) return null;
+
+            float randomValue = Random.Range(0, totalWeight);
+            float cumulativeWeight = 0;
+
+            foreach (var variant in availableVariants)
+            {
+                cumulativeWeight += variant.weight;
+                if (randomValue <= cumulativeWeight)
+                {
+                    return variant.config;
+                }
+            }
+
+            return availableVariants[0].config;
         }
 
         private Vector2 GetAroundTargetSpawnPosition()
@@ -152,65 +197,32 @@ namespace Managers
             return center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
         }
 
-        public int GetEnemiesAmount()
+        private void CreatePools()
         {
-            return _enemiesToSpawn;
-        }
-         
-        private void PoolEnemies()
-        {
-            _pooledEnemies = new Queue<EnemyController>();
-            _totalPooledEnemies = 0;
-
-            for (int i = 0; i < _enemiesAmountToPool; i++)
+            foreach (var config in _loadedConfigs.Values)
             {
-                CreatePooledEnemy();
+                if (!_enemyPools.ContainsKey(config.EnemyID))
+                {
+                    _enemyPools[config.EnemyID] = new Queue<EnemyController>();
+                    
+                    GameObject poolParent = new GameObject($"Pool_{config.name}");
+                    poolParent.transform.SetParent(this.transform);
+                    _poolParents[config.EnemyID] = poolParent.transform;
+
+                    for (int i = 0; i < config.EnemyAmountToPool; i++)
+                    {
+                        CreatePooledEnemy(config);
+                    }
+                }
             }
         }
 
-        private void EnsurePoolCapacity(int requiredCount)
+        private EnemyController CreatePooledEnemy(EnemyConfig config)
         {
-            if (requiredCount <= _totalPooledEnemies)
-            {
-                return;
-            }
-
-            int enemiesToCreate = requiredCount - _totalPooledEnemies;
-            for (int i = 0; i < enemiesToCreate; i++)
-            {
-                CreatePooledEnemy();
-            }
-        }
-
-        private void CreatePooledEnemy()
-        {
-            EnemyController pooledEnemy = Instantiate(_pooledEnemy, _pooledTransform);
+            EnemyController pooledEnemy = Instantiate(config.EnemyPrefab, _poolParents[config.EnemyID]);
             pooledEnemy.gameObject.SetActive(false);
-            _pooledEnemies.Enqueue(pooledEnemy);
-            _totalPooledEnemies++;
-        }
-        
-        private void UpdateEnemyStats()
-        {
-            _enemiesAmountToPool = _enemyConfig.EnemyAmountToPool;
-            _enemiesToSpawn = _enemyConfig.EnemyAmountToPool;
-            _pooledEnemy = _enemyConfig.EnemyPrefab;
-        }
-
-        private EnemyRuntimeStats BuildBaseRuntimeStats()
-        {
-            if (_enemyConfig == null)
-            {
-                return default;
-            }
-
-            return new EnemyRuntimeStats(
-                _enemyConfig.EnemyHealth,
-                _enemyConfig.EnemyDamage,
-                _enemyConfig.EnemyMoveSpeed,
-                _enemyConfig.EnemyAtkSpeed,
-                _enemyConfig.EnemyKnockbackForce
-            );
+            _enemyPools[config.EnemyID].Enqueue(pooledEnemy);
+            return pooledEnemy;
         }
 
         private Vector2 GetEdgeSpawnPosition() { 
@@ -229,15 +241,23 @@ namespace Managers
             };
         }
         
-        private async UniTaskVoid LoadEnemyConfigAsync()
+        private async UniTaskVoid LoadEnemyConfigsAsync()
         {
-            _enemyConfig = await _enemyConfigReference.LoadAssetAsync<EnemyConfig>().ToUniTask();
-    
-            UpdateEnemyStats();
-            PoolEnemies();
+            List<UniTask<EnemyConfig>> loadTasks = new();
+            foreach (var variant in _enemyVariants)
+            {
+                loadTasks.Add(variant.ConfigReference.LoadAssetAsync<EnemyConfig>().ToUniTask());
+            }
+
+            EnemyConfig[] configs = await UniTask.WhenAll(loadTasks);
+            foreach (var config in configs)
+            {
+                _loadedConfigs[config.EnemyID] = config;
+            }
+
+            CreatePools();
             _isInitialized = true;
         }
 
     }
-
 }
