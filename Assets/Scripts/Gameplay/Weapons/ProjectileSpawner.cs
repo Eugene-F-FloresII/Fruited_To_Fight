@@ -138,28 +138,48 @@ namespace Gameplay.Weapons
             return null;
         }
 
+        private EnemyController GetNearestEnemy()
+        {
+            _enemies.RemoveAll(e => e == null || !e.gameObject.activeInHierarchy);
+
+            if (_enemies.Count == 0)
+            {
+                return null;
+            }
+
+            EnemyController nearestEnemy = null;
+            float nearestDistanceSqr = float.MaxValue;
+            Vector2 spawnerPosition = transform.position;
+
+            foreach (var enemy in _enemies)
+            {
+                float distanceSqr = ((Vector2)enemy.transform.position - spawnerPosition).sqrMagnitude;
+
+                if (distanceSqr < nearestDistanceSqr)
+                {
+                    nearestDistanceSqr = distanceSqr;
+                    nearestEnemy = enemy;
+                }
+            }
+
+            return nearestEnemy;
+        }
+
         private async UniTask AttackEnemyAsync(CancellationToken token)
         {
             try
             {
                 while (!token.IsCancellationRequested)
                 {
-                    _enemies.RemoveAll(e => e == null);
+                    EnemyController target = GetNearestEnemy();
 
-                    if (_enemies.Count == 0)
+                    if (target == null)
                     {
                         StopAttackLoop();
                         return;
                     }
 
-                    EnemyController target = _enemies[0];
-
-                    if (target == null)
-                    {
-                        continue;
-                    }
-
-                    Vector2 direction = target.transform.position - transform.position;
+                    Vector2 direction = (Vector2)target.transform.position - (Vector2)transform.position;
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     Quaternion rotation = Quaternion.Euler(0, 0, angle + _projectileRotationOffset);
                     

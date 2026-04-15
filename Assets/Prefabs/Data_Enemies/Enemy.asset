@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0af65230db9338340b479d879e321b6c, type: 3}
-  m_Name: RottedOrange
+  m_Name: Enemy
   m_EditorClassIdentifier: Assembly-CSharp::Data.EnemyConfig
-  EnemyPrefab: {fileID: 8219122852226264418, guid: 0ab585daf5c1de142bba809ad7769e7d, type: 3}
+  EnemyPrefab: {fileID: 0}
   EnemyID: 0
-  EnemyAmountToPool: 50
-  EnemyHealth: 500
-  EnemyDamage: 10
-  EnemyMoveSpeed: 2
-  EnemyAtkSpeed: 10
-  EnemyKnockbackForce: 12
+  EnemyAmountToPool: 0
+  EnemyHealth: 0
+  EnemyDamage: 0
+  EnemyMoveSpeed: 0
+  EnemyAtkSpeed: 0
+  EnemyKnockbackForce: 0

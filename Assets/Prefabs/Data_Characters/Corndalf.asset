@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645180222611c3749bad6237d394634d, type: 3}
+  m_Name: Corndalf
+  m_EditorClassIdentifier: Assembly-CSharp::Data.CharacterConfig
+  CharacterId: 2
+  CharacterName: Corndalf
+  CharacterSpeed: 0
+  CharacterHealth: 100
+  CharacterKnockbackResistance: 0
+  CharacterArmor: 0
