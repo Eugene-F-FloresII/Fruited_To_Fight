@@ -1,15 +1,16 @@
-using System;
 using Obvious.Soap;
 using TMPro;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
+using Shared.Events;
 
 
 namespace Controllers
 {
     public class EnemiesDefeatedController : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private TextMeshProUGUI _enemiesDefeatedText;
         [SerializeField] private IntVariable _enemiesDefeatedCount;
         
@@ -22,22 +23,19 @@ namespace Controllers
 
         private void OnEnable()
         {
-            if (_enemiesDefeatedCount != null)
-            {
-                _enemiesDefeatedCount.OnValueChanged += OnEnemyDefeated;
-            }
-            Shared.Events.Events_Game.OnGameRestarted += OnGameRestarted;
-            Shared.Events.Events_Game.OnGameExited += OnGameRestarted;
+   
+            _enemiesDefeatedCount.OnValueChanged += OnEnemyDefeated;
+            
+            Events_Game.OnGameRestarted += OnGameRestarted;
+            Events_Game.OnGameExited += OnGameRestarted;
         }
 
         private void OnDisable()
         {
-            if (_enemiesDefeatedCount != null)
-            {
-                _enemiesDefeatedCount.OnValueChanged -= OnEnemyDefeated;
-            }
-            Shared.Events.Events_Game.OnGameRestarted -= OnGameRestarted;
-            Shared.Events.Events_Game.OnGameExited -= OnGameRestarted;
+            _enemiesDefeatedCount.OnValueChanged -= OnEnemyDefeated;
+            
+            Events_Game.OnGameRestarted -= OnGameRestarted;
+            Events_Game.OnGameExited -= OnGameRestarted;
         }
 
         private void OnGameRestarted()
@@ -45,21 +43,21 @@ namespace Controllers
             if (_enemiesDefeatedCount != null)
             {
                 _enemiesDefeatedCount.Value = 0;
-                UpdateUI(0);
+                UpdateUI();
             }
         }
 
         private void OnEnemyDefeated(int i)
         {
-            UpdateUI(i);
+            UpdateUI();
             IncreaseScale().Forget();
         }
 
-        private void UpdateUI(int count)
+        private void UpdateUI()
         {
             if (_enemiesDefeatedText != null)
             {
-                _enemiesDefeatedText.text = "ENEMIES DEFEATED: " + count;
+                _enemiesDefeatedText.text = "ENEMIES DEFEATED: " + _enemiesDefeatedCount.Value;
             }
         }
 
