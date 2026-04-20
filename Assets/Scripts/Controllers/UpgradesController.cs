@@ -64,7 +64,29 @@ namespace Controllers
                 TurnOffCanvasGroup();
             }
         }
+        
+        public async void TurnOffCanvasGroup()
+        {
+            if (_canvasGroup == null) return;
+            
+            await Tween.Alpha(_canvasGroup, 0f, _animationDuration).ToUniTask(this);
+            
+            if (_canvasGroup != null)
+            {
+                _canvasGroup.interactable = false;
+                _canvasGroup.blocksRaycasts = false;
+            }
+        }
+        
+        public async void TurnOnCanvasGroup()
+        {
+            if (_canvasGroup == null) return;
 
+            _canvasGroup.interactable  = true;
+            _canvasGroup.blocksRaycasts = true;
+            await Tween.Alpha(_canvasGroup, 1f, _animationDuration).ToUniTask(this);
+        }
+        
         public void BuyDamageUpgrade()
         {
             if (_upgradesManager == null || _upgradesManager.GetDamageLevelMaxed()) return;
@@ -104,27 +126,7 @@ namespace Controllers
             }
         }
 
-        private async void TurnOffCanvasGroup()
-        {
-            if (_canvasGroup == null) return;
-            
-            await Tween.Alpha(_canvasGroup, 0f, _animationDuration).ToUniTask(this);
-            
-            if (_canvasGroup != null)
-            {
-                _canvasGroup.interactable = false;
-                _canvasGroup.blocksRaycasts = false;
-            }
-        }
-        
-        private async void TurnOnCanvasGroup()
-        {
-            if (_canvasGroup == null) return;
-
-            _canvasGroup.interactable  = true;
-            _canvasGroup.blocksRaycasts = true;
-            await Tween.Alpha(_canvasGroup, 1f, _animationDuration).ToUniTask(this);
-        }
+       
     }
     
 }
