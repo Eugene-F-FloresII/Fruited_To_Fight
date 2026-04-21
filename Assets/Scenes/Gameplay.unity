@@ -24743,8 +24743,8 @@ MonoBehaviour:
   _defendingController: {fileID: 1725762691}
   _camera: {fileID: 519420031}
   _spawnMode: 1
-  _minSpawnDistance: 20
-  _maxSpawnDistance: 25
+  _minSpawnDistance: 25
+  _maxSpawnDistance: 30
 --- !u!4 &919370835
 Transform:
   m_ObjectHideFlags: 0
