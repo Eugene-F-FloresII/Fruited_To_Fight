@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 116994283}
   - component: {fileID: 116994282}
   m_Layer: 0
-  m_Name: Ambience
+  m_Name: AmbienceManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25467,7 +25467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.BGM_Manager
   _audioClips:
-  - {fileID: 8300000, guid: c43cbe5eb9eae784982895deafeccbda, type: 3}
+  - {fileID: 8300000, guid: a60aa8e7d81d10c4e846b00046a235b9, type: 3}
   - {fileID: 8300000, guid: 9d9c2ef07e14cf944915acb6fe51f3a5, type: 3}
   - {fileID: 8300000, guid: 5854bbcf6c19ca94a99448a9ad4b7422, type: 3}
   _fadeDuration: 1.5
