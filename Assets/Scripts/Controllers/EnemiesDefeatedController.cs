@@ -12,9 +12,9 @@ namespace Controllers
     {
         [Header("References")]
         [SerializeField] private TextMeshProUGUI _enemiesDefeatedText;
-        [SerializeField] private IntVariable _enemiesDefeatedCount;
         
         private Transform _enemiesDefeatedGameObject;
+        private int _enemiesDefeated;
 
         private void Start()
         {
@@ -24,32 +24,27 @@ namespace Controllers
 
         private void OnEnable()
         {
-   
-            _enemiesDefeatedCount.OnValueChanged += OnEnemyDefeated;
-            
+            Events_Enemy.OnEnemyDeath += OnEnemyDefeated;
             Events_Game.OnGameRestarted += OnGameRestarted;
             Events_Game.OnGameExited += OnGameRestarted;
         }
 
         private void OnDisable()
         {
-            _enemiesDefeatedCount.OnValueChanged -= OnEnemyDefeated;
-            
+            Events_Enemy.OnEnemyDeath -= OnEnemyDefeated;
             Events_Game.OnGameRestarted -= OnGameRestarted;
             Events_Game.OnGameExited -= OnGameRestarted;
         }
 
         private void OnGameRestarted()
         {
-            if (_enemiesDefeatedCount != null)
-            {
-                _enemiesDefeatedCount.Value = 0;
-                UpdateUI();
-            }
+            _enemiesDefeated = 0;
+            UpdateUI();
         }
 
-        private void OnEnemyDefeated(int i)
+        private void OnEnemyDefeated()
         {
+            _enemiesDefeated++;
             UpdateUI();
             IncreaseScale().Forget();
         }
@@ -58,7 +53,7 @@ namespace Controllers
         {
             if (_enemiesDefeatedText != null)
             {
-                _enemiesDefeatedText.text = "ENEMIES DEFEATED: " + _enemiesDefeatedCount.Value;
+                _enemiesDefeatedText.text = "ENEMIES DEFEATED: " + _enemiesDefeated;
             }
         }
 

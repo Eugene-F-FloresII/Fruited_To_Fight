@@ -19,7 +19,6 @@ namespace Controllers
         [Header("Enemy References")]
         [SerializeField] private DefendingController _defendingController;
         [SerializeField] private Animator _animator;
-        [SerializeField] private IntVariable _enemyDefeated;
         
         [Header("Material References")]
         [SerializeField] protected Material _hitMaterial;
@@ -88,7 +87,7 @@ namespace Controllers
         {
             Events_Sound.PlaySound?.Invoke(_deathAudioClip);
             Events_Seed.OnEnemyDeath?.Invoke(transform);
-            _enemyDefeated.Value++;
+            Events_Enemy.OnEnemyDeath?.Invoke();
             gameObject.SetActive(false);
         }
 
