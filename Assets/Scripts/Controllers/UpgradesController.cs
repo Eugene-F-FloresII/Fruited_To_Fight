@@ -24,6 +24,7 @@ namespace Controllers
         
         private UpgradesManager _upgradesManager;
         private CanvasGroup _canvasGroup;
+        private bool _canChoose;
 
         private void Awake()
         {
@@ -34,7 +35,8 @@ namespace Controllers
         private void Start()
         {
             _upgradesManager = ServiceLocator.Get<UpgradesManager>();
-            
+
+            _canChoose = true;
             _canvasGroup.alpha = 0f;
             _canvasGroup.interactable  = false;
             _canvasGroup.blocksRaycasts = false;
@@ -60,6 +62,7 @@ namespace Controllers
         {
             if (_seedCollected != null)
             {
+                _canChoose = true;
                 _seedCollected.Value = 0;
                 TurnOffCanvasGroup();
             }
@@ -81,7 +84,8 @@ namespace Controllers
         public async void TurnOnCanvasGroup()
         {
             if (_canvasGroup == null) return;
-
+            
+            _canChoose = true;
             _canvasGroup.interactable  = true;
             _canvasGroup.blocksRaycasts = true;
             await Tween.Alpha(_canvasGroup, 1f, _animationDuration).ToUniTask(this);
@@ -89,6 +93,7 @@ namespace Controllers
         
         public void BuyDamageUpgrade()
         {
+            if (!_canChoose) return;
             if (_upgradesManager == null || _upgradesManager.GetDamageLevelMaxed()) return;
 
             int newSeed = _upgradesManager.UpgradeOverallDamage(_seedCollected.Value);
@@ -96,12 +101,14 @@ namespace Controllers
             if (newSeed != _seedCollected.Value) 
             {
                 _seedCollected.Value = newSeed;
+                _canChoose = false;
                 TurnOffCanvasGroup();
             }
         }
 
         public void BuyRangeUpgrade()
         {
+            if (!_canChoose) return;
             if (_upgradesManager == null || _upgradesManager.GetRangedLevelMaxed()) return;
 
             int newSeed = _upgradesManager.UpgradeOverallRange(_seedCollected.Value);
@@ -109,12 +116,15 @@ namespace Controllers
             if (newSeed != _seedCollected.Value) 
             {
                 _seedCollected.Value = newSeed;
+                _canChoose = false;
                 TurnOffCanvasGroup();
+                
             }
         }
 
         public void BuySpeedUpgrade()
         {
+            if (!_canChoose) return;
             if (_upgradesManager == null || _upgradesManager.GetSpeedLevelMaxed()) return;
 
             int newSeed = _upgradesManager.UpgradeOverallSpeed(_seedCollected.Value);
@@ -122,6 +132,7 @@ namespace Controllers
             if (newSeed != _seedCollected.Value) // ✅ only close if purchase succeeded
             {
                 _seedCollected.Value = newSeed;
+                _canChoose = false;
                 TurnOffCanvasGroup();
             }
         }
