@@ -26,6 +26,7 @@ namespace Controllers
             if (_seedsCollected != null)
             {
                 _seedsCollected.OnValueChanged += OnSeedsValueChanged;
+                OnSeedsValueChanged(_seedsCollected.Value);
             }
             UpdateSeedCollection();
         }

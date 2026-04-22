@@ -19,6 +19,7 @@ namespace Controllers
         private void Start()
         {
             InitializeEnemyDefeated();
+            UpdateUI();
         }
 
         private void OnEnable()

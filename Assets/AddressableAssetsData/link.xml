@@ -1,6 +1,8 @@
 <linker>
   <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="Controllers.EnemyController" preserve="all" />
+    <type fullname="Controllers.EnemiesDefeatedController" preserve="all" />
+    <type fullname="Controllers.SeedCollectionController" preserve="all" />
     <type fullname="Data.CharacterConfig" preserve="all" />
     <type fullname="Data.EnemyConfig" preserve="all" />
     <type fullname="Data.SeedConfig" preserve="all" />
