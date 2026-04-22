@@ -39,6 +39,19 @@ namespace Collection
             Debug.LogError($"Service of type {type.Name} not found!");
             return null;
         }
+
+        /// <summary>
+        /// Try to get a registered service without logging an error if not found
+        /// </summary>
+        public static T TryGet<T>() where T : class
+        {
+            var type = typeof(T);
+            if (_services.TryGetValue(type, out var service))
+            {
+                return service as T;
+            }
+            return null;
+        }
         
         /// <summary>
         /// Unregister a service (useful for cleanup)

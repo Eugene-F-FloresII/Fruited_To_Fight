@@ -161,7 +161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3300130579569479943}
   - component: {fileID: 4785278350493661069}
-  - component: {fileID: 2797429716517250805}
+  - component: {fileID: 9173910302195221033}
   m_Layer: 8
   m_Name: Weapon_Tomahawk
   m_TagString: Untagged
@@ -243,8 +243,8 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!70 &2797429716517250805
-CapsuleCollider2D:
+--- !u!58 &9173910302195221033
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -277,9 +277,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.021982908, y: 0.024220705}
-  m_Size: {x: 0.29784703, y: 0.9456229}
-  m_Direction: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5
 --- !u!1 &5521510721269681469
 GameObject:
   m_ObjectHideFlags: 0

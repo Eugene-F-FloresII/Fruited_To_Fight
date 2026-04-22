@@ -1,3 +1,4 @@
+using Shared.Events;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +8,7 @@ namespace Managers
     {
         public void PlayGame()
         {
-            SceneManager.LoadScene("Gameplay");
+            Events_Game.OnSceneChange?.Invoke("Gameplay");
         }
 
         public void ExitGame()
