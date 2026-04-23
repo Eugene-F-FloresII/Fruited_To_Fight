@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using Obvious.Soap;
+using Shared.Enums;
 using UnityEngine.SceneManagement;
 
 
@@ -30,6 +31,7 @@ namespace Managers
         
         private EnemySpawnManager _enemySpawnManager;
         private UpgradesManager _upgradesManager;
+        private GameCondition _gameCondition;
         
         private int _enemiesRemainingInRound;
         private bool _roundStarted;
@@ -231,13 +233,13 @@ namespace Managers
                 return;
             }
 
+            _gameCondition = GameCondition.Lose;
             _hasReachedMaxRounds = true;
             _roundStarted = false;
             _isTransitioning = false;
 
             Debug.Log("Max rounds reached. Run complete.", this);
-            Events_Game.OnGameExited?.Invoke();
-            Events_Game.OnSceneChange?.Invoke("MainMenu");
+            Events_Game.OnGameFinished?.Invoke(_gameCondition);
         }
 
         private int BuildSpawnCount(int roundIndex)

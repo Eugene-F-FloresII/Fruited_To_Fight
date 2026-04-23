@@ -15,6 +15,6 @@ MonoBehaviour:
   CharacterId: 2
   CharacterName: Corndalf
   CharacterSpeed: 0
-  CharacterHealth: 100
+  CharacterHealth: 0
   CharacterKnockbackResistance: 0
   CharacterArmor: 0

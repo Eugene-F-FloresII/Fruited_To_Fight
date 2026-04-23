@@ -51,7 +51,7 @@ namespace Gameplay
 
         private void OnHealthValueChanged(float newValue)
         {
-            if (newValue < _lastHealthValue)
+            if (newValue > _lastHealthValue)
             {
                 if (_healthBar != null)
                 {

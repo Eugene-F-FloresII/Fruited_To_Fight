@@ -1,6 +1,7 @@
 using System;
 using Data;
 using Obvious.Soap;
+using Shared.Enums;
 using Shared.Events;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,7 @@ namespace Controllers
         [SerializeField] private CharacterConfig _characterConfig;
         [SerializeField] private FloatVariable _characterHealth;
         private float _initialHealth;
+        private GameCondition _gameCondition;
 
         private void Awake()
         {
@@ -34,10 +36,10 @@ namespace Controllers
         {
             if (other.TryGetComponent(out EnemyController enemyController))
             {
-                _characterHealth.Value -= enemyController.GotHitByEnemy();
+                _characterHealth.Value += enemyController.GotHitByEnemy();
                 enemyController.KillEnemy();
                 
-                if (_characterHealth.Value <= 0)
+                if (_characterHealth.Value >= 100)
                 {
                     GameOver();
                 }
@@ -69,12 +71,12 @@ namespace Controllers
 
         private void GameOver()
         {
+            _gameCondition = GameCondition.Win;
             // Game over logic
             Debug.Log("Corndalf ded");
             gameObject.SetActive(false);
             ResetStats();
-            Events_Game.OnGameExited?.Invoke();
-            SceneManager.LoadScene("MainMenu");
+            Events_Game.OnGameFinished?.Invoke(_gameCondition);
         }
     }
 }

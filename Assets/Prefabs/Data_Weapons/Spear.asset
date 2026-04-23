@@ -24,11 +24,11 @@ MonoBehaviour:
   WeaponType: 1
   WeaponAmountToPool: 20
   WeaponHoming: 0
-  WeaponRange: 4
-  WeaponDamage: 100
-  WeaponPierce: 6
-  WeaponSpeed: 10
-  WeaponAtkSpeed: 1.5
+  WeaponRange: 7
+  WeaponDamage: 700
+  WeaponPierce: 10
+  WeaponSpeed: 20
+  WeaponAtkSpeed: 0.5
   WeaponKnockback: 4
   DamageDescription: Make your spear even stronger!
   RangeDescription: Strike foes from afar!

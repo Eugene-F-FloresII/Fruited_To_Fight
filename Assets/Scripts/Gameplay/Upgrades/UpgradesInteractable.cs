@@ -85,21 +85,21 @@ namespace Gameplay.Upgrades
                 case UpgradesCategoryType.Damage:
                     isMaxed = _upgradesManager.GetDamageLevelMaxed();
                     multiplier = _upgradesManager.GetDamageMultiplier();
-                    label = "% Damage & Pierce";
+                    label = " Damage & Pierce";
                     currentLevel = _overallDamageLevel.Value;
                     price = _upgradesManager.GetSeedPriceDamageUpgrade();
                     break;
                 case UpgradesCategoryType.Range:
                     isMaxed = _upgradesManager.GetRangedLevelMaxed();
                     multiplier = _upgradesManager.GetRangeMultiplier();
-                    label = "% Range & Knockback Force";
+                    label = " Range & Knockback Force";
                     currentLevel = _overallRangeLevel.Value;
                     price = _upgradesManager.GetSeedPriceRangeUpgrade();
                     break;
                 case UpgradesCategoryType.Speed:
                     isMaxed = _upgradesManager.GetSpeedLevelMaxed();
                     multiplier = _upgradesManager.GetSpeedMultiplier();
-                    label = "% Speed & Attack Speed";
+                    label = " Speed & Attack Speed";
                     currentLevel = _overallSpeedLevel.Value;
                     price = _upgradesManager.GetSeedPriceSpeedUpgrade();
                     break;
@@ -115,13 +115,13 @@ namespace Gameplay.Upgrades
             {
                 TurnOnCanvasGroup();
                 if (_button != null) _button.interactable = true;
-                ApplyStatusTexts((multiplier - 1) * 100, label, currentLevel, price);
+                ApplyStatusTexts(-25, label, currentLevel, price);
             }
         }
 
         private void ApplyStatusTexts(float damagePercentage, string upgradeType, int level, float price)
         {
-            if (_percentageText != null) _percentageText.text = "+" + damagePercentage + upgradeType;
+            if (_percentageText != null) _percentageText.text = "+25%" + upgradeType;
             if (_levelText != null) _levelText.text = "Level " + level;
             if (_priceText != null) _priceText.text = price + " seeds";
         }

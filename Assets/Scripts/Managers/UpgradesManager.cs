@@ -101,13 +101,13 @@ namespace Managers
             if (_firstWeaponConfig != null)
             {
                 _firstWeaponConfig.WeaponDamage = _firstWeaponInitialDamage * GetDamageMultiplier();
-                _firstWeaponConfig.WeaponPierce = _firstWeaponInitialPierce * Mathf.RoundToInt(GetDamageMultiplier());
+                _firstWeaponConfig.WeaponPierce = Mathf.RoundToInt(_firstWeaponInitialPierce * GetDamageMultiplier());
             }
 
             if (_secondWeaponConfig != null)
             {
                 _secondWeaponConfig.WeaponDamage = _secondWeaponInitialDamage * GetDamageMultiplier();
-                _secondWeaponConfig.WeaponPierce = _secondWeaponInitialPierce * Mathf.RoundToInt(GetDamageMultiplier());
+                _secondWeaponConfig.WeaponPierce = Mathf.RoundToInt(_secondWeaponInitialPierce * GetDamageMultiplier());
             }
             
             return currency;
@@ -170,13 +170,13 @@ namespace Managers
             if (_firstWeaponConfig != null)
             {
                 _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed * GetSpeedMultiplier();
-                _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed / GetSpeedMultiplier();
+                _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed * GetSpeedMultiplier();
             }
             
             if (_secondWeaponConfig != null)
             {
                 _secondWeaponConfig.WeaponSpeed = _secondWeaponInitialSpeed * GetSpeedMultiplier();
-                _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed / GetSpeedMultiplier();
+                _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed * GetSpeedMultiplier();
             }
             
             return currency;
@@ -239,19 +239,16 @@ namespace Managers
         
         public float GetDamageMultiplier()
         {
-            // Example: each level adds 10% damage
-            return 1f + (_overallDamageLevel.Value * _percentageIncreasePerLevel);
+            return 1f - ((_overallDamageLevel.Value - 1) * _percentageIncreasePerLevel);
         }
         public float GetRangeMultiplier()
         {
-            // Example: each level adds 10% damage
-            return 1f + (_overallRangeLevel.Value * _percentageIncreasePerLevel);
+            return 1f - ((_overallRangeLevel.Value - 1) * _percentageIncreasePerLevel);
         }
 
         public float GetSpeedMultiplier()
         {
-            // Example: each level adds 10% damage
-            return 1f + (_overallSpeedLevel.Value * _percentageIncreasePerLevel);
+            return 1f - ((_overallSpeedLevel.Value - 1) * _percentageIncreasePerLevel);
         }
 
         
@@ -352,11 +349,11 @@ namespace Managers
             float initialAtkSpeed)
         {
             config.WeaponDamage = initialDamage * GetDamageMultiplier();
-            config.WeaponPierce = initialPierce * (int) GetDamageMultiplier();
+            config.WeaponPierce = Mathf.RoundToInt(initialPierce * GetDamageMultiplier());
             config.WeaponRange  = initialRange  * GetRangeMultiplier();
             config.WeaponKnockback = initialKnockback * GetRangeMultiplier();
             config.WeaponSpeed  = initialSpeed  * GetSpeedMultiplier();
-            config.WeaponAtkSpeed = initialAtkSpeed / GetSpeedMultiplier();
+            config.WeaponAtkSpeed = initialAtkSpeed * GetSpeedMultiplier();
         }
 
         

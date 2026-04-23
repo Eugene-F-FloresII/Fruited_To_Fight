@@ -25283,7 +25283,7 @@ MonoBehaviour:
   _nextRoundDelaySeconds: 10
   _currentRound: {fileID: 11400000, guid: a2420f190c4aea844900cc6cda5faeea, type: 2}
   _maxRounds: {fileID: 11400000, guid: dd6611b2ef6460644aef18dc8ba16894, type: 2}
-  _healthGrowthPerRound: 1.15
+  _healthGrowthPerRound: 1.06
   _damageGrowthPerRound: 1.1
   _moveSpeedGrowthPerRound: 1.05
   _attackSpeedGrowthPerRound: 1.04
