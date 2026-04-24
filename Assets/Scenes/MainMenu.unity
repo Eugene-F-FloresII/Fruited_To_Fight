@@ -782,7 +782,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PROTECT CORNDALF!
+  m_text: RULES ARE MEANT TO BE BROKEN
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a5dc0285d5764344abc7c3c269e80fbd, type: 2}
   m_sharedMaterial: {fileID: -4237411156429526564, guid: a5dc0285d5764344abc7c3c269e80fbd, type: 2}
@@ -792,7 +792,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4282078863
-  m_fontColor: {r: 0.56078434, g: 0.3372549, b: 0.23137257, a: 1}
+  m_fontColor: {r: 0.56078434, g: 0.3372549, b: 0.23137252, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -809,8 +809,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80.6
-  m_fontSizeBase: 80.6
+  m_fontSize: 69.44
+  m_fontSizeBase: 69.44
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2082,9 +2082,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Corndalf seeks to seal a source of rot. He shall grant thee invulnerability
-    to smite the corruption. Protect him, that the rot spreading across the Ripe
-    Lands may be stayed.
+  m_text: 'Everything is the opposite of what your thinking!
+
+    :)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a5dc0285d5764344abc7c3c269e80fbd, type: 2}
   m_sharedMaterial: {fileID: -4237411156429526564, guid: a5dc0285d5764344abc7c3c269e80fbd, type: 2}

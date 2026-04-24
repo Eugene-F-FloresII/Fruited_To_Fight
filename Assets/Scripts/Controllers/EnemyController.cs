@@ -40,8 +40,8 @@ namespace Controllers
         private float _currentDamage;
         private float _currentSpeed;
         private float _currentAttackSpeed;
-        private float _playerPosX;
-        private float _playerPosY;
+        private Vector2 _playerPosX;
+        private Vector2 _playerPosY;
         private float _currentKnockbackForce;
 
         private CancellationTokenSource _hitEffectCts;
@@ -160,12 +160,17 @@ namespace Controllers
             
             if (_defendingController == null) return;
 
-            _playerPosX = _defendingController.transform.position.x;
-            _playerPosY = _defendingController.transform.position.y;
+            _playerPosX.x = _defendingController.transform.position.x;
+            _playerPosY.y = _defendingController.transform.position.y;
+
+            Vector2 FinalPos = new Vector2(_playerPosX.x, _playerPosY.y);
+            Vector2 EnemyPos = new Vector2(transform.position.x, transform.position.y);
+
+            Vector2 direction = FinalPos - EnemyPos;
+            Vector2 normalizedDirection = direction.normalized;
             
-            _animator.SetFloat(_velocityX, _playerPosX);
-            _animator.SetFloat(_velocityY, _playerPosY);
-            
+            _animator.SetFloat(_velocityX, normalizedDirection.x);
+            _animator.SetFloat(_velocityY, normalizedDirection.y);
             
             gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, _defendingController.transform.position, _currentSpeed * Time.deltaTime);
         }
