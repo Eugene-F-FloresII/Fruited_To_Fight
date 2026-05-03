@@ -15,6 +15,6 @@ MonoBehaviour:
   CharacterId: 1
   CharacterName: Eurango
   CharacterSpeed: 8
-  CharacterHealth: 0
+  CharacterHealth: 100
   CharacterKnockbackResistance: 10
   CharacterArmor: 0

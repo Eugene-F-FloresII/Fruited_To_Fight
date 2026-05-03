@@ -172,7 +172,7 @@ namespace Controllers
 
         private float CalculateKnockbackResistance(float maxKnockbackForce,float knockbackResistance)
         {
-            if (maxKnockbackForce < knockbackResistance)
+            if (maxKnockbackForce <= 0.001f || maxKnockbackForce < knockbackResistance)
             {
                 return 0.4f;
             }

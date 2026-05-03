@@ -89,18 +89,18 @@ namespace Gameplay.Weapons
             _activeSequence = Sequence.Create(useUnscaledTime: true);
             
             if (_spearButton.gameObject.activeSelf)
-                _activeSequence.Group(Tween.Scale(_spearButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
+                _activeSequence.Group(Tween.Scale(_spearButton.transform, 0.001f, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
             
             if (_staffButton.gameObject.activeSelf)
                 _activeSequence.Chain(Tween.Delay(_buttonStaggerDelay, useUnscaledTime: true))
-                   .Group(Tween.Scale(_staffButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
+                   .Group(Tween.Scale(_staffButton.transform, 0.001f, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
 
             if (_tomahawkButton.gameObject.activeSelf)
                 _activeSequence.Chain(Tween.Delay(_buttonStaggerDelay, useUnscaledTime: true))
-                   .Group(Tween.Scale(_tomahawkButton.transform, 0, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
+                   .Group(Tween.Scale(_tomahawkButton.transform, 0.001f, _buttonAnimationDuration, Ease.InBack, useUnscaledTime: true));
 
             _activeSequence.Chain(Tween.Alpha(_canvasGroup, 0, _animationDuration, useUnscaledTime: true))
-               .Group(Tween.Scale(transform, 0, _animationDuration, Ease.InBack, useUnscaledTime: true));
+               .Group(Tween.Scale(transform, 0.001f, _animationDuration, Ease.InBack, useUnscaledTime: true));
         }
         
         public void TurnOnCanvasGroup()
@@ -117,14 +117,14 @@ namespace Gameplay.Weapons
             
             // Set initial state manually
             _canvasGroup.alpha = 0f;
-            transform.localScale = Vector3.zero;
+            transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
             
             _spearButton.gameObject.SetActive(true);
             _staffButton.gameObject.SetActive(true);
             _tomahawkButton.gameObject.SetActive(true);
-            _spearButton.transform.localScale = Vector3.zero;
-            _staffButton.transform.localScale = Vector3.zero;
-            _tomahawkButton.transform.localScale = Vector3.zero;
+            _spearButton.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
+            _staffButton.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
+            _tomahawkButton.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
 
             // Activation sequence: After Panel Animation
             _activeSequence = Sequence.Create(useUnscaledTime: true)
