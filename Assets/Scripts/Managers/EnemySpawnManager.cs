@@ -7,6 +7,7 @@ using Data;
 using NaughtyAttributes;
 using Obvious.Soap;
 using Shared.Enums;
+using Shared.Events;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
@@ -26,18 +27,19 @@ namespace Managers
 
         [Header("Enemy Spawn References")] 
         [SerializeField] private List<EnemyVariantSettings> _enemyVariants;
-        [SerializeField] private DefendingController _defendingController;
         [SerializeField] private Camera _camera;
 
         [Header("Spawn Settings")]
         [SerializeField] private SpawnMode _spawnMode = SpawnMode.CameraEdge;
         [SerializeField] [ShowIf("_spawnMode", SpawnMode.AroundTarget)] private float _minSpawnDistance = 10f;
         [SerializeField] [ShowIf("_spawnMode", SpawnMode.AroundTarget)] private float _maxSpawnDistance = 15f;
-        
+
+        private PlayerController _playerController;
         private Dictionary<int, Queue<EnemyController>> _enemyPools = new();
         private Dictionary<int, EnemyConfig> _loadedConfigs = new();
         private Dictionary<int, Transform> _poolParents = new();
         private bool _isInitialized;
+        
 
         public bool IsInitialized => _isInitialized;
 
@@ -50,6 +52,16 @@ namespace Managers
         {
             LoadEnemyConfigsAsync().Forget();
             _camera = Camera.main;
+        }
+
+        private void OnEnable()
+        {
+            Events_Game.OnGameStarted += InitializePlayer;
+        }
+
+        private void OnDisable()
+        {
+            Events_Game.OnGameStarted -= InitializePlayer;
         }
 
         private void OnDestroy()
@@ -107,7 +119,7 @@ namespace Managers
                 _camera = Camera.main;
             }
 
-            if (_camera == null || _defendingController == null)
+            if (_camera == null || _playerController == null)
             {
                 Debug.LogWarning("EnemySpawnManager is missing camera or player reference.", this);
                 return 0;
@@ -130,7 +142,7 @@ namespace Managers
                     : GetAroundTargetSpawnPosition();
                 
                 enemyTransform.rotation = Quaternion.identity;
-                enemy.InitializePlayer(_defendingController);
+                enemy.InitializePlayer(_playerController);
                 
                 EnemyRuntimeStats scaledStats = new EnemyRuntimeStats(
                     config.EnemyHealth * multipliers.HealthMultiplier,
@@ -185,12 +197,12 @@ namespace Managers
 
         private Vector2 GetAroundTargetSpawnPosition()
         {
-            if (_defendingController == null)
+            if (_playerController == null)
             {
                 return GetEdgeSpawnPosition();
             }
 
-            Vector2 center = _defendingController.transform.position;
+            Vector2 center = _playerController.transform.position;
             float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             float distance = Random.Range(_minSpawnDistance, _maxSpawnDistance);
 
@@ -239,6 +251,11 @@ namespace Managers
                 2 => new Vector2(Random.Range(camPos.x - width - margin, camPos.x + width + margin), camPos.y - height - margin), // bottom
                 _ => new Vector2(camPos.x - width - margin, Random.Range(camPos.y - height - margin, camPos.y + height + margin)), // left
             };
+        }
+
+        private void InitializePlayer(PlayerController player)
+        {
+            _playerController = player;
         }
         
         private async UniTaskVoid LoadEnemyConfigsAsync()

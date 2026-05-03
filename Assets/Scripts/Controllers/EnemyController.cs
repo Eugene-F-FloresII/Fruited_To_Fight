@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Data;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Gameplay;
 using Gameplay.Weapons;
 using Obvious.Soap;
 using Shared.Events;
@@ -30,6 +31,7 @@ namespace Controllers
         
         
         protected SpriteRenderer SpriteRenderer;
+        private PlayerController _playerController;
         private EnemyConfig _enemyConfig;
         private Rigidbody2D _enemyRb;
         private Vector2 _projectileDirection;
@@ -146,7 +148,7 @@ namespace Controllers
             _currentKnockbackForce = runtimeStats.KnockbackForce;
         }
 
-        public void InitializePlayer(DefendingController defendingController) =>  _defendingController = defendingController; 
+        public void InitializePlayer(PlayerController playerController) =>  _playerController = playerController; 
 
         private void ChasePlayer()
         {
@@ -158,16 +160,16 @@ namespace Controllers
                 return;
             }
             
-            if (_defendingController == null) return;
+            if (_playerController == null) return;
 
-            _playerPosX = _defendingController.transform.position.x;
-            _playerPosY = _defendingController.transform.position.y;
+            _playerPosX = _playerController.transform.position.x;
+            _playerPosY = _playerController.transform.position.y;
             
             _animator.SetFloat(_velocityX, _playerPosX);
             _animator.SetFloat(_velocityY, _playerPosY);
             
             
-            gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, _defendingController.transform.position, _currentSpeed * Time.deltaTime);
+            gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, _playerController.transform.position, _currentSpeed * Time.deltaTime);
         }
 
         private void ResetStatsFromConfig()

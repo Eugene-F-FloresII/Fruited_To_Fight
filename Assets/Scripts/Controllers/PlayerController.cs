@@ -8,6 +8,7 @@ using Shared.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cysharp.Threading.Tasks;
+using Obvious.Soap;
 
 
 namespace Controllers
@@ -22,6 +23,9 @@ namespace Controllers
         [SerializeField] private PlayerCharacter _playerCharacter;
         [SerializeField] private Rigidbody2D _rb;
         [SerializeField] private BoxCollider2D _boxCollider;
+        [SerializeField] private FloatVariable _characterHealth;
+        [SerializeField] private FloatVariable _characterMaxHealth;
+
         
         [Header("Player Settings")]
         [SerializeField] private float _maxKnockbackForce = 10f;
@@ -35,6 +39,11 @@ namespace Controllers
         private Vector2 _enemyDirection;
         
         private Animator _playerCharacterAnimator;
+
+        private float _initialCharacterSpeed;
+        private float _initialCharacterHealth;
+        private float _initialCharacterKnockbackResistance;
+        private float _initialCharacterArmor;
         
         private bool _isKnockedBack;
         private readonly string _velocityX = "VelocityX";
@@ -56,6 +65,7 @@ namespace Controllers
             
             _playerStateMachine.ChangeState(_idleState);
            
+            Events_Game.OnGameStarted?.Invoke(this);
         }
 
         private void OnEnable()
@@ -97,6 +107,14 @@ namespace Controllers
             if(_isKnockedBack) return;
             if (other.TryGetComponent(out EnemyController enemy))
             {
+                _characterHealth.Value -= enemy.GotHitByEnemy();
+
+                if (_characterHealth.Value <= 0)
+                {
+                    GameOver();
+                    return;
+                }
+                
                 _enemyDirection = (transform.position - enemy.transform.position).normalized;
                 
                 _knockBackCts = new CancellationTokenSource();
@@ -138,39 +156,18 @@ namespace Controllers
             CharacterConfig = characterConfig;
             UpdatePlayerStats();
         }
-
-        private async UniTask PlayerKnockBack(Vector2 direction, float force, float duration, CancellationToken token)
-        {
-            try
-            {
-                if (_rb != null)
-                {
-                    _rb.linearVelocity = Vector2.zero;
-                    _rb.AddForce(direction * CalculateKnockbackForce(force), ForceMode2D.Impulse);
-                }
-                Events_Character.RequestShake(_cameraShakeForce);
-                
-                _isKnockedBack = true;
-                await UniTask.Delay(TimeSpan.FromSeconds(CalculateKnockbackResistance(duration, CharacterConfig.CharacterKnockbackResistance)), cancellationToken: token);
-
-            }
-            catch (OperationCanceledException)
-            {
-                Debug.Log("Player Knocked Back");
-            }
-            finally
-            {
-                _isKnockedBack = false;
-                if (_rb != null)
-                {
-                    _rb.linearVelocity = Vector2.zero;
-                }
-            }
-        }
         
         private void UpdatePlayerStats()
         {
+            _initialCharacterArmor = CharacterConfig.CharacterArmor;
+            _initialCharacterHealth = CharacterConfig.CharacterHealth;
+            _initialCharacterKnockbackResistance = CharacterConfig.CharacterKnockbackResistance;
+            _initialCharacterSpeed = CharacterConfig.CharacterSpeed;
+            
+            
             _playerCharacterAnimator = _playerCharacter.CharacterAnimator;
+            _characterHealth.Value = CharacterConfig.CharacterHealth;
+            _characterMaxHealth.Value = CharacterConfig.CharacterHealth;
         }
 
         private float CalculateKnockbackResistance(float maxKnockbackForce,float knockbackResistance)
@@ -197,6 +194,51 @@ namespace Controllers
 
             return knockbackforce;
         }
+
+        private void GameOver()
+        {
+            ResetStats();
+            Events_Game.OnGameExited?.Invoke();
+            Events_Game.OnSceneChange?.Invoke("MainMenu");
+        }
+
+        private void ResetStats()
+        {
+            CharacterConfig.CharacterArmor = _initialCharacterArmor; 
+            CharacterConfig.CharacterHealth = _initialCharacterHealth;
+            CharacterConfig.CharacterKnockbackResistance = _initialCharacterKnockbackResistance;
+            CharacterConfig.CharacterSpeed = _initialCharacterSpeed;
+        }
+        
+         private async UniTask PlayerKnockBack(Vector2 direction, float force, float duration, CancellationToken token)
+                {
+                    try
+                    {
+                        if (_rb != null)
+                        {
+                            _rb.linearVelocity = Vector2.zero;
+                            _rb.AddForce(direction * CalculateKnockbackForce(force), ForceMode2D.Impulse);
+                        }
+                        Events_Character.RequestShake(_cameraShakeForce);
+                        
+                        _isKnockedBack = true;
+                        await UniTask.Delay(TimeSpan.FromSeconds(CalculateKnockbackResistance(duration, CharacterConfig.CharacterKnockbackResistance)), cancellationToken: token);
+        
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        Debug.Log("Player Knocked Back");
+                    }
+                    finally
+                    {
+                        _isKnockedBack = false;
+                        if (_rb != null)
+                        {
+                            _rb.linearVelocity = Vector2.zero;
+                        }
+                    }
+                }
+        
         
     }
 }

@@ -309,6 +309,8 @@ MonoBehaviour:
   _playerCharacter: {fileID: 3127359511337143219}
   _rb: {fileID: 1999794825571847956}
   _boxCollider: {fileID: 513007265146019826}
+  _characterHealth: {fileID: 11400000, guid: 667dbaa064bdea946bc3b9e0b0d6f2e5, type: 2}
+  _characterMaxHealth: {fileID: 11400000, guid: b962481d1e4515941b6799f73e79849c, type: 2}
   _maxKnockbackForce: 10
 --- !u!50 &1999794825571847956
 Rigidbody2D:

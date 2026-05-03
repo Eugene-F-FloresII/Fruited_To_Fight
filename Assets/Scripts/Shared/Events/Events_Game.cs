@@ -1,4 +1,5 @@
 using System;
+using Controllers;
 
 namespace Shared.Events
 {
@@ -9,5 +10,6 @@ namespace Shared.Events
         public static Action OnGameResumed;
         public static Action OnGameRestarted;
         public static Action OnGameExited;
+        public static Action<PlayerController> OnGameStarted;
     }
 }
