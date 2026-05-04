@@ -84,23 +84,23 @@ namespace Gameplay.Upgrades
             {
                 case UpgradesCategoryType.Damage:
                     isMaxed = _upgradesManager.GetDamageLevelMaxed();
-                    multiplier = _upgradesManager.GetDamageMultiplier();
-                    label = "% Damage & Pierce";
                     currentLevel = _overallDamageLevel.Value;
+                    multiplier = _upgradesManager.GetDamageMultiplier(currentLevel + 1);
+                    label = "% Damage & Pierce";
                     price = _upgradesManager.GetSeedPriceDamageUpgrade();
                     break;
                 case UpgradesCategoryType.Range:
                     isMaxed = _upgradesManager.GetRangedLevelMaxed();
-                    multiplier = _upgradesManager.GetRangeMultiplier();
-                    label = "% Range & Knockback Force";
                     currentLevel = _overallRangeLevel.Value;
+                    multiplier = _upgradesManager.GetRangeMultiplier(currentLevel + 1);
+                    label = "% Range & Knockback Force";
                     price = _upgradesManager.GetSeedPriceRangeUpgrade();
                     break;
                 case UpgradesCategoryType.Speed:
                     isMaxed = _upgradesManager.GetSpeedLevelMaxed();
-                    multiplier = _upgradesManager.GetSpeedMultiplier();
-                    label = "% Speed & Attack Speed";
                     currentLevel = _overallSpeedLevel.Value;
+                    multiplier = _upgradesManager.GetSpeedMultiplier(currentLevel + 1);
+                    label = "% Speed & Attack Speed";
                     price = _upgradesManager.GetSeedPriceSpeedUpgrade();
                     break;
             }
@@ -122,7 +122,7 @@ namespace Gameplay.Upgrades
         private void ApplyStatusTexts(float damagePercentage, string upgradeType, int level, float price)
         {
             if (_percentageText != null) _percentageText.text = "+" + damagePercentage + upgradeType;
-            if (_levelText != null) _levelText.text = "Level " + level;
+            if (_levelText != null) _levelText.text = "Level " + (level + 1);
             if (_priceText != null) _priceText.text = price + " seeds";
         }
 

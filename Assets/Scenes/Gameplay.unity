@@ -662,7 +662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4533593ead4c8b642bd76d1b4c65872d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.UpgradesManager
-  _percentageIncreasePerLevel: 0.25
+  _percentageIncreasePerLevel: 0.1
   _overallDamageLevel: {fileID: 11400000, guid: ea1e53e731b64714cab52e2713683603, type: 2}
   _overallRangeLevel: {fileID: 11400000, guid: 31dde5b659ce4bb4c8e35e1395102ad2, type: 2}
   _overallSpeedLevel: {fileID: 11400000, guid: bd80a942a1fb9a74aad18e83050dd458, type: 2}

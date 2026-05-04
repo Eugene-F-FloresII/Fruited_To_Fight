@@ -9,6 +9,7 @@ using Gameplay.Weapons;
 using Obvious.Soap;
 using Shared.Events;
 using UnityEngine.AddressableAssets;
+using Random = System.Random;
 
 namespace Controllers
 {

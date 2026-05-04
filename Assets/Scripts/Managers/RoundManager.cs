@@ -130,7 +130,17 @@ namespace Managers
             }
 
             EndCurrentRound();
-            StartNextRoundAfterDelay().Forget();
+
+            if (_currentRound.Value >= _maxRounds.Value)
+            {
+                HandleMaxRoundsReached();
+            }
+            else
+            { 
+                StartNextRoundAfterDelay().Forget();
+            }
+            
+           
         }
 
         private void EndCurrentRound()

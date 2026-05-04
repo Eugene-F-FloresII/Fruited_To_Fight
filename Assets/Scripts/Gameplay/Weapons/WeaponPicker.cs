@@ -35,7 +35,7 @@ namespace Gameplay.Weapons
 
         private void Update()
         {
-            if (_countIndex == 2)
+            if (_countIndex == 1)
             {
                 TurnOffCanvasGroup();
                 Time.timeScale = 1;

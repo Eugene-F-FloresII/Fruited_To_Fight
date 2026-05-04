@@ -3,7 +3,6 @@ using Data;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using Cysharp.Threading.Tasks;
 using Obvious.Soap;
 using Shared.Events;
 
@@ -13,7 +12,7 @@ namespace Managers
     public class UpgradesManager : MonoBehaviour
     {
         [Header("Settings")] 
-        [SerializeField] private float _percentageIncreasePerLevel = 0.25f;
+        [SerializeField] private float _percentageIncreasePerLevel = 0.1f;
         
         [Header("Soap Level References")] 
         [SerializeField] private IntVariable _overallDamageLevel;
@@ -204,9 +203,9 @@ namespace Managers
                 _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed;
             }
 
-            if (_overallDamageLevel != null) _overallDamageLevel.Value = 1;
-            if (_overallRangeLevel != null) _overallRangeLevel.Value = 1;
-            if (_overallSpeedLevel != null) _overallSpeedLevel.Value = 1;
+            if (_overallDamageLevel != null) _overallDamageLevel.Value = 0;
+            if (_overallRangeLevel != null) _overallRangeLevel.Value = 0;
+            if (_overallSpeedLevel != null) _overallSpeedLevel.Value = 0;
 
             _isDamageMaxed = false;
             _isRangedMaxed = false;
@@ -226,34 +225,53 @@ namespace Managers
 
         public int GetSeedPriceDamageUpgrade()
         {
-            return _overallDamageLevel.Value * _priceDamageUpgrade;
+            var price = _overallDamageLevel * _priceDamageUpgrade;
+            
+            if (price == 0)
+            {
+                price = _priceDamageUpgrade / 2;
+            }
+            
+            return price;
         }
         public int GetSeedPriceRangeUpgrade()
         {
-            return _overallRangeLevel.Value * _priceRangeUpgrade;
+            var price = _overallRangeLevel * _priceRangeUpgrade;
+            
+            if (price == 0)
+            {
+                price = _priceRangeUpgrade / 2;
+            }
+            return price;
         }
         public int GetSeedPriceSpeedUpgrade()
         {
-            return _overallSpeedLevel.Value * _priceSpeedUpgrade;
+            var price = _overallSpeedLevel.Value * _priceSpeedUpgrade;
+
+            if (price == 0)
+            {
+                price = _priceSpeedUpgrade / 2;
+            }
+            
+            return price;
         }
         
-        public float GetDamageMultiplier()
+        public float GetDamageMultiplier(int level = -1)
         {
-            // Example: each level adds 10% damage
-            return 1f + (_overallDamageLevel.Value * _percentageIncreasePerLevel);
+            var targetLevel = level == -1 ? _overallDamageLevel.Value : level;
+            return 1f + (targetLevel * _percentageIncreasePerLevel);
         }
-        public float GetRangeMultiplier()
+        public float GetRangeMultiplier(int level = -1)
         {
-            // Example: each level adds 10% damage
-            return 1f + (_overallRangeLevel.Value * _percentageIncreasePerLevel);
-        }
-
-        public float GetSpeedMultiplier()
-        {
-            // Example: each level adds 10% damage
-            return 1f + (_overallSpeedLevel.Value * _percentageIncreasePerLevel);
+            var targetLevel = level == -1 ? _overallRangeLevel.Value : level;
+            return 1f + (targetLevel * _percentageIncreasePerLevel);
         }
 
+        public float GetSpeedMultiplier(int level = -1)
+        {
+            var targetLevel = level == -1 ? _overallSpeedLevel.Value : level;
+            return 1f + (targetLevel * _percentageIncreasePerLevel);
+        }
         
         private async void InitializeCurrentWeapon(string label)
         {
