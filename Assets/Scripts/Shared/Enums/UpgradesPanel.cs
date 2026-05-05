@@ -5,8 +5,11 @@ namespace Shared.Enums
     public enum UpgradesCategoryType
     {
         Damage,
+        Pierce,
         Range,
-        Speed
+        Knockback,
+        Speed,
+        AttackSpeed,
     }
 
 }
