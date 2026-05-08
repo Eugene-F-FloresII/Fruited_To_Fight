@@ -873,6 +873,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1447602302754582020, guid: d58be223138338743aaeae5c02222111, type: 3}
+      propertyPath: _upgrades
+      value: 
+      objectReference: {fileID: 11400000, guid: c7e0f88e1191bce4c856d626bbe3547c, type: 2}
     - target: {fileID: 1599925346840754979, guid: d58be223138338743aaeae5c02222111, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1015,6 +1019,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 9019582420042816599}
+    - target: {fileID: 3990035035284818752, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
+      propertyPath: _upgrades
+      value: 
+      objectReference: {fileID: 11400000, guid: 5c62695bdc7329349907f367bf9231fe, type: 2}
     - target: {fileID: 8597101850220342146, guid: 79a488f1519c39a44a46955e3c606d95, type: 3}
       propertyPath: _audioClip
       value: 
@@ -1199,6 +1207,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 9019582420042816599}
+    - target: {fileID: 8218119834835533291, guid: 9b6996f5543496e4f89f87fd63096d8f, type: 3}
+      propertyPath: _upgrades
+      value: 
+      objectReference: {fileID: 11400000, guid: 3a116ff078c61e149a8a453dc0c4e3d7, type: 2}
     - target: {fileID: 8636959666723397711, guid: 9b6996f5543496e4f89f87fd63096d8f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

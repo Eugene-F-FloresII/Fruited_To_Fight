@@ -1,7 +1,5 @@
 using System;
-using Collection;
 using Managers;
-using Obvious.Soap;
 using Shared.Enums;
 using TMPro;
 using UnityEngine;
@@ -12,10 +10,7 @@ namespace Gameplay.Upgrades
     public class UpgradesInteractable : MonoBehaviour
     {
         [Header("Setting")]
-        [SerializeField] private UpgradesCategoryType _categoryType;
-        [SerializeField] private IntVariable _overallDamageLevel;
-        [SerializeField] private IntVariable _overallRangeLevel;
-        [SerializeField] private IntVariable _overallSpeedLevel;
+        [SerializeField] private Data.Upgrades.Upgrades _upgrades;
         
         [Header("Text References")]
         [SerializeField] private TextMeshProUGUI _percentageText;
@@ -23,7 +18,6 @@ namespace Gameplay.Upgrades
         [SerializeField] private TextMeshProUGUI _priceText;
 
         private CanvasGroup _canvasGroup;
-        private UpgradesManager _upgradesManager;
         private Button _button;
 
         private void Awake()
@@ -32,78 +26,33 @@ namespace Gameplay.Upgrades
             _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        private void Start()
-        {
-            _upgradesManager = ServiceLocator.Get<UpgradesManager>();
-            UpdateUI();
-        }
-
         private void OnEnable()
         {
-            // Re-assign in case of issues, though Awake should have handled it
-            if (_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
-            if (_button == null) _button = GetComponent<Button>();
-
-            if (_categoryType == UpgradesCategoryType.Damage)
-                _overallDamageLevel.OnValueChanged += OnLevelChanged;
-            else if (_categoryType == UpgradesCategoryType.Range)
-                _overallRangeLevel.OnValueChanged += OnLevelChanged;
-            else if (_categoryType == UpgradesCategoryType.Speed)
-                _overallSpeedLevel.OnValueChanged += OnLevelChanged;
+            if (_upgrades != null && _upgrades.UpgradeLevel != null)
+            {
+                _upgrades.UpgradeLevel.OnValueChanged += OnLevelChanged;
+            }
             
             UpdateUI();
         }
 
         private void OnDisable()
         {
-            if (_categoryType == UpgradesCategoryType.Damage)
-                _overallDamageLevel.OnValueChanged -= OnLevelChanged;
-            else if (_categoryType == UpgradesCategoryType.Range)
-                _overallRangeLevel.OnValueChanged -= OnLevelChanged;
-            else if (_categoryType == UpgradesCategoryType.Speed)
-                _overallSpeedLevel.OnValueChanged -= OnLevelChanged;
+            if (_upgrades != null && _upgrades.UpgradeLevel != null)
+            {
+                _upgrades.UpgradeLevel.OnValueChanged -= OnLevelChanged;
+            }
         }
 
         private void OnLevelChanged(int level) => UpdateUI();
 
         private void UpdateUI()
         {
-            if (_upgradesManager == null)
-            {
-                _upgradesManager = ServiceLocator.Get<UpgradesManager>();
-                if (_upgradesManager == null) return;
-            }
+            if (_upgrades == null) return;
 
-            bool isMaxed = false;
-            float multiplier = 0;
-            string label = "";
-            int currentLevel = 0;
-            float price = 0;
-
-            switch (_categoryType)
-            {
-                case UpgradesCategoryType.Damage:
-                    isMaxed = _upgradesManager.GetDamageLevelMaxed();
-                    currentLevel = _overallDamageLevel.Value;
-                    multiplier = _upgradesManager.GetDamageMultiplier(currentLevel + 1);
-                    label = "% Damage & Pierce";
-                    price = _upgradesManager.GetSeedPriceDamageUpgrade();
-                    break;
-                case UpgradesCategoryType.Range:
-                    isMaxed = _upgradesManager.GetRangedLevelMaxed();
-                    currentLevel = _overallRangeLevel.Value;
-                    multiplier = _upgradesManager.GetRangeMultiplier(currentLevel + 1);
-                    label = "% Range & Knockback Force";
-                    price = _upgradesManager.GetSeedPriceRangeUpgrade();
-                    break;
-                case UpgradesCategoryType.Speed:
-                    isMaxed = _upgradesManager.GetSpeedLevelMaxed();
-                    currentLevel = _overallSpeedLevel.Value;
-                    multiplier = _upgradesManager.GetSpeedMultiplier(currentLevel + 1);
-                    label = "% Speed & Attack Speed";
-                    price = _upgradesManager.GetSeedPriceSpeedUpgrade();
-                    break;
-            }
+            bool isMaxed = _upgrades.GetUpgradeLevelMaxed();
+            int currentLevel = _upgrades.UpgradeLevel.Value;
+            int price = _upgrades.GetSeedPriceUpgrade();
 
             if (isMaxed)
             {
@@ -115,13 +64,45 @@ namespace Gameplay.Upgrades
             {
                 TurnOnCanvasGroup();
                 if (_button != null) _button.interactable = true;
-                ApplyStatusTexts((multiplier - 1) * 100, label, currentLevel, price);
+
+                string label = "";
+                float displayValue = 0;
+
+                switch (_upgrades.Category)
+                {
+                    case UpgradesCategoryType.Damage:
+                        label = "% Damage";
+                        displayValue = (_upgrades.GetMultiplier(currentLevel + 1) - 1) * 100;
+                        break;
+                    case UpgradesCategoryType.Pierce:
+                        label = " Pierce";
+                        displayValue = 1; 
+                        break;
+                    case UpgradesCategoryType.Range:
+                        label = "% Range";
+                        displayValue = (_upgrades.GetMultiplier(currentLevel + 1) - 1) * 100;
+                        break;
+                    case UpgradesCategoryType.Knockback:
+                        label = " Knockback";
+                        displayValue = 1;
+                        break;
+                    case UpgradesCategoryType.Speed:
+                        label = "% Speed";
+                        displayValue = (_upgrades.GetMultiplier(currentLevel + 1) - 1) * 100;
+                        break;
+                    case UpgradesCategoryType.AttackSpeed:
+                        label = "% Attack Speed";
+                        displayValue = (_upgrades.GetMultiplier(currentLevel + 1) - 1) * 100;
+                        break;
+                }
+
+                ApplyStatusTexts(displayValue, label, currentLevel, price);
             }
         }
 
-        private void ApplyStatusTexts(float damagePercentage, string upgradeType, int level, float price)
+        private void ApplyStatusTexts(float value, string label, int level, float price)
         {
-            if (_percentageText != null) _percentageText.text = "+" + damagePercentage + upgradeType;
+            if (_percentageText != null) _percentageText.text = "+" + value + label;
             if (_levelText != null) _levelText.text = "Level " + (level + 1);
             if (_priceText != null) _priceText.text = price + " seeds";
         }

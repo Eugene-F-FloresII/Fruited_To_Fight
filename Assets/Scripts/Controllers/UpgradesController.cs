@@ -94,9 +94,9 @@ namespace Controllers
         public void BuyDamageUpgrade()
         {
             if (!_canChoose) return;
-            if (_upgradesManager == null || _upgradesManager.GetDamageLevelMaxed()) return;
+            if (_upgradesManager == null) return;
 
-            int newSeed = _upgradesManager.UpgradeOverallDamage(_seedCollected.Value);
+            int newSeed = _upgradesManager.UpgradeDamage(_seedCollected.Value);
     
             if (newSeed != _seedCollected.Value) 
             {
@@ -109,9 +109,9 @@ namespace Controllers
         public void BuyRangeUpgrade()
         {
             if (!_canChoose) return;
-            if (_upgradesManager == null || _upgradesManager.GetRangedLevelMaxed()) return;
+            if (_upgradesManager == null) return;
 
-            int newSeed = _upgradesManager.UpgradeOverallRange(_seedCollected.Value);
+            int newSeed = _upgradesManager.UpgradeRange(_seedCollected.Value);
     
             if (newSeed != _seedCollected.Value) 
             {
@@ -125,9 +125,9 @@ namespace Controllers
         public void BuySpeedUpgrade()
         {
             if (!_canChoose) return;
-            if (_upgradesManager == null || _upgradesManager.GetSpeedLevelMaxed()) return;
+            if (_upgradesManager == null) return;
 
-            int newSeed = _upgradesManager.UpgradeOverallSpeed(_seedCollected.Value);
+            int newSeed = _upgradesManager.UpgradeSpeed(_seedCollected.Value);
     
             if (newSeed != _seedCollected.Value) // ✅ only close if purchase succeeded
             {
