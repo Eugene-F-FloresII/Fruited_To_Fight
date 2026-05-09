@@ -1,6 +1,8 @@
 using Obvious.Soap;
 using Shared.Enums;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
+using UnityEngine.UI;
 
 namespace Data.Upgrades
 {
@@ -21,6 +23,7 @@ namespace Data.Upgrades
         public int MaxLevel;
         public int PriceUpgrade;
         public bool IsMaxed;
+        public Button ButtonPrefab;
 
         protected float InitialPercentageValue;
         protected int InitialUpgradeLevel;

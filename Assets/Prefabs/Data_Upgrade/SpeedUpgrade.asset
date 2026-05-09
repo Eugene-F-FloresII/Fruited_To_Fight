@@ -18,3 +18,4 @@ MonoBehaviour:
   MaxLevel: 5
   PriceUpgrade: 6
   IsMaxed: 0
+  ButtonPrefab: {fileID: 8083496570283747532, guid: 9b6996f5543496e4f89f87fd63096d8f, type: 3}

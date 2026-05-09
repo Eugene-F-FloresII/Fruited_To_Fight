@@ -7,24 +7,35 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Cysharp.Threading.Tasks;
+using Data.Upgrades;
 using Managers;
 using Obvious.Soap;
 using PrimeTween;
 using Shared.Enums;
 using Shared.Events;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Controllers
 {
     public class UpgradesController : MonoBehaviour
     {
+        [Header("Seed Collection")]
         [SerializeField] private IntVariable _seedCollected;
 
         [Header("Animation Settings")] 
         [SerializeField] private float _animationDuration = 0.5f;
+
+        [Header("Upgrades Settings")] 
+        [SerializeField] private List<Upgrades> _upgradesList;
+        [SerializeField] private int _maxButtons;
+        [SerializeField] private Transform _transform;
         
         private UpgradesManager _upgradesManager;
         private CanvasGroup _canvasGroup;
         private bool _canChoose;
+        private int _randomIndex;
+        private Button _button;
 
         private void Awake()
         {
@@ -67,6 +78,61 @@ namespace Controllers
                 TurnOffCanvasGroup();
             }
         }
+
+        private void ClearUpgrades()
+        {
+            if (_transform == null) return;
+            foreach (Transform child in _transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        private async UniTask SpawnUpgrades()
+        {
+            if (_upgradesList == null || _upgradesList.Count == 0) return;
+
+            ClearUpgrades();
+
+            // Create a temporary list of available (non-maxed) upgrades
+            List<Upgrades> availableUpgrades = new List<Upgrades>();
+            foreach (var upgrade in _upgradesList)
+            {
+                if (!upgrade.GetUpgradeLevelMaxed())
+                {
+                    availableUpgrades.Add(upgrade);
+                }
+            }
+
+            // Determine how many buttons to spawn (minimum of _maxButtons or available count)
+            int buttonsToSpawn = Mathf.Min(_maxButtons, availableUpgrades.Count);
+
+            for (int i = 0; i < buttonsToSpawn; i++)
+            {
+                _randomIndex = Random.Range(0, availableUpgrades.Count);
+                var upgrade = availableUpgrades[_randomIndex];
+
+                // Remove from available list so it can't be picked again in this session
+                availableUpgrades.RemoveAt(_randomIndex);
+
+                _button = Instantiate(upgrade.ButtonPrefab, _transform);
+
+                switch (upgrade.Category)
+                {
+                    case UpgradesCategoryType.Damage:
+                        _button.onClick.AddListener(BuyDamageUpgrade);
+                        break;
+                    case UpgradesCategoryType.Range:
+                        _button.onClick.AddListener(BuyRangeUpgrade);
+                        break;
+                    case UpgradesCategoryType.Speed:
+                        _button.onClick.AddListener(BuySpeedUpgrade);
+                        break;
+                }
+
+                await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: this.GetCancellationTokenOnDestroy());
+            }
+        }
         
         public async void TurnOffCanvasGroup()
         {
@@ -78,6 +144,7 @@ namespace Controllers
             {
                 _canvasGroup.interactable = false;
                 _canvasGroup.blocksRaycasts = false;
+                ClearUpgrades();
             }
         }
         
@@ -89,6 +156,7 @@ namespace Controllers
             _canvasGroup.interactable  = true;
             _canvasGroup.blocksRaycasts = true;
             await Tween.Alpha(_canvasGroup, 1f, _animationDuration).ToUniTask(this);
+            await SpawnUpgrades();
         }
         
         public void BuyDamageUpgrade()

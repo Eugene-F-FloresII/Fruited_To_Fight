@@ -562,6 +562,7 @@ GameObject:
   - component: {fileID: 8083496570283747532}
   - component: {fileID: 3611000002941934889}
   - component: {fileID: 8218119834835533291}
+  - component: {fileID: 3036226510570601316}
   m_Layer: 0
   m_Name: SpeedUpgrade
   m_TagString: Untagged
@@ -657,6 +658,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323eeb0095ab3694eb36871efe5c84d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.ButtonAnimator.ScaleUpDown
+  _hoverAudioClip: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
+  _clickAudioClip: {fileID: 8300000, guid: e7daa6301297e974ca7af926a668b46c, type: 3}
   _scaleFactor: 1.3
   _duration: 0.5
   _ease: 6
@@ -672,13 +675,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333944505f8cd0d428a5b52cb0ad0d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Upgrades.UpgradesInteractable
-  _categoryType: 2
-  _overallDamageLevel: {fileID: 11400000, guid: ea1e53e731b64714cab52e2713683603, type: 2}
-  _overallRangeLevel: {fileID: 11400000, guid: 31dde5b659ce4bb4c8e35e1395102ad2, type: 2}
-  _overallSpeedLevel: {fileID: 11400000, guid: bd80a942a1fb9a74aad18e83050dd458, type: 2}
+  _upgrades: {fileID: 11400000, guid: 3a116ff078c61e149a8a453dc0c4e3d7, type: 2}
   _percentageText: {fileID: 7592784532276983347}
   _levelText: {fileID: 6514371175871694472}
   _priceText: {fileID: 7846192654856013356}
+--- !u!225 &3036226510570601316
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4217636621545147770}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4379404219598125458
 GameObject:
   m_ObjectHideFlags: 0

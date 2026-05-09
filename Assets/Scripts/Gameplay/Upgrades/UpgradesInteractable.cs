@@ -4,6 +4,8 @@ using Shared.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using PrimeTween;
+using Cysharp.Threading.Tasks;
 
 namespace Gameplay.Upgrades
 {
@@ -16,6 +18,9 @@ namespace Gameplay.Upgrades
         [SerializeField] private TextMeshProUGUI _percentageText;
         [SerializeField] private TextMeshProUGUI _levelText;
         [SerializeField] private TextMeshProUGUI _priceText;
+
+        [Header("Animation Settings")]
+        [SerializeField] private float _animationDuration = 0.5f;
 
         private CanvasGroup _canvasGroup;
         private Button _button;
@@ -33,6 +38,10 @@ namespace Gameplay.Upgrades
                 _upgrades.UpgradeLevel.OnValueChanged += OnLevelChanged;
             }
             
+            // Set initial state for pop out animation
+            transform.localScale = Vector3.zero;
+            if (_canvasGroup != null) _canvasGroup.alpha = 0f;
+            
             UpdateUI();
         }
 
@@ -42,9 +51,18 @@ namespace Gameplay.Upgrades
             {
                 _upgrades.UpgradeLevel.OnValueChanged -= OnLevelChanged;
             }
+            
+            // Stop any ongoing tweens to prevent conflicts
+            Tween.StopAll(transform);
         }
 
-        private void OnLevelChanged(int level) => UpdateUI();
+        private void OnLevelChanged(int level) => DelayedUpdateUI().Forget();
+
+        private async UniTaskVoid DelayedUpdateUI()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(4f), cancellationToken: this.GetCancellationTokenOnDestroy());
+            UpdateUI();
+        }
 
         private void UpdateUI()
         {
@@ -114,20 +132,24 @@ namespace Gameplay.Upgrades
             if (_priceText != null) _priceText.text = " ";
         }
 
-        private void TurnOffCanvasGroup()
+        public void TurnOffCanvasGroup()
         {
             if (_canvasGroup == null) return;
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
-            _canvasGroup.alpha = 0f;
+            
+            Tween.Alpha(_canvasGroup, 0f, _animationDuration * 0.6f);
+            Tween.Scale(transform, 0f, _animationDuration * 0.6f, Ease.InBack);
         }
 
-        private void TurnOnCanvasGroup()
+        public void TurnOnCanvasGroup()
         {
             if (_canvasGroup == null) return;
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
-            _canvasGroup.alpha = 1f;
+            
+            Tween.Alpha(_canvasGroup, 1f, _animationDuration);
+            Tween.Scale(transform, 1f, _animationDuration, Ease.OutBack);
         }
     }
 }

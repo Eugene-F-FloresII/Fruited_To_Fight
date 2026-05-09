@@ -852,6 +852,7 @@ GameObject:
   - component: {fileID: 3854389167948340839}
   - component: {fileID: 8597101850220342146}
   - component: {fileID: 3990035035284818752}
+  - component: {fileID: 6184764822214414862}
   m_Layer: 0
   m_Name: DamageUpgrade
   m_TagString: Untagged
@@ -877,7 +878,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 560, y: 100}
+  m_SizeDelta: {x: 300, y: 363.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3854389167948340839
 MonoBehaviour:
@@ -947,6 +948,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323eeb0095ab3694eb36871efe5c84d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.ButtonAnimator.ScaleUpDown
+  _hoverAudioClip: {fileID: 8300000, guid: 14b6753fa08caaa49a0159f57e5f28f9, type: 3}
+  _clickAudioClip: {fileID: 8300000, guid: e7daa6301297e974ca7af926a668b46c, type: 3}
   _scaleFactor: 1.3
   _duration: 0.5
   _ease: 6
@@ -962,10 +965,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333944505f8cd0d428a5b52cb0ad0d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Upgrades.UpgradesInteractable
-  _categoryType: 0
-  _overallDamageLevel: {fileID: 11400000, guid: ea1e53e731b64714cab52e2713683603, type: 2}
-  _overallRangeLevel: {fileID: 11400000, guid: 31dde5b659ce4bb4c8e35e1395102ad2, type: 2}
-  _overallSpeedLevel: {fileID: 11400000, guid: bd80a942a1fb9a74aad18e83050dd458, type: 2}
+  _upgrades: {fileID: 11400000, guid: 5c62695bdc7329349907f367bf9231fe, type: 2}
   _percentageText: {fileID: 3174244467389907096}
   _levelText: {fileID: 2248529704297771043}
   _priceText: {fileID: 3004065250003497095}
+--- !u!225 &6184764822214414862
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9213201429636185041}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

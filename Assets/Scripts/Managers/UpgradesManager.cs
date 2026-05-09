@@ -282,11 +282,11 @@ namespace Managers
         private void ConfigureAllUpgrades()
         {
             _damage = GetUpgrade(UpgradesCategoryType.Damage);
-            _pierce = GetUpgrade(UpgradesCategoryType.Pierce);
+            //_pierce = GetUpgrade(UpgradesCategoryType.Pierce);
             _range = GetUpgrade(UpgradesCategoryType.Range);
-            _knockback = GetUpgrade(UpgradesCategoryType.Knockback);
+            //_knockback = GetUpgrade(UpgradesCategoryType.Knockback);
             _speed = GetUpgrade(UpgradesCategoryType.Speed);
-            _attackSpeed = GetUpgrade(UpgradesCategoryType.AttackSpeed);
+           // _attackSpeed = GetUpgrade(UpgradesCategoryType.AttackSpeed);
             
         }
         
@@ -300,11 +300,11 @@ namespace Managers
         {
          
             config.WeaponDamage = initialDamage * _damage.GetMultiplier();
-            config.WeaponPierce = initialPierce + (int)_pierce.GetMultiplier();
+          //  config.WeaponPierce = initialPierce + (int)_pierce.GetMultiplier();
             config.WeaponRange  = initialRange  * _range.GetMultiplier();
-            config.WeaponKnockback = initialKnockback + (int)_knockback.GetMultiplier();
+          //  config.WeaponKnockback = initialKnockback + (int)_knockback.GetMultiplier();
             config.WeaponSpeed  = initialSpeed  * _speed.GetMultiplier();
-            config.WeaponAtkSpeed = initialAtkSpeed / _attackSpeed.GetMultiplier();
+           // config.WeaponAtkSpeed = initialAtkSpeed / _attackSpeed.GetMultiplier();
         }
 
         
