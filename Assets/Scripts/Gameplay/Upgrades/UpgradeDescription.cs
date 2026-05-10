@@ -88,10 +88,7 @@ namespace Gameplay.Upgrades
 
             string description = upgradesCategoryType switch
             {
-                UpgradesCategoryType.Damage => weaponConfig.DamageDescription,
-                UpgradesCategoryType.Range => weaponConfig.RangeDescription,
-                UpgradesCategoryType.Speed => weaponConfig.SpeedDescription,
-                _ => string.Empty
+                //dsd
             };
 
             if (string.IsNullOrWhiteSpace(description))

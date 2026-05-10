@@ -56,9 +56,8 @@ namespace Gameplay.Weapons
                     _enemies.Add(enemy);
                 }
 
-                if (_enemies.Count == 1)
+                if (_attackCts == null)
                 {
-                    StopAttackLoop();
                     _attackCts = new CancellationTokenSource();
                     AttackEnemyAsync(_attackCts.Token).Forget();
                 }
@@ -71,6 +70,7 @@ namespace Gameplay.Weapons
             if (other.TryGetComponent(out EnemyController enemy))
             {
                 _enemies.Remove(enemy);
+                _enemies.RemoveAll(e => e == null || !e.gameObject.activeInHierarchy);
 
                 if (_enemies.Count == 0)
                 {

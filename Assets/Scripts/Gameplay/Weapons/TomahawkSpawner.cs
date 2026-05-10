@@ -28,28 +28,41 @@ namespace Gameplay.Weapons
                         return;
                     }
 
-                    Vector2 direction = (Vector2)target.transform.position - (Vector2)transform.position;
-                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    Quaternion rotation = Quaternion.Euler(0, 0, angle + _projectileRotationOffset);
-                    
-                    GameObject spear = GetPooledObject();
+                    Vector2 directionToTarget = (Vector2)target.transform.position - (Vector2)transform.position;
+                    float baseAngle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
 
-                    if (spear != null)
+                    for (int i = 0; i < _weaponConfig.WeaponLevel.Value; i++)
                     {
-                        spear.transform.position = transform.position;
-                        spear.transform.rotation = rotation;
-                        spear.SetActive(true);
-                        
-                        Events_Sound.PlaySound?.Invoke(_audioClip);
-
-                        if (spear.TryGetComponent(out Rigidbody2D rb))
+                        float angleOffset = 0;
+                        if (i > 0)
                         {
-                            rb.linearVelocity = direction.normalized * _weaponConfig.WeaponSpeed;
+                            int multiplier = (i + 1) / 2;
+                            angleOffset = (i % 2 != 0) ? 15f * multiplier : -15f * multiplier;
                         }
-                        else
+
+                        float finalAngle = baseAngle + angleOffset;
+                        Quaternion rotation = Quaternion.Euler(0, 0, finalAngle + _projectileRotationOffset);
+                        
+                        GameObject tomahawk = GetPooledObject();
+
+                        if (tomahawk != null)
                         {
-                            Debug.LogWarning($"{nameof(ProjectileSpawner)} spawned projectile without Rigidbody2D.", this);
-                            spear.SetActive(false);
+                            tomahawk.transform.position = transform.position;
+                            tomahawk.transform.rotation = rotation;
+                            tomahawk.SetActive(true);
+                            
+                            Events_Sound.PlaySound?.Invoke(_audioClip);
+
+                            if (tomahawk.TryGetComponent(out Rigidbody2D rb))
+                            {
+                                Vector2 direction = new Vector2(Mathf.Cos(finalAngle * Mathf.Deg2Rad), Mathf.Sin(finalAngle * Mathf.Deg2Rad));
+                                rb.linearVelocity = direction * _weaponConfig.WeaponSpeed;
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"{nameof(ProjectileSpawner)} spawned projectile without Rigidbody2D.", this);
+                                tomahawk.SetActive(false);
+                            }
                         }
                     }
                     

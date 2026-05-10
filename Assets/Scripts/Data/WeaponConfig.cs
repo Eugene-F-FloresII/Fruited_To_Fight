@@ -1,3 +1,4 @@
+using Obvious.Soap;
 using Shared.Enums;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -18,6 +19,7 @@ namespace Data
         public bool WeaponHoming;
         
         [Header("Weapon Statistics")]
+        public IntVariable WeaponLevel;
         public float WeaponRange;
         public float WeaponDamage;
         public int WeaponPierce;
@@ -25,10 +27,6 @@ namespace Data
         public float WeaponAtkSpeed;
         public float WeaponKnockback;
         
-        [Header("Weapon Upgrade Desc")]
-        [TextArea] public string DamageDescription;
-        [TextArea] public string RangeDescription;
-        [TextArea] public string SpeedDescription;
     }
 
 }
