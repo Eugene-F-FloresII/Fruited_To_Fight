@@ -22,6 +22,7 @@ MonoBehaviour:
   WeaponName: Tomahawk
   WeaponID: 2
   WeaponType: 1
+  WeaponClass: 2
   WeaponAmountToPool: 50
   WeaponHoming: 0
   WeaponLevel: {fileID: 11400000, guid: 1c73f343ac90cd2469d6a16ccf74ff8d, type: 2}

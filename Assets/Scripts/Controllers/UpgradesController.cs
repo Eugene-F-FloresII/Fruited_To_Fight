@@ -27,7 +27,7 @@ namespace Controllers
         [SerializeField] private float _animationDuration = 0.5f;
 
         [Header("Upgrades Settings")] 
-        [SerializeField] private List<Upgrades> _upgradesList;
+        [SerializeField] private List<UpgradeData> _upgradesList;
         [SerializeField] private int _maxButtons;
         [SerializeField] private Transform _transform;
         
@@ -95,7 +95,7 @@ namespace Controllers
             ClearUpgrades();
 
             // Create a temporary list of available (non-maxed) upgrades
-            List<Upgrades> availableUpgrades = new List<Upgrades>();
+            List<UpgradeData> availableUpgrades = new List<UpgradeData>();
             foreach (var upgrade in _upgradesList)
             {
                 if (!upgrade.GetUpgradeLevelMaxed())
@@ -127,6 +127,9 @@ namespace Controllers
                         break;
                     case UpgradesCategoryType.Speed:
                         _button.onClick.AddListener(BuySpeedUpgrade);
+                        break;
+                    case UpgradesCategoryType.Tomahawk:
+                        _button.onClick.AddListener(BuyTomahawkUpgrade);
                         break;
                 }
 
@@ -196,6 +199,21 @@ namespace Controllers
             if (_upgradesManager == null) return;
 
             int newSeed = _upgradesManager.UpgradeSpeed(_seedCollected.Value);
+    
+            if (newSeed != _seedCollected.Value) // ✅ only close if purchase succeeded
+            {
+                _seedCollected.Value = newSeed;
+                _canChoose = false;
+                TurnOffCanvasGroup();
+            }
+        }
+
+        public void BuyTomahawkUpgrade()
+        {
+            if (!_canChoose) return;
+            if (_upgradesManager == null) return;
+
+            int newSeed = _upgradesManager.UpgradeTomahawk(_seedCollected.Value);
     
             if (newSeed != _seedCollected.Value) // ✅ only close if purchase succeeded
             {

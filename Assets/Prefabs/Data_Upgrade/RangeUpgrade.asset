@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RangeUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::Data.Upgrades.Upgrades
   Category: 2
-  PercentageIncreasePerLevel: 0.1
+  PercentageIncreasePerLevel: 0.05
   UpgradeLevel: {fileID: 11400000, guid: 31dde5b659ce4bb4c8e35e1395102ad2, type: 2}
   MaxLevel: 5
   PriceUpgrade: 7

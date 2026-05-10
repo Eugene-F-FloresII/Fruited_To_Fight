@@ -17,20 +17,21 @@ namespace Managers
     public class UpgradesManager : MonoBehaviour
     {
         [Header("Lists of Upgrades")]
-        [SerializeField] private List<Upgrades> _upgradesList;
+        [SerializeField] private List<UpgradeData> _upgradesList;
         [SerializeField] private List<UpgradesCategoryType> _upgradesCategoryList;
         
-        private Dictionary<UpgradesCategoryType, Upgrades> _upgradesDictionary = new Dictionary<UpgradesCategoryType, Upgrades>();
+        private Dictionary<UpgradesCategoryType, UpgradeData> _upgradesDictionary = new Dictionary<UpgradesCategoryType, UpgradeData>();
         
         private WeaponConfig _firstWeaponConfig;
         private WeaponConfig _secondWeaponConfig;
 
-        private Upgrades _damage;
-        private Upgrades _pierce;
-        private Upgrades _range;
-        private Upgrades _knockback;
-        private Upgrades _speed;
-        private Upgrades _attackSpeed;
+        private UpgradeData _damage;
+        private UpgradeData _pierce;
+        private UpgradeData _range;
+        private UpgradeData _knockback;
+        private UpgradeData _speed;
+        private UpgradeData _attackSpeed;
+        private UpgradeData _weapon;
         
         private float _firstWeaponInitialDamage;
         private int _firstWeaponInitialPierce;
@@ -84,15 +85,15 @@ namespace Managers
         public int UpgradeDamage(int seed)
         {
             if (_damage.GetUpgradeLevelMaxed()) return seed;
-            UpgradeResult result = _damage.BuyUpgrade(seed, _firstWeaponInitialDamage);
+            UpgradeResult result = _damage.BuyUpgrade(seed, _firstWeaponConfig.WeaponDamage);
             if (_firstWeaponConfig != null)
             {
-                _firstWeaponConfig.WeaponDamage = result.Value; 
+                _firstWeaponConfig.WeaponDamage += result.Value; 
             }
             if (_secondWeaponConfig != null)
             {
-                UpgradeResult secondResult = _damage.BuyUpgrade(seed, _secondWeaponInitialDamage);
-                _secondWeaponConfig.WeaponDamage = secondResult.Value;
+                UpgradeResult secondResult = _damage.BuyUpgrade(seed, _secondWeaponConfig.WeaponDamage);
+                _secondWeaponConfig.WeaponDamage += secondResult.Value;
 
             }
             return result.Currency;     
@@ -101,15 +102,15 @@ namespace Managers
         public int UpgradeRange(int seed)
         {
             if (_range.GetUpgradeLevelMaxed()) return seed;
-            UpgradeResult result = _range.BuyUpgrade(seed, _firstWeaponInitialRange);
+            UpgradeResult result = _range.BuyUpgrade(seed, _firstWeaponConfig.WeaponRange);
             if (_firstWeaponConfig != null)
             {
-                _firstWeaponConfig.WeaponRange = result.Value; 
+                _firstWeaponConfig.WeaponRange += result.Value; 
             }
             if (_secondWeaponConfig != null)
             {
-                UpgradeResult secondResult = _range.BuyUpgrade(seed, _secondWeaponInitialRange);
-                _secondWeaponConfig.WeaponRange = secondResult.Value;
+                UpgradeResult secondResult = _range.BuyUpgrade(seed, _secondWeaponConfig.WeaponRange);
+                _secondWeaponConfig.WeaponRange += secondResult.Value;
 
             }
             return result.Currency;     
@@ -118,18 +119,49 @@ namespace Managers
         public int UpgradeSpeed(int seed)
         {
             if (_speed.GetUpgradeLevelMaxed()) return seed;
-            UpgradeResult result = _speed.BuyUpgrade(seed, _firstWeaponInitialSpeed);
+            UpgradeResult result = _speed.BuyUpgrade(seed, _firstWeaponConfig.WeaponSpeed);
             if (_firstWeaponConfig != null)
             {
-                _firstWeaponConfig.WeaponSpeed = result.Value; 
+                _firstWeaponConfig.WeaponSpeed += result.Value; 
             }
             if (_secondWeaponConfig != null)
             {
-                UpgradeResult secondResult = _speed.BuyUpgrade(seed, _secondWeaponInitialSpeed);
-                _secondWeaponConfig.WeaponSpeed = secondResult.Value;
+                UpgradeResult secondResult = _speed.BuyUpgrade(seed, _secondWeaponConfig.WeaponSpeed);
+                _secondWeaponConfig.WeaponSpeed += secondResult.Value;
 
             }
             return result.Currency;  
+        }
+        
+        public int UpgradeTomahawk(int seed)
+        {
+            if (_weapon.GetUpgradeLevelMaxed()) return seed;
+
+            WeaponConfig target = null;
+            if (_firstWeaponConfig != null && _firstWeaponConfig.WeaponClass == WeaponClass.Tomahawk)
+                target = _firstWeaponConfig;
+            else if (_secondWeaponConfig != null && _secondWeaponConfig.WeaponClass == WeaponClass.Tomahawk)
+                target = _secondWeaponConfig;
+
+            if (target == null) return seed;
+
+            UpgradeWeaponResult result = _weapon.BuyWeaponUpgrade(seed, target.WeaponDamage, target.WeaponSpeed, target.WeaponRange);
+            
+            if (_firstWeaponConfig != null && _firstWeaponConfig.WeaponClass == WeaponClass.Tomahawk)
+            {
+                _firstWeaponConfig.WeaponDamage += result.Damage;
+                _firstWeaponConfig.WeaponSpeed += result.Speed;
+                _firstWeaponConfig.WeaponRange += result.Range;
+            }
+            
+            if (_secondWeaponConfig != null && _secondWeaponConfig.WeaponClass == WeaponClass.Tomahawk && _secondWeaponConfig != _firstWeaponConfig)
+            {
+                _secondWeaponConfig.WeaponDamage += result.Damage;
+                _secondWeaponConfig.WeaponSpeed += result.Speed;
+                _secondWeaponConfig.WeaponRange += result.Range;
+            }
+
+            return result.Currency;
         }
         
         
@@ -216,9 +248,9 @@ namespace Managers
             }
         }
 
-        private Upgrades GetUpgrade(UpgradesCategoryType upgradesCategory)
+        private UpgradeData GetUpgrade(UpgradesCategoryType upgradesCategory)
         {
-            if (_upgradesDictionary.TryGetValue(upgradesCategory, out Upgrades upgrade))
+            if (_upgradesDictionary.TryGetValue(upgradesCategory, out UpgradeData upgrade))
                 return upgrade;
 
             Debug.LogError($"Upgrade not found for category: {upgradesCategory}");
@@ -287,7 +319,8 @@ namespace Managers
             //_knockback = GetUpgrade(UpgradesCategoryType.Knockback);
             _speed = GetUpgrade(UpgradesCategoryType.Speed);
            // _attackSpeed = GetUpgrade(UpgradesCategoryType.AttackSpeed);
-            
+           _weapon = GetUpgrade(UpgradesCategoryType.Tomahawk);
+
         }
         
         private void ApplyAllUpgrades(WeaponConfig config, 
@@ -298,13 +331,41 @@ namespace Managers
             float initialKnockback,
             float initialAtkSpeed)
         {
+            float weaponMultiplier = _weapon != null ? _weapon.GetMultiplier() : 1f;
          
-            config.WeaponDamage = initialDamage * _damage.GetMultiplier();
+            config.WeaponDamage = initialDamage * _damage.GetMultiplier() * weaponMultiplier;
           //  config.WeaponPierce = initialPierce + (int)_pierce.GetMultiplier();
-            config.WeaponRange  = initialRange  * _range.GetMultiplier();
+            config.WeaponPierce = Mathf.CeilToInt(initialPierce * weaponMultiplier);
+            config.WeaponRange  = initialRange  * _range.GetMultiplier() * weaponMultiplier;
           //  config.WeaponKnockback = initialKnockback + (int)_knockback.GetMultiplier();
-            config.WeaponSpeed  = initialSpeed  * _speed.GetMultiplier();
+            config.WeaponKnockback = initialKnockback * weaponMultiplier;
+            config.WeaponSpeed  = initialSpeed  * _speed.GetMultiplier() * weaponMultiplier;
            // config.WeaponAtkSpeed = initialAtkSpeed / _attackSpeed.GetMultiplier();
+           config.WeaponAtkSpeed = initialAtkSpeed / weaponMultiplier;
+        }
+
+        private void RefreshAllWeaponStats()
+        {
+            if (_firstWeaponConfig != null)
+            {
+                ApplyAllUpgrades(_firstWeaponConfig, 
+                    _firstWeaponInitialDamage,
+                    _firstWeaponInitialRange, 
+                    _firstWeaponInitialSpeed, 
+                    _firstWeaponInitialPierce, 
+                    _firstWeaponInitialKnockback, 
+                    _firstWeaponInitialAtkSpeed);
+            }
+            if (_secondWeaponConfig != null)
+            {
+                ApplyAllUpgrades(_secondWeaponConfig,
+                    _secondWeaponInitialDamage,
+                    _secondWeaponInitialRange,
+                    _secondWeaponInitialSpeed,
+                    _secondWeaponInitialPierce,
+                    _secondWeaponInitialKnockback, 
+                    _secondWeaponInitialAtkSpeed);
+            }
         }
 
         

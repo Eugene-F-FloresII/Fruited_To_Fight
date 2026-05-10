@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpeedUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::Data.Upgrades.Upgrades
   Category: 4
-  PercentageIncreasePerLevel: 0.1
+  PercentageIncreasePerLevel: 0.05
   UpgradeLevel: {fileID: 11400000, guid: bd80a942a1fb9a74aad18e83050dd458, type: 2}
   MaxLevel: 5
   PriceUpgrade: 6

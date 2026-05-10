@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DamageUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::Data.Upgrades.Upgrades
   Category: 0
-  PercentageIncreasePerLevel: 0.1
+  PercentageIncreasePerLevel: 0.05
   UpgradeLevel: {fileID: 11400000, guid: ea1e53e731b64714cab52e2713683603, type: 2}
   MaxLevel: 5
   PriceUpgrade: 10

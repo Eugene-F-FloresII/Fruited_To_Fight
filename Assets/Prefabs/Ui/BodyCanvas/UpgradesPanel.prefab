@@ -649,6 +649,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5c62695bdc7329349907f367bf9231fe, type: 2}
   - {fileID: 11400000, guid: c7e0f88e1191bce4c856d626bbe3547c, type: 2}
   - {fileID: 11400000, guid: 3a116ff078c61e149a8a453dc0c4e3d7, type: 2}
+  - {fileID: 11400000, guid: b146130a57fbcf748b697f05bad04b49, type: 2}
   _maxButtons: 3
   _transform: {fileID: 7661351597025478818}
 --- !u!1 &8980742787940176289

@@ -31,7 +31,10 @@ namespace Gameplay.Weapons
                     Vector2 directionToTarget = (Vector2)target.transform.position - (Vector2)transform.position;
                     float baseAngle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
 
-                    for (int i = 0; i < _weaponConfig.WeaponLevel.Value; i++)
+                    int weaponLevel = _weaponConfig.WeaponLevel.Value;
+                    int projectileCount = weaponLevel == 0 ? 1 : 1 + (weaponLevel + 1) / 2;
+
+                    for (int i = 0; i < projectileCount; i++)
                     {
                         float angleOffset = 0;
                         if (i > 0)

@@ -6,13 +6,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using PrimeTween;
 using Cysharp.Threading.Tasks;
+using Data.Upgrades;
 
 namespace Gameplay.Upgrades
 {
     public class UpgradesInteractable : MonoBehaviour
     {
         [Header("Setting")]
-        [SerializeField] private Data.Upgrades.Upgrades _upgrades;
+        [SerializeField] private UpgradeData _upgrades;
         
         [Header("Text References")]
         [SerializeField] private TextMeshProUGUI _percentageText;
@@ -112,9 +113,13 @@ namespace Gameplay.Upgrades
                         label = "% Attack Speed";
                         displayValue = (_upgrades.GetMultiplier(currentLevel + 1) - 1) * 100;
                         break;
+                    case UpgradesCategoryType.Tomahawk:
+                        label = "% Increase";
+                        displayValue = (_upgrades.GetMultiplier(currentLevel + 1) - 1) * 100;
+                        break;
                 }
 
-                ApplyStatusTexts(displayValue, label, currentLevel, price);
+                ApplyStatusTexts(Mathf.RoundToInt(displayValue), label, currentLevel, price);
             }
         }
 

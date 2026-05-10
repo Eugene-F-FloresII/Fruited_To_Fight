@@ -10,6 +10,7 @@ namespace Shared.Enums
         Knockback,
         Speed,
         AttackSpeed,
+        Tomahawk,
     }
 
 }

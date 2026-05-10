@@ -15,6 +15,7 @@ namespace Data
         public string WeaponName;
         public int WeaponID;
         public WeaponType WeaponType;
+        public WeaponClass WeaponClass;
         public int WeaponAmountToPool;
         public bool WeaponHoming;
         
