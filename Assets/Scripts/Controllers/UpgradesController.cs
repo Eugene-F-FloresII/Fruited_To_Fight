@@ -30,6 +30,8 @@ namespace Controllers
         [SerializeField] private List<UpgradeData> _upgradesList;
         [SerializeField] private int _maxButtons;
         [SerializeField] private Transform _transform;
+
+        private UpgradeData _damageUpgrade;
         
         private UpgradesManager _upgradesManager;
         private CanvasGroup _canvasGroup;
@@ -51,6 +53,7 @@ namespace Controllers
             _canvasGroup.alpha = 0f;
             _canvasGroup.interactable  = false;
             _canvasGroup.blocksRaycasts = false;
+            LoadBaseUpgrades();
         }
 
         private void OnEnable()
@@ -59,6 +62,7 @@ namespace Controllers
             Events_Upgrades.OnRoundStarted += TurnOffCanvasGroup;
             Events_Game.OnGameRestarted += OnGameRestarted;
             Events_Game.OnGameExited += OnGameRestarted;
+            Events_Weapons.OnChosenWeapon += InitializeUpgrade;
         }
 
         private void OnDisable()
@@ -67,8 +71,16 @@ namespace Controllers
             Events_Upgrades.OnRoundStarted -= TurnOffCanvasGroup;
             Events_Game.OnGameRestarted -= OnGameRestarted;
             Events_Game.OnGameExited -= OnGameRestarted;
+            Events_Weapons.OnChosenWeapon -= InitializeUpgrade;
         }
 
+        private void LoadBaseUpgrades()
+        {
+            PrepareUpgrade("DamageUpgrade").Forget();
+            PrepareUpgrade("RangeUpgrade").Forget();
+            PrepareUpgrade("SpeedUpgrade").Forget();
+        }
+        
         private void OnGameRestarted()
         {
             if (_seedCollected != null)
@@ -76,6 +88,15 @@ namespace Controllers
                 _canChoose = true;
                 _seedCollected.Value = 0;
                 TurnOffCanvasGroup();
+                ClearUpgradesList();
+            }
+        }
+
+        private void ClearUpgradesList()
+        {
+            if (_upgradesList != null)
+            {
+                _upgradesList.Clear();
             }
         }
 
@@ -222,6 +243,37 @@ namespace Controllers
                 TurnOffCanvasGroup();
             }
         }
+
+        private void InitializeUpgrade(string key)
+        {
+            PrepareUpgrade(key).Forget();
+        }
+
+        private void PreparedUpgrade(UpgradeData upgrade)
+        {
+            if (upgrade == null) return;
+
+            if (!_upgradesList.Contains(upgrade))
+            {
+                _upgradesList.Add(upgrade);
+                upgrade.SetInitialDataValues();
+            }
+        }
+
+        private async UniTask PrepareUpgrade(string upgradeKey)
+        {
+            var handle = Addressables.LoadAssetAsync<UpgradeData>(upgradeKey);
+            await handle.Task;
+
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                PreparedUpgrade(handle.Result);
+            }
+            else
+            {
+                Debug.LogError($"Failed to load UpgradeData with key '{upgradeKey}'");
+            }
+        } 
 
        
     }

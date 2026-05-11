@@ -41,11 +41,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a116ff078c61e149a8a453dc0c4e3d7
+    m_Address: Assets/Prefabs/Data_Upgrade/SpeedUpgrade.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SpeedUpgrade
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3cd373512670cf341824ec6a5281b3d8
     m_Address: Assets/Prefabs/Data_Weapons/Staff.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - StaffConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c62695bdc7329349907f367bf9231fe
+    m_Address: Assets/Prefabs/Data_Upgrade/DamageUpgrade.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DamageUpgrade
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c97c827fdf6c36468ce379af9a5e7e3
     m_Address: Assets/Prefabs/Data_Enemies/RottedApple.asset
@@ -63,6 +75,13 @@ MonoBehaviour:
     m_SerializedLabels:
     - Fireball
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b146130a57fbcf748b697f05bad04b49
+    m_Address: Assets/Prefabs/Data_Upgrade/TomahawkUpgrade.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tomahawk
+    - TomahawkConfig
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b494e7e7d674dd84d894cd2cd594803a
     m_Address: Assets/Prefabs/Data_Enemies/RottedCherry.asset
     m_ReadOnly: 0
@@ -73,6 +92,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - SpearConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7e0f88e1191bce4c856d626bbe3547c
+    m_Address: Assets/Prefabs/Data_Upgrade/RangeUpgrade.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RangeUpgrade
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dad15acf0d267934498d69240f441483
     m_Address: Assets/Prefabs/Weapon/Spear.prefab
