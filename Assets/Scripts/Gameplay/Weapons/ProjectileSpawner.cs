@@ -138,31 +138,28 @@ namespace Gameplay.Weapons
             return null;
         }
 
-        protected EnemyController GetNearestEnemy()
+        protected List<EnemyController> GetSortedEnemies()
         {
             _enemies.RemoveAll(e => e == null || !e.gameObject.activeInHierarchy);
 
-            if (_enemies.Count == 0)
+            if (_enemies.Count > 1)
             {
-                return null;
-            }
-
-            EnemyController nearestEnemy = null;
-            float nearestDistanceSqr = float.MaxValue;
-            Vector2 spawnerPosition = transform.position;
-
-            foreach (var enemy in _enemies)
-            {
-                float distanceSqr = ((Vector2)enemy.transform.position - spawnerPosition).sqrMagnitude;
-
-                if (distanceSqr < nearestDistanceSqr)
+                Vector2 spawnerPosition = transform.position;
+                _enemies.Sort((a, b) =>
                 {
-                    nearestDistanceSqr = distanceSqr;
-                    nearestEnemy = enemy;
-                }
+                    float distASqr = ((Vector2)a.transform.position - spawnerPosition).sqrMagnitude;
+                    float distBSqr = ((Vector2)b.transform.position - spawnerPosition).sqrMagnitude;
+                    return distASqr.CompareTo(distBSqr);
+                });
             }
 
-            return nearestEnemy;
+            return _enemies;
+        }
+
+        protected EnemyController GetNearestEnemy()
+        {
+            var sortedEnemies = GetSortedEnemies();
+            return sortedEnemies.Count > 0 ? sortedEnemies[0] : null;
         }
 
         protected virtual async UniTask AttackEnemyAsync(CancellationToken token)

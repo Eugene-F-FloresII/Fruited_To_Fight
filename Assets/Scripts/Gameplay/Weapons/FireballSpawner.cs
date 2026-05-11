@@ -13,6 +13,9 @@ namespace Gameplay.Weapons
     {
         [Header("Audio")] 
         [SerializeField] private AudioClip _audioClip;
+
+        [Header("Burst Settings")] 
+        [SerializeField] private float _burstDelay = 0.2f;
         
         protected override async UniTask AttackEnemyAsync(CancellationToken token)
         {
@@ -20,36 +23,57 @@ namespace Gameplay.Weapons
             {
                 while (!token.IsCancellationRequested)
                 {
-                    EnemyController target = GetNearestEnemy();
-
-                    if (target == null)
+                    int weaponLevel = _weaponConfig.WeaponLevel.Value;
+                    int projectileCount = weaponLevel switch
                     {
-                        StopAttackLoop();
-                        return;
-                    }
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 5,
+                        _ => 6 // Level 4 and above
+                    };
 
-                    Vector2 direction = (Vector2)target.transform.position - (Vector2)transform.position;
-                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    Quaternion rotation = Quaternion.Euler(0, 0, angle + _projectileRotationOffset);
-                    
-                    GameObject spear = GetPooledObject();
-
-                    if (spear != null)
+                    for (int i = 0; i < projectileCount; i++)
                     {
-                        spear.transform.position = transform.position;
-                        spear.transform.rotation = rotation;
-                        spear.SetActive(true);
-                        
-                        Events_Sound.PlaySound?.Invoke(_audioClip);
+                        var enemies = GetSortedEnemies();
 
-                        if (spear.TryGetComponent(out Rigidbody2D rb))
+                        if (enemies.Count == 0)
                         {
-                            rb.linearVelocity = direction.normalized * _weaponConfig.WeaponSpeed;
+                            StopAttackLoop();
+                            return;
                         }
-                        else
+
+                        // Cycle through enemies: Shot 1 -> nearest, Shot 2 -> second nearest, etc.
+                        EnemyController target = enemies[i % enemies.Count];
+
+                        Vector2 direction = (Vector2)target.transform.position - (Vector2)transform.position;
+                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        Quaternion rotation = Quaternion.Euler(0, 0, angle + _projectileRotationOffset);
+                        
+                        GameObject fireball = GetPooledObject();
+
+                        if (fireball != null)
                         {
-                            Debug.LogWarning($"{nameof(ProjectileSpawner)} spawned projectile without Rigidbody2D.", this);
-                            spear.SetActive(false);
+                            fireball.transform.position = transform.position;
+                            fireball.transform.rotation = rotation;
+                            fireball.SetActive(true);
+                            
+                            Events_Sound.PlaySound?.Invoke(_audioClip);
+
+                            if (fireball.TryGetComponent(out Rigidbody2D rb))
+                            {
+                                rb.linearVelocity = direction.normalized * _weaponConfig.WeaponSpeed;
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"{nameof(ProjectileSpawner)} spawned projectile without Rigidbody2D.", this);
+                                fireball.SetActive(false);
+                            }
+                        }
+
+                        if (i < projectileCount - 1)
+                        {
+                            await UniTask.Delay(TimeSpan.FromSeconds(_burstDelay), cancellationToken: token);
                         }
                     }
                     
