@@ -270,6 +270,7 @@ Transform:
   - {fileID: 1910022959166021599}
   - {fileID: 5944003789220971081}
   - {fileID: 1702876249721332263}
+  - {fileID: 7529066222076773606}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3127359511337143219
@@ -339,6 +340,56 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!1 &468195833956917015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7529066222076773606}
+  - component: {fileID: 8908511133942247584}
+  m_Layer: 7
+  m_Name: SpecialAbilityTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7529066222076773606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468195833956917015}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6029804757836756755}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8908511133942247584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468195833956917015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0b1539fafe5a448a2ba7ae6f8de97b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.TomahawkAbilityState
+  _weaponConfig: {fileID: 11400000, guid: e25e6241b0aceac4c9b816e19d8c1f7b, type: 2}
+  _percentageIncrease: 5
+  _spinRadius: 5
+  _spinSpeed: 400
+  _projectileScale: 4
+  _target: {fileID: 6029804757836756755}
 --- !u!1 &546557196339612545
 GameObject:
   m_ObjectHideFlags: 0

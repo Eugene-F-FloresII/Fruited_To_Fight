@@ -27,7 +27,10 @@ namespace Data
         public float WeaponSpeed;
         public float WeaponAtkSpeed;
         public float WeaponKnockback;
-        
+
+        [Header("Special Ability Settings")] 
+        public float AbilityCooldown;
+        public float AbilityDuration;
     }
 
 }

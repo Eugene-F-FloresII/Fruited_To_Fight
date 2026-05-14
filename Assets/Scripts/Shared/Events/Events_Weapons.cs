@@ -1,4 +1,5 @@
 using System;
+using Shared.Enums;
 using UnityEngine;
 
 namespace Shared.Events
@@ -8,6 +9,7 @@ namespace Shared.Events
         public static Action<Transform> OnEnemyDetectedHoming { get; set; }
         public static Action<string> OnChosenWeapon {get; set;}
         public static Action<GameObject> OnSpawnedWeapon { get; set; }
+        public static Action<WeaponClass> OnUsedSpecialAbility { get; set;}
     }
 
 }

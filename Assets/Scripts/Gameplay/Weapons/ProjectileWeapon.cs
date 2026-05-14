@@ -27,6 +27,7 @@ namespace Gameplay.Weapons
         private bool _isHoming;
         private float _nextRetargetTime;
         private float _currentKnockbackForce;
+        private float _despawnTime = 3.5f;
         
         private const float ProjectileRotationOffset = -90f;
 
@@ -77,6 +78,11 @@ namespace Gameplay.Weapons
         public float GetWeaponKnockback()
         {
             return _currentKnockbackForce;
+        }
+
+        public void SetCustomDespawnTime(float duration)
+        {
+            _despawnTime = duration;
         }
 
         private void UpdateWeaponStats()
@@ -219,7 +225,7 @@ namespace Gameplay.Weapons
         {
             try
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(3.5), cancellationToken: token);
+                await UniTask.Delay(TimeSpan.FromSeconds(_despawnTime), cancellationToken: token);
                 gameObject.SetActive(false);
 
             }
