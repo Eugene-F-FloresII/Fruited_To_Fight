@@ -11,6 +11,13 @@ namespace Gameplay.Weapons
             { 
                 enemy.TakeDamage(CurrentDamage, this);
                 
+                if (_weaponConfig.Afflictions != null)
+                {
+                    foreach (var affliction in _weaponConfig.Afflictions)
+                    {
+                        enemy.ApplyAffliction(affliction);
+                    }
+                }
                 CurrentPierce--;
                 
                 OnPierceValueChanged();

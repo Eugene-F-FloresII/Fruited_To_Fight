@@ -1,4 +1,5 @@
 using System;
+using Shared.Enums;
 using UnityEngine;
 
 namespace Shared.Events
@@ -9,6 +10,7 @@ namespace Shared.Events
         public static Action<Transform> OnPlayerDetected;
         public static Action<Vector2, int> OnEnemyHit;
         public static Action OnEnemyDeath;
+        public static Action<AfflictionType> OnEnemyAffliction;
     }
 
 }

@@ -10,6 +10,7 @@ using Obvious.Soap;
 using Shared.Events;
 using UnityEngine.AddressableAssets;
 using Random = System.Random;
+using Collection;
 
 namespace Controllers
 {
@@ -39,6 +40,7 @@ namespace Controllers
         private Vector2 _knockbackVelocity;
         
         private bool _isKnockedBack;
+        private bool _isFrozen;
         private float _currentHealth;
         private float _currentDamage;
         private float _currentSpeed;
@@ -49,9 +51,12 @@ namespace Controllers
 
         private CancellationTokenSource _hitEffectCts;
         private CancellationTokenSource _knockbackCts;
+        private CancellationTokenSource _freezeCts;
         
         private readonly string _velocityX = "VelocityX";
         private readonly string _velocityY = "VelocityY";
+
+        public float CurrentHealth => _currentHealth;
 
         private void Awake()
         {
@@ -61,6 +66,8 @@ namespace Controllers
 
         private void OnEnable()
         {
+            _isFrozen = false;
+            _animator.speed = 1f;
             ResetStatsFromConfig();
         }
 
@@ -94,6 +101,69 @@ namespace Controllers
             gameObject.SetActive(false);
         }
 
+        public void ApplyAffliction(AfflictionConfig config)
+        {
+            if (config == null) return;
+
+            var existingAfflictions = GetComponents<AfflictionState>();
+            foreach (var affliction in existingAfflictions)
+            {
+                if (affliction.AfflictionType == config.Type)
+                {
+                    affliction.Refresh(config);
+                    return;
+                }
+            }
+
+            AfflictionState newState = null;
+            switch (config.Type)
+            {
+                case Shared.Enums.AfflictionType.Burn:
+                    newState = gameObject.AddComponent<BurnState>();
+                    break;
+                case Shared.Enums.AfflictionType.Ice:
+                    newState = gameObject.AddComponent<IceState>();
+                    break;
+                case Shared.Enums.AfflictionType.Weakness:
+                    newState = gameObject.AddComponent<WeaknessState>();
+                    break;
+            }
+
+            if (newState != null)
+            {
+                newState.Initialize(this, config);
+            }
+        }
+
+        public async UniTaskVoid Freeze(float duration)
+        {
+            if (_freezeCts != null)
+            {
+                _freezeCts.Cancel();
+                _freezeCts.Dispose();
+            }
+            _freezeCts = new CancellationTokenSource();
+            var token = _freezeCts.Token;
+
+            try
+            {
+                _isFrozen = true;
+                _animator.speed = 0f;
+                await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                if (!token.IsCancellationRequested)
+                {
+                    _isFrozen = false;
+                    _animator.speed = 1f;
+                }
+            }
+        }
+
         public void TakeDamage(float damage, ProjectileWeapon projectile)
         {
             _projectileDirection = (transform.position - projectile.transform.position).normalized;
@@ -108,6 +178,16 @@ namespace Controllers
             
             EnemyKnockBack(_projectileDirection, projectile.GetWeaponKnockback(), 0.3f, _knockbackCts.Token).Forget();
             
+            ApplyDamage(damage);
+        }
+
+        public void TakeDamage(float damage)
+        {
+            ApplyDamage(damage);
+        }
+
+        private void ApplyDamage(float damage)
+        {
             _currentHealth -= damage;
             Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage));
             
@@ -125,7 +205,6 @@ namespace Controllers
             if (_currentHealth <= 0)
             {
                 KillEnemy();
-                
             }
         }
 
@@ -153,6 +232,8 @@ namespace Controllers
 
         private void ChasePlayer()
         {
+            if (_isFrozen) return;
+
             if (_isKnockedBack)
             {
                 // Decay knockback over time
@@ -207,6 +288,13 @@ namespace Controllers
                 _knockbackCts.Cancel();
                 _knockbackCts.Dispose();
                 _knockbackCts = null;
+            }
+
+            if (_freezeCts != null)
+            {
+                _freezeCts.Cancel();
+                _freezeCts.Dispose();
+                _freezeCts = null;
             }
         }
         

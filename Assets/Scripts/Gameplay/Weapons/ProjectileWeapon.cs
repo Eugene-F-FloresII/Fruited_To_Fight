@@ -10,7 +10,7 @@ namespace Gameplay.Weapons
     public class ProjectileWeapon : MonoBehaviour
     {
         [Header("Weapon Config")]
-        [SerializeField] private WeaponConfig _weaponConfig;
+        [SerializeField] protected WeaponConfig _weaponConfig;
         
         [Header("Weapon References")] 
         [SerializeField] private ProjectileWeaponHoming ProjectileWeaponHoming;
@@ -65,6 +65,15 @@ namespace Gameplay.Weapons
             if (other.TryGetComponent(out EnemyController enemy))
             { 
                 enemy.TakeDamage(CurrentDamage, this);
+
+                if (_weaponConfig.Afflictions != null)
+                {
+                    foreach (var affliction in _weaponConfig.Afflictions)
+                    {
+                        enemy.ApplyAffliction(affliction);
+                    }
+                }
+
                 CurrentPierce--;
                 OnPierceValueChanged();
                 

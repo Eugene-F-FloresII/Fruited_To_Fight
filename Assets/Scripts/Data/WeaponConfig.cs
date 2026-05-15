@@ -3,6 +3,7 @@ using Shared.Enums;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Collections.Generic;
 
 namespace Data
 {
@@ -31,6 +32,9 @@ namespace Data
         [Header("Special Ability Settings")] 
         public float AbilityCooldown;
         public float AbilityDuration;
+
+        [Header("Afflictions")]
+        public List<AfflictionConfig> Afflictions;
     }
 
 }

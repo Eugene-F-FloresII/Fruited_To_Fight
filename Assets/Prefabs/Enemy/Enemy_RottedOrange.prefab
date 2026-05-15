@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1779643901948791470}
   - component: {fileID: 2710715450788840562}
   - component: {fileID: 6170445283240097834}
+  - component: {fileID: 420332929846147242}
   m_Layer: 6
   m_Name: Enemy_RottedOrange
   m_TagString: Untagged
@@ -33,7 +34,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 8143752793364716913}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4090929272528799532
@@ -115,7 +117,6 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   _defendingController: {fileID: 0}
   _animator: {fileID: 1779643901948791470}
-  _enemyDefeated: {fileID: 11400000, guid: ac31289e1640a6e42a0b6305f4a81922, type: 2}
   _hitMaterial: {fileID: 2100000, guid: f6fc82d52acb33e4f93cf7004c6be449, type: 2}
   _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   _hitAudioClip: {fileID: 8300000, guid: 559c4182b25e92c4885555ae5153643e, type: 3}
@@ -215,3 +216,96 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.3145584, y: 0.2612463}
   m_EdgeRadius: 0
+--- !u!114 &420332929846147242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191412059391474361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e468b8d8d49e7e46a404578e59bb419, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Enemies.EnemyAffliction
+  _afflictionGameObjects:
+  - {fileID: 2578549575152815240}
+--- !u!1001 &3971919374033956389
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8642704902383617352}
+    m_Modifications:
+    - target: {fileID: 1501896106332578477, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_Name
+      value: BurnAfflictionEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501896106332578477, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565147404689411300, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.006
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6977963259938623206, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+--- !u!1 &2578549575152815240 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1501896106332578477, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+  m_PrefabInstance: {fileID: 3971919374033956389}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8143752793364716913 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5051767354666546004, guid: 2fbb95db9b0005940b50e937c6980256, type: 3}
+  m_PrefabInstance: {fileID: 3971919374033956389}
+  m_PrefabAsset: {fileID: 0}
