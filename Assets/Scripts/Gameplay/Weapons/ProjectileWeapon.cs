@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Controllers;
 using Cysharp.Threading.Tasks;
@@ -17,6 +18,9 @@ namespace Gameplay.Weapons
         [SerializeField] private Rigidbody2D _weaponTriggerRb;
         [SerializeField] private float _homingTurnSpeed = 540f;
         [SerializeField] private float _retargetInterval = 0.08f;
+
+        [Header("Weapon Afflictions")] 
+        [SerializeField] protected WeaponAffliction _weaponAffliction;
         
         protected int CurrentPierce;
         protected float CurrentDamage;
@@ -42,7 +46,8 @@ namespace Gameplay.Weapons
         private void OnEnable()
         {
             UpdateWeaponStats();
-           ProcessWeaponHoming();
+            RefreshAfflictionVisuals();
+            ProcessWeaponHoming();
             StopDespawnTimer();
             
             _despawnCts = new CancellationTokenSource();
@@ -53,6 +58,10 @@ namespace Gameplay.Weapons
         {
             StopDespawnTimer();
             ProcessWeaponHoming();
+        }
+
+        public virtual void RefreshAfflictionVisuals()
+        {
         }
 
         private void FixedUpdate()

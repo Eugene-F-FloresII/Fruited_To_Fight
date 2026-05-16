@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 2992e0799de6d22478a9bbee20abcc7a
   m_currentHash:
     serializedVersion: 2
-    Hash: 80fd785270e7ac7c679585e7172365e6
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -109,6 +109,7 @@ MonoBehaviour:
     - SpeedUpgrade
     - RangeUpgrade
     - DamageUpgrade
+    - BurnAffliction
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 0c70afc2454749243a855e125e9b3ac2, type: 2}

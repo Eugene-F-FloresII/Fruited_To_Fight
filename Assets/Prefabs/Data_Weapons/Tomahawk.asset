@@ -34,5 +34,4 @@ MonoBehaviour:
   WeaponKnockback: 4
   AbilityCooldown: 10
   AbilityDuration: 6
-  Afflictions:
-  - {fileID: 11400000, guid: 43ddac93c3704fb42b1d6995d7ab4909, type: 2}
+  Afflictions: []

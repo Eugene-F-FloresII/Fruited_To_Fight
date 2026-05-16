@@ -53,6 +53,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - StaffConfig
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43ddac93c3704fb42b1d6995d7ab4909
+    m_Address: Assets/Prefabs/Afflictions/Burn.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BurnAffliction
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5c62695bdc7329349907f367bf9231fe
     m_Address: Assets/Prefabs/Data_Upgrade/DamageUpgrade.asset
     m_ReadOnly: 0

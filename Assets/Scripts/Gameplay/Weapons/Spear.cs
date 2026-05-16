@@ -1,4 +1,6 @@
 using Controllers;
+using Data;
+using Shared.Enums;
 using UnityEngine;
 
 namespace Gameplay.Weapons
@@ -26,6 +28,22 @@ namespace Gameplay.Weapons
                 {
                     gameObject.SetActive(false);
                 }
+            }
+        }
+
+        public override void RefreshAfflictionVisuals()
+        {
+            if (_weaponAffliction == null || _weaponConfig == null || _weaponConfig.Afflictions == null)
+            {
+                return;
+            }
+
+            _weaponAffliction.DisableAllVisuals();
+
+            if (_weaponConfig.Afflictions.Count > 0)
+            {
+                var primaryAffliction = _weaponConfig.Afflictions[0];
+                _weaponAffliction.ToggleVisual(primaryAffliction.Type, true);
             }
         }
     }
