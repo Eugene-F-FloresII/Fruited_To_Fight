@@ -5,14 +5,17 @@ using Controllers;
 using Data;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Shared.Enums;
 
 
 namespace Gameplay.Weapons
 {
     public class ProjectileSpawner : MonoBehaviour
     {
-        [Header("Weapon Config")]
+        [Header("References")]
         [SerializeField] protected WeaponConfig _weaponConfig;
+        [SerializeField] protected WeaponAfflictionSprite _weaponAfflictionSprite;
+        [SerializeField] protected WeaponAffliction _weaponAffliction;
         
         [Header("Enemies in Range")]
         [SerializeField] private List<EnemyController> _enemies = new();
@@ -40,11 +43,40 @@ namespace Gameplay.Weapons
         private void Start()
         {
             PoolObjects();
+            RefreshAfflictionVisuals();
+
+            if (_weaponConfig != null)
+                _weaponConfig.OnAfflictionsChanged += RefreshAfflictionVisuals;
         }
 
         private void OnDestroy()
         {
             StopAttackLoop();
+            
+            if (_weaponConfig != null)
+                _weaponConfig.OnAfflictionsChanged -= RefreshAfflictionVisuals;
+        }
+
+        public virtual void RefreshAfflictionVisuals()
+        {
+            if (_weaponConfig == null || _weaponConfig.Afflictions == null)
+            {
+                return;
+            }
+
+            AfflictionType type = _weaponConfig.Afflictions.Count > 0 
+                ? _weaponConfig.Afflictions[0].Type 
+                : AfflictionType.None;
+
+            if (_weaponAfflictionSprite != null)
+            {
+                _weaponAfflictionSprite.UpdateSprite(type);
+            }
+
+            if (_weaponAffliction != null)
+            {
+                _weaponAffliction.ToggleVisual(type, true);
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)

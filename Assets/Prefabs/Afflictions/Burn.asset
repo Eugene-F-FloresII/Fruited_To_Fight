@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c7379321478694fbea98b9ccef326e, type: 3}
   m_Name: Burn
   m_EditorClassIdentifier: Assembly-CSharp::Data.AfflictionConfig
-  Type: 0
+  Type: 1
   Duration: 3
   Power: 3
   MaxStacks: 5

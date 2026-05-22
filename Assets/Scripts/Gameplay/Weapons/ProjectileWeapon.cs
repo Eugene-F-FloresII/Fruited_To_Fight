@@ -46,18 +46,23 @@ namespace Gameplay.Weapons
         private void OnEnable()
         {
             UpdateWeaponStats();
-            RefreshAfflictionVisuals();
             ProcessWeaponHoming();
             StopDespawnTimer();
-            
+            RefreshAfflictionVisuals();
             _despawnCts = new CancellationTokenSource();
             DespawnProjectileWeapon(_despawnCts.Token).Forget();
+
+            if (_weaponConfig != null)
+                _weaponConfig.OnAfflictionsChanged += RefreshAfflictionVisuals;
         }
 
         private void OnDisable()
         {
             StopDespawnTimer();
             ProcessWeaponHoming();
+
+            if (_weaponConfig != null)
+                _weaponConfig.OnAfflictionsChanged -= RefreshAfflictionVisuals;
         }
 
         public virtual void RefreshAfflictionVisuals()
