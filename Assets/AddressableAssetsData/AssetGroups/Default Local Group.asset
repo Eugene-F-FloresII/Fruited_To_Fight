@@ -99,6 +99,13 @@ MonoBehaviour:
     m_SerializedLabels:
     - SpearConfig
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bfca974adca83614d9e094505c294644
+    m_Address: Assets/Prefabs/Data_AfflictionUpgrade/Fire_Tomahawk.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tomahawk
+    - TomahawkConfig
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7e0f88e1191bce4c856d626bbe3547c
     m_Address: Assets/Prefabs/Data_Upgrade/RangeUpgrade.asset
     m_ReadOnly: 0

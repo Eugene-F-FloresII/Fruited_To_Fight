@@ -12,6 +12,7 @@ namespace Shared.Events
         public static Action<WeaponConfig, bool> OnChosenWeapon { get; set;}
         public static Action OnActivateUpgradePanel {get; set;}
         
+        public static Action OnActivateUpgradeAfflictionPanel {get; set;}
         public static Action OnRoundStarted {get; set;}
        
     }

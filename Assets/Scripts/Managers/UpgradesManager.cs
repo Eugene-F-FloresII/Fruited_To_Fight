@@ -47,6 +47,9 @@ namespace Managers
         private float _secondWeaponInitialSpeed;
         private float _secondWeaponInitialAtkSpeed;
         
+        public WeaponConfig FirstWeaponConfig => _firstWeaponConfig;
+        public WeaponConfig SecondWeaponConfig => _secondWeaponConfig;
+
         private void Awake()
         {
             ServiceLocator.Register(this);
@@ -167,6 +170,16 @@ namespace Managers
         
         public void ResetAllUpgrades()
         {
+            if (_firstWeaponConfig != null && _firstWeaponConfig.Afflictions != null)
+            {
+                _firstWeaponConfig.ResetAfflictions();
+            }
+
+            if (_secondWeaponConfig != null && _secondWeaponConfig.Afflictions != null)
+            {
+                _secondWeaponConfig.ResetAfflictions();
+            }
+            
             if (_secondWeaponConfig != null)
             {
                 _secondWeaponConfig.WeaponDamage = _secondWeaponInitialDamage;
@@ -199,6 +212,21 @@ namespace Managers
         public bool AreAllLevelsMaxed()
         {
             return _upgradesList.All(upgrade => upgrade.GetUpgradeLevelMaxed());        
+        }
+
+        public bool CanUpgradeAfflictions()
+        {
+            if (_firstWeaponConfig != null && _firstWeaponConfig.Afflictions.Count < 1)
+            {
+                return true;
+            }
+
+            if (_secondWeaponConfig != null && _secondWeaponConfig.Afflictions.Count < 1)
+            {
+                return true;
+            }
+
+            return false;
         }
         
         private async void InitializeCurrentWeapon(string label)

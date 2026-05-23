@@ -1,7 +1,7 @@
 using UnityEngine;
 using PrimeTween;
 
-namespace Gameplay.ButtonAnimator
+namespace Gameplay.UI
 {
     public class LoopingScaleUpDown : MonoBehaviour
     {

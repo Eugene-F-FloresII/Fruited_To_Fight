@@ -150,6 +150,12 @@ namespace Managers
 
             if (_upgradesManager == null) _upgradesManager = ServiceLocator.Get<UpgradesManager>();
             
+            if (_currentRound.Value % 2 == 0 && _upgradesManager.CanUpgradeAfflictions())
+            {
+                Events_Upgrades.OnActivateUpgradeAfflictionPanel?.Invoke();
+                return;
+            }
+
             if (_upgradesManager != null && !_upgradesManager.AreAllLevelsMaxed())
             { 
                 Events_Upgrades.OnActivateUpgradePanel?.Invoke();

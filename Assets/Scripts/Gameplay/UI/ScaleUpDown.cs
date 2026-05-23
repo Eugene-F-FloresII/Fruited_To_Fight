@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using PrimeTween;
 using Shared.Events;
 
-namespace Gameplay.ButtonAnimator
+namespace Gameplay.UI
 {
     [RequireComponent(typeof(RectTransform))]
     public class ScaleUpDown : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
