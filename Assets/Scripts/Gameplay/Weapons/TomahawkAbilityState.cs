@@ -29,10 +29,15 @@ namespace Gameplay.Weapons
         private void OnDestroy()
         {
             ServiceLocator.Unregister<TomahawkAbilityState>();
+            
             _abilityCts?.Cancel();
             _abilityCts?.Dispose();
+            _abilityCts = null;
+
             _cooldownCts?.Cancel();
             _cooldownCts?.Dispose();
+            _cooldownCts = null;
+
             CleanupProjectiles();
         }
         
@@ -94,10 +99,13 @@ namespace Gameplay.Weapons
             {
                 CleanupProjectiles();
                 
-                _cooldownCts?.Cancel();
-                _cooldownCts?.Dispose();
-                _cooldownCts = new CancellationTokenSource();
-                WeaponAbilityCooldown(_cooldownCts.Token).Forget();
+                if (this != null)
+                {
+                    _cooldownCts?.Cancel();
+                    _cooldownCts?.Dispose();
+                    _cooldownCts = new CancellationTokenSource();
+                    WeaponAbilityCooldown(_cooldownCts.Token).Forget();
+                }
             }
         }
 

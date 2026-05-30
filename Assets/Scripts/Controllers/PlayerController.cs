@@ -25,7 +25,7 @@ namespace Controllers
         [SerializeField] private BoxCollider2D _boxCollider;
         [SerializeField] private FloatVariable _characterHealth;
         [SerializeField] private FloatVariable _characterMaxHealth;
-
+        [SerializeField] private Vector2Variable _moveDirection;
         
         [Header("Player Settings")]
         [SerializeField] private float _maxKnockbackForce = 10f;
@@ -35,7 +35,7 @@ namespace Controllers
         private RunningState _runningState;
         private PlayerStateMachine _playerStateMachine;
         
-        private Vector2 _moveDirection;
+        
         private Vector2 _enemyDirection;
         
         private Animator _playerCharacterAnimator;
@@ -60,7 +60,7 @@ namespace Controllers
         private void Start()
         {
             _playerStateMachine = new PlayerStateMachine();
-            _runningState = new RunningState(this, _playerStateMachine, _playerCharacter.CharacterAnimator,_moveDirection);
+            _runningState = new RunningState(this, _playerStateMachine, _playerCharacter.CharacterAnimator,_moveDirection.Value);
             _idleState = new IdleState(this, _playerStateMachine);
             
             _playerStateMachine.ChangeState(_idleState);
@@ -141,13 +141,13 @@ namespace Controllers
             if(_isKnockedBack) return;
             
             Vector2 moveInput =  MovementInput.action.ReadValue<Vector2>();
-            _moveDirection = moveInput.normalized;
+            _moveDirection.Value = moveInput.normalized;
             
             if (_playerCharacterAnimator == null) UpdatePlayerStats();
             if (_playerCharacterAnimator == null) return;
 
-            _playerCharacterAnimator.SetFloat(_velocityX, _moveDirection.x);
-            _playerCharacterAnimator.SetFloat(_velocityY, _moveDirection.y);
+            _playerCharacterAnimator.SetFloat(_velocityX, _moveDirection.Value.x);
+            _playerCharacterAnimator.SetFloat(_velocityY, _moveDirection.Value.y);
             _rb.linearVelocity = moveInput.normalized * CharacterConfig.CharacterSpeed;
         }
         
