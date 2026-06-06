@@ -8,6 +8,7 @@ namespace Data
     {
         public float Damage;
         public float Range;
+        public float AtkSpeed;
         public float ProjectileSpeed;
         public WispType WispType;
     }
