@@ -83,6 +83,14 @@ namespace Gameplay.Wisps
             if (_wispConfig != null)
             {
                 currentTarget.TakeDamage(_wispConfig.Damage);
+
+                if (_wispConfig.Afflictions != null)
+                {
+                    foreach (var affliction in _wispConfig.Afflictions)
+                    {
+                        currentTarget.ApplyAffliction(affliction);
+                    }
+                }
             }
 
             // Always update the root position to match the wisp's current position to prevent stretching

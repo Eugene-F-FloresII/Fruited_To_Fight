@@ -30,6 +30,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1db174a37fc01bb41a7ea04f481dabdd
+    m_Address: Assets/Prefabs/Afflictions/Lightning.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LightningAffliction
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 31a7e3e5b249e5d499f3e9d9823033af
     m_Address: Assets/Prefabs/Weapon/Tomahawk.prefab
     m_ReadOnly: 0

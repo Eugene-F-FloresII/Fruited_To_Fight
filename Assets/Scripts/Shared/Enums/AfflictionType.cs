@@ -6,5 +6,6 @@ namespace Shared.Enums
         Burn,
         Ice,
         Weakness,
+        Lightning
     }
 }

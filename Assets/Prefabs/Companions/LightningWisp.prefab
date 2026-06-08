@@ -61,7 +61,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4108f16c8e4af07458ac8d7d252eba5f, type: 2}
+  - {fileID: 2100000, guid: 12b22644aa4661e4f96b1bd6b9a5d791, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
   EnemyAlreadyHit: []
   _maxJumps: 3
   _jumpRadius: 10
-  _jumpDelay: 0.2
+  _jumpDelay: 0.1
   _lineRenderer: {fileID: 3755853240010075274}
 --- !u!50 &2827444798367331053
 Rigidbody2D:

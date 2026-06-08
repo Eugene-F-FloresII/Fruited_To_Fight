@@ -127,6 +127,9 @@ namespace Controllers
                 case Shared.Enums.AfflictionType.Weakness:
                     newState = gameObject.AddComponent<WeaknessState>();
                     break;
+                case Shared.Enums.AfflictionType.Lightning:
+                    newState = gameObject.AddComponent<LightningState>();
+                    break;
             }
 
             if (newState != null)

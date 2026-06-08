@@ -10,5 +10,6 @@ namespace Data
         public float Duration;
         public float Power;
         public int MaxStacks = 5;
+        public float ExplosionRadius = 5f;
     }
 }

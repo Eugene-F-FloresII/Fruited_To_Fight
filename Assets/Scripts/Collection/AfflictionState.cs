@@ -13,6 +13,7 @@ namespace Collection
         protected AfflictionConfig Config;
         protected float RemainingDuration;
         protected EnemyAffliction VisualController;
+        protected int CurrentStacks;
 
         public virtual void Initialize(EnemyController enemy, AfflictionConfig config)
         {
@@ -20,6 +21,7 @@ namespace Collection
             Config = config;
             AfflictionType = config.Type;
             RemainingDuration = config.Duration;
+            CurrentStacks = 1;
 
             VisualController = enemy.GetComponentInChildren<EnemyAffliction>();
             if (VisualController != null)
@@ -33,7 +35,12 @@ namespace Collection
             // If the new config is the same type but has different values, we update it
             Config = config;
             RemainingDuration = config.Duration;
+            
+            CurrentStacks = Mathf.Min(CurrentStacks + 1, Config.MaxStacks);
+            OnStackAdded();
         }
+
+        protected virtual void OnStackAdded() { }
 
         protected virtual void Update()
         {

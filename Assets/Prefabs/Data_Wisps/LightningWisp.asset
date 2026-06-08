@@ -17,3 +17,5 @@ MonoBehaviour:
   AtkSpeed: 1
   ProjectileSpeed: 20
   WispType: 3
+  Afflictions:
+  - {fileID: 11400000, guid: 1db174a37fc01bb41a7ea04f481dabdd, type: 2}
