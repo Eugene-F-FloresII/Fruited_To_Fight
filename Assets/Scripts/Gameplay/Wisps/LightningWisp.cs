@@ -4,19 +4,33 @@ using System.Threading;
 using Controllers;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Gameplay.Wisps
 {
-    [RequireComponent(typeof(LineRenderer))]
     public class LightningWisp : WispProjectile
     {
         [Header("Lightning Wisp Settings")]
         [SerializeField] private int _maxJumps;
         [SerializeField] private float _jumpRadius;
         [SerializeField] private float _jumpDelay = 0.2f;
-        [SerializeField] private LineRenderer _lineRenderer;
+        [SerializeField] private GameObject _lightningVisualPrefab;
 
         private CancellationTokenSource _cts;
+        private ObjectPool<GameObject> _visualPool;
+
+        private void Awake()
+        {
+            _visualPool = new ObjectPool<GameObject>(
+                createFunc: () => Instantiate(_lightningVisualPrefab),
+                actionOnGet: (obj) => obj.SetActive(true),
+                actionOnRelease: (obj) => obj.SetActive(false),
+                actionOnDestroy: (obj) => Destroy(obj),
+                collectionCheck: false,
+                defaultCapacity: 10,
+                maxSize: 20
+            );
+        }
 
         private void Start()
         {
@@ -59,10 +73,8 @@ namespace Gameplay.Wisps
             _cts = new CancellationTokenSource();
 
             EnemyAlreadyHit.Clear();
-            _lineRenderer.positionCount = 1;
-            _lineRenderer.SetPosition(0, transform.position);
             
-            LightningBounce(enemy, _maxJumps, _cts.Token).Forget();
+            LightningBounce(transform.position, enemy, _maxJumps, _cts.Token);
         }
 
         private EnemyController GetNextTarget(EnemyController currentTarget)
@@ -74,7 +86,7 @@ namespace Gameplay.Wisps
                 .FirstOrDefault();
         }
 
-        private async UniTask LightningBounce(EnemyController currentTarget, int jumpsLeft, CancellationToken token)
+        private void LightningBounce(Vector3 startPos, EnemyController currentTarget, int jumpsLeft, CancellationToken token)
         {
             if (currentTarget == null || token.IsCancellationRequested) return;
             
@@ -93,35 +105,41 @@ namespace Gameplay.Wisps
                 }
             }
 
-            // Always update the root position to match the wisp's current position to prevent stretching
-            _lineRenderer.SetPosition(0, transform.position);
-
-            int pointIndex = _lineRenderer.positionCount;
-            _lineRenderer.positionCount = pointIndex + 1;
-            _lineRenderer.SetPosition(pointIndex, currentTarget.transform.position);
+            // Get visual from pool and set it up
+            GameObject visual = _visualPool.Get();
+            visual.transform.position = startPos;
+            Vector2 direction = (Vector2)currentTarget.transform.position - (Vector2)startPos;
+            visual.transform.right = direction;
+            visual.transform.localScale = new Vector3(direction.magnitude, 1f, 1f);
             
-            if (jumpsLeft <= 0)
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(_jumpDelay), cancellationToken: token).SuppressCancellationThrow();
-                if (token.IsCancellationRequested) return;
-                
-                _lineRenderer.positionCount = 0;
-                return;
-            }
+            // Handle visual despawn independently
+            DespawnVisual(visual, token).Forget();
 
-            await UniTask.Delay(TimeSpan.FromSeconds(_jumpDelay), cancellationToken: token).SuppressCancellationThrow();
-            if (token.IsCancellationRequested) return;
+            if (jumpsLeft <= 0) return;
 
             EnemyController nextTarget = GetNextTarget(currentTarget);
             if (nextTarget != null)
             {
-                await LightningBounce(nextTarget, jumpsLeft - 1, token);
+                LightningBounce(currentTarget.transform.position, nextTarget, jumpsLeft - 1, token);
             }
-            else
+        }
+
+        private async UniTask DespawnVisual(GameObject visual, CancellationToken token)
+        {
+            try
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(_jumpDelay), cancellationToken: token).SuppressCancellationThrow();
-                if (token.IsCancellationRequested) return;
-                _lineRenderer.positionCount = 0;
+                await UniTask.Delay(TimeSpan.FromSeconds(_jumpDelay), cancellationToken: token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Task canceled, just clean up
+            }
+            finally
+            {
+                if (visual != null)
+                {
+                    _visualPool.Release(visual);
+                }
             }
         }
     }
