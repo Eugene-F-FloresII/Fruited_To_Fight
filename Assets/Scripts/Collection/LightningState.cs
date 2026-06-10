@@ -1,11 +1,14 @@
 using UnityEngine;
 using Controllers;
+using Cysharp.Threading.Tasks;
+using System;
 
 namespace Collection
 {
     public class LightningState : AfflictionState
     {
-        [SerializeField] private GameObject _lightningExplosionPrefab;
+
+        private GameObject _lightningGameObject;
 
         public override void Initialize(EnemyController enemy, Data.AfflictionConfig config)
         {
@@ -17,21 +20,30 @@ namespace Collection
         {
             CheckStacks();
         }
-
+        
         private void CheckStacks()
         {
             if (CurrentStacks >= Config.MaxStacks)
             {
-                TriggerLightningStrike();
+                TriggerLightningStrike().Forget();
                 CurrentStacks = 0;
             }
         }
 
-        private void TriggerLightningStrike()
+        private async UniTaskVoid TriggerLightningStrike()
         {
-            if (_lightningExplosionPrefab != null)
+            if (_gameObjectVFX != null)
             {
-                Instantiate(_lightningExplosionPrefab, transform.position, Quaternion.identity);
+                _lightningGameObject = Instantiate(_gameObjectVFX, transform.position, Quaternion.identity);
+            }
+
+            try
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(Config.LightningStrikeDelay), cancellationToken: this.GetCancellationTokenOnDestroy());
+            }
+            catch (OperationCanceledException)
+            {
+                return;
             }
 
             float damage = Config.Power * 4f; // Power + 300% = 400% (Power * 4)
@@ -42,8 +54,11 @@ namespace Collection
                 if (hitCollider.TryGetComponent(out EnemyController enemy))
                 {
                     enemy.TakeDamage(damage);
+                    Destroy(_lightningGameObject, 1f);
                 }
             }
         }
+
+       
     }
 }

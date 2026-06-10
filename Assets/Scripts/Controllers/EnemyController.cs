@@ -129,6 +129,7 @@ namespace Controllers
                     break;
                 case Shared.Enums.AfflictionType.Lightning:
                     newState = gameObject.AddComponent<LightningState>();
+                    newState.InitializeVFXPrefab(config.VFXPrefab);
                     break;
             }
 

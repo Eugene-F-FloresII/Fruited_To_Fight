@@ -14,6 +14,7 @@ namespace Collection
         protected float RemainingDuration;
         protected EnemyAffliction VisualController;
         protected int CurrentStacks;
+        protected GameObject _gameObjectVFX;
 
         public virtual void Initialize(EnemyController enemy, AfflictionConfig config)
         {
@@ -65,6 +66,11 @@ namespace Collection
             {
                 VisualController.ToggleVisual(AfflictionType, false);
             }
+        }
+
+        public virtual void InitializeVFXPrefab(GameObject prefab)
+        {
+            _gameObjectVFX = prefab;
         }
     }
 

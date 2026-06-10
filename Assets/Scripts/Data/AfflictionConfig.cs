@@ -11,5 +11,7 @@ namespace Data
         public float Power;
         public int MaxStacks = 5;
         public float ExplosionRadius = 5f;
+        public float LightningStrikeDelay = 0.5f;
+        public GameObject VFXPrefab;
     }
 }

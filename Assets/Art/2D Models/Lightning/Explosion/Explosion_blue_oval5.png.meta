@@ -1,85 +1,34 @@
 fileFormatVersion: 2
-guid: 7142940463fd9964d80db6a3163619f2
+guid: a358c76a3d208634589faf8dac1d1dec
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3475142825580610831
-    second: Lightning-bolt_0
+      213: 5292159071854996219
+    second: Explosion_blue_oval5_0
   - first:
-      213: -4430060266147063419
-    second: Lightning-bolt_1
+      213: 7354641480967436470
+    second: Explosion_blue_oval5_1
   - first:
-      213: -6120511944319148375
-    second: Lightning-bolt_2
+      213: -2606693145119520123
+    second: Explosion_blue_oval5_2
   - first:
-      213: 7392201637894831213
-    second: Lightning-bolt_3
+      213: 548488704730761160
+    second: Explosion_blue_oval5_3
   - first:
-      213: -4096363743782408168
-    second: Lightning-bolt_4
+      213: 4133592792712583910
+    second: Explosion_blue_oval5_4
   - first:
-      213: -2416979867250715430
-    second: Lightning-bolt_5
+      213: -1879823744911759358
+    second: Explosion_blue_oval5_5
   - first:
-      213: 8719278419603866474
-    second: Lightning-bolt_6
+      213: 6418972102115903942
+    second: Explosion_blue_oval5_6
   - first:
-      213: -3275986279729396712
-    second: Lightning-bolt_7
+      213: -4044490212153369755
+    second: Explosion_blue_oval5_7
   - first:
-      213: -4248983782699280140
-    second: Lightning-bolt_8
-  - first:
-      213: 8614614720661223305
-    second: Lightning-bolt_9
-  - first:
-      213: -1570692315825102032
-    second: Lightning-bolt_10
-  - first:
-      213: -2796792979283456824
-    second: Lightning-bolt_11
-  - first:
-      213: -8883391533981278109
-    second: Lightning-bolt_12
-  - first:
-      213: 376780369626323276
-    second: Lightning-bolt_13
-  - first:
-      213: 9007072136796999572
-    second: Lightning-bolt_14
-  - first:
-      213: 425437471763129991
-    second: Lightning-bolt_15
-  - first:
-      213: -8612784309858579949
-    second: Lightning-bolt_16
-  - first:
-      213: -1629639106703471960
-    second: Lightning-bolt_17
-  - first:
-      213: 8659320372042664986
-    second: Lightning-bolt_18
-  - first:
-      213: -7889539985091635783
-    second: Lightning-bolt_19
-  - first:
-      213: 2157693832644692305
-    second: Lightning-bolt_20
-  - first:
-      213: -7764873279510228072
-    second: Lightning-bolt_21
-  - first:
-      213: 2397440537002581932
-    second: Lightning-bolt_22
-  - first:
-      213: -6661266540739612150
-    second: Lightning-bolt_23
-  - first:
-      213: 3286887814352249656
-    second: Lightning-bolt_24
-  - first:
-      213: -8413518868115259733
-    second: Lightning-bolt_25
+      213: 5355102796726008042
+    second: Explosion_blue_oval5_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -121,12 +70,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -150,7 +99,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -201,221 +150,199 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Lightning-bolt_0
+      name: Explosion_blue_oval5_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 98
+        y: 93
+        width: 68
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1fa35812300d5cfc0800000000000000
-      internalID: -3475142825580610831
+      spriteID: bfa27c403a6817940800000000000000
+      internalID: 5292159071854996219
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lightning-bolt_1
+      name: Explosion_blue_oval5_1
       rect:
         serializedVersion: 2
-        x: 72
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 100
+        y: 135
+        width: 28
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5895bbec8a34582c0800000000000000
-      internalID: -4430060266147063419
+      spriteID: 6b8ba6bd57fe01660800000000000000
+      internalID: 7354641480967436470
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lightning-bolt_2
+      name: Explosion_blue_oval5_2
       rect:
         serializedVersion: 2
-        x: 144
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 139
+        y: 135
+        width: 22
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9ae525380d29f0ba0800000000000000
-      internalID: -6120511944319148375
+      spriteID: 58a84b6356a23dbd0800000000000000
+      internalID: -2606693145119520123
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lightning-bolt_3
+      name: Explosion_blue_oval5_3
       rect:
         serializedVersion: 2
-        x: 216
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 79
+        y: 116
+        width: 18
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d6c38ce5930669660800000000000000
-      internalID: 7392201637894831213
+      spriteID: 8c78ac8229f9c9700800000000000000
+      internalID: 548488704730761160
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lightning-bolt_4
+      name: Explosion_blue_oval5_4
       rect:
         serializedVersion: 2
-        x: 288
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 163
+        y: 125
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8107f05e0eac627c0800000000000000
-      internalID: -4096363743782408168
+      spriteID: 6ea9fb78eb87d5930800000000000000
+      internalID: 4133592792712583910
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lightning-bolt_5
+      name: Explosion_blue_oval5_5
       rect:
         serializedVersion: 2
-        x: 360
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 166
+        y: 109
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ad4104fcd99257ed0800000000000000
-      internalID: -2416979867250715430
+      spriteID: 208a034834689e5e0800000000000000
+      internalID: -1879823744911759358
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lightning-bolt_6
+      name: Explosion_blue_oval5_6
       rect:
         serializedVersion: 2
-        x: 432
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 87
+        y: 102
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a63c732a689110970800000000000000
-      internalID: 8719278419603866474
+      spriteID: 6c9c2c12e15c41950800000000000000
+      internalID: 6418972102115903942
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lightning-bolt_7
+      name: Explosion_blue_oval5_7
       rect:
         serializedVersion: 2
-        x: 504
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 96
+        y: 96
+        width: 21
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8140da3e5db5982d0800000000000000
-      internalID: -3275986279729396712
+      spriteID: 56bdd07a4951fd7c0800000000000000
+      internalID: -4044490212153369755
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lightning-bolt_8
+      name: Explosion_blue_oval5_8
       rect:
         serializedVersion: 2
-        x: 576
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 152
+        y: 97
+        width: 22
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4f850dff2c39805c0800000000000000
-      internalID: -4248983782699280140
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lightning-bolt_9
-      rect:
-        serializedVersion: 2
-        x: 648
-        y: 0
-        width: 72
-        height: 72
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 987fcdd32724d8770800000000000000
-      internalID: 8614614720661223305
+      spriteID: ae8fd8efe95215a40800000000000000
+      internalID: 5355102796726008042
       vertices: []
       indices: 
       edges: []
@@ -424,7 +351,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 18cd176d7fe138d48bbd6bb4a09e1b6f
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -432,20 +359,17 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":72.0,"y":72.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      Lightning-bolt_0: -3475142825580610831
-      Lightning-bolt_1: -4430060266147063419
-      Lightning-bolt_2: -6120511944319148375
-      Lightning-bolt_3: 7392201637894831213
-      Lightning-bolt_4: -4096363743782408168
-      Lightning-bolt_5: -2416979867250715430
-      Lightning-bolt_6: 8719278419603866474
-      Lightning-bolt_7: -3275986279729396712
-      Lightning-bolt_8: -4248983782699280140
-      Lightning-bolt_9: 8614614720661223305
+      Explosion_blue_oval5_0: 5292159071854996219
+      Explosion_blue_oval5_1: 7354641480967436470
+      Explosion_blue_oval5_2: -2606693145119520123
+      Explosion_blue_oval5_3: 548488704730761160
+      Explosion_blue_oval5_4: 4133592792712583910
+      Explosion_blue_oval5_5: -1879823744911759358
+      Explosion_blue_oval5_6: 6418972102115903942
+      Explosion_blue_oval5_7: -4044490212153369755
+      Explosion_blue_oval5_8: 5355102796726008042
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
