@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2b2c867d04f28c4ba3621783a5652ef, type: 3}
   m_Name: LightningWisp
   m_EditorClassIdentifier: Assembly-CSharp::Data.WispConfig
+  WispPrefab: {fileID: 7729233161752626312, guid: b28cb6f5969a4294b9d8257a2d2735e2, type: 3}
   Damage: 10
   Range: 6
   AtkSpeed: 1

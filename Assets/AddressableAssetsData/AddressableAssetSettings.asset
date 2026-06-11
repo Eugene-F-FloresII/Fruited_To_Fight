@@ -61,6 +61,7 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 106e647ae686eac4db46aad4fb9875a2, type: 2}
+  - {fileID: 11400000, guid: 29d5478e1b4361b468e4205ef87aceec, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
     m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
@@ -111,6 +112,7 @@ MonoBehaviour:
     - DamageUpgrade
     - BurnAffliction
     - LightningAffliction
+    - LightningWisp
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 0c70afc2454749243a855e125e9b3ac2, type: 2}

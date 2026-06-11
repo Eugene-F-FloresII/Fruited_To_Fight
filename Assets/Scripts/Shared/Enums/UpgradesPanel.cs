@@ -11,6 +11,7 @@ namespace Shared.Enums
         Speed,
         AttackSpeed,
         Tomahawk,
+        LightningWisp
     }
 
 }

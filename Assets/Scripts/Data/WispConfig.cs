@@ -5,12 +5,16 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Cysharp.Threading.Tasks;
+using Obvious.Soap;
 
 namespace Data
 {
     [CreateAssetMenu(fileName = "WispConfig", menuName = "Data/Create Wisp Config")]
     public class WispConfig : ScriptableObject
     {
+        [Header("Wisp Settings")]
+        public GameObject WispPrefab;
+        public IntVariable WispLevel;
         public float Damage;
         public float Range;
         public float AtkSpeed;

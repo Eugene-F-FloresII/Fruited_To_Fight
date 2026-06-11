@@ -94,6 +94,11 @@ MonoBehaviour:
     - Tomahawk
     - TomahawkConfig
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b28cb6f5969a4294b9d8257a2d2735e2
+    m_Address: Assets/Prefabs/Companions/LightningWisp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b494e7e7d674dd84d894cd2cd594803a
     m_Address: Assets/Prefabs/Data_Enemies/RottedCherry.asset
     m_ReadOnly: 0
