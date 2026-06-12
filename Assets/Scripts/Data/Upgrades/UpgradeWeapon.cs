@@ -45,11 +45,6 @@ namespace Data.Upgrades
             return new UpgradeWeaponResult {Currency = currency, Damage =  resultDamage, Speed = resultSpeed, Range = resultRange};
         }
 
-        public override UpgradeResult BuyUpgrade(int seed, float initialValue)
-        {
-           throw new  System.NotImplementedException();
-        }
-
         public override float GetMultiplier(int level = -1)
         {
             if (IsPierceCategoryType())

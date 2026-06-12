@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 namespace Data.Upgrades
 {
+    public struct UpgradeWispResult
+    {
+        public int Currency;
+        public float Damage;
+        public float Range;
+        public float Speed;
+    }
+    
     public struct UpgradeWeaponResult
     {
         public int Currency;
@@ -37,9 +45,19 @@ namespace Data.Upgrades
         protected int InitialMaxLevel;
         protected int InitialPriceUpgrade;
         protected bool InitialIsMaxed;
-        
-        public abstract UpgradeResult BuyUpgrade(int seed, float initialValue);
-        public abstract UpgradeWeaponResult BuyWeaponUpgrade(int seed, float damageValue, float speedValue, float rangeValue);
+
+        public virtual UpgradeWispResult BuyWispUpgrade(int seed, float damageValue, float rangeValue, float speedValue)
+        {
+            throw new System.NotImplementedException();
+        }
+        public virtual UpgradeResult BuyUpgrade(int seed, float initialValue)
+        {
+            throw new System.NotImplementedException();
+        }
+        public virtual UpgradeWeaponResult BuyWeaponUpgrade(int seed, float damageValue, float speedValue, float rangeValue)
+        {
+            throw new System.NotImplementedException();
+        }
         public abstract float GetMultiplier(int level = -1);
         public abstract int GetSeedPriceUpgrade();
         public abstract bool GetUpgradeLevelMaxed();

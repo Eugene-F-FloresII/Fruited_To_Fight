@@ -10,6 +10,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using Obvious.Soap;
 using Shared.Enums;
 using Shared.Events;
+using UnityEditor.PackageManager;
 
 
 namespace Managers
@@ -24,6 +25,11 @@ namespace Managers
         
         private WeaponConfig _firstWeaponConfig;
         private WeaponConfig _secondWeaponConfig;
+        
+        private WispConfig _leftWispConfig;
+        private WispConfig _centerWispConfig;
+        private WispConfig _rightWispConfig;
+
 
         private UpgradeData _damage;
         private UpgradeData _pierce;
@@ -31,7 +37,8 @@ namespace Managers
         private UpgradeData _knockback;
         private UpgradeData _speed;
         private UpgradeData _attackSpeed;
-        private UpgradeData _weapon;
+        private UpgradeData _tomahawk;
+        private UpgradeData _lightningWisp;
         
         private float _firstWeaponInitialDamage;
         private int _firstWeaponInitialPierce;
@@ -46,6 +53,8 @@ namespace Managers
         private float _secondWeaponInitialKnockback;
         private float _secondWeaponInitialSpeed;
         private float _secondWeaponInitialAtkSpeed;
+
+        private bool _lightningWispPicked;
         
         public WeaponConfig FirstWeaponConfig => _firstWeaponConfig;
         public WeaponConfig SecondWeaponConfig => _secondWeaponConfig;
@@ -138,7 +147,7 @@ namespace Managers
         
         public int UpgradeTomahawk(int seed)
         {
-            if (_weapon.GetUpgradeLevelMaxed()) return seed;
+            if (_tomahawk.GetUpgradeLevelMaxed()) return seed;
 
             WeaponConfig target = null;
             if (_firstWeaponConfig != null && _firstWeaponConfig.WeaponClass == WeaponClass.Tomahawk)
@@ -148,7 +157,7 @@ namespace Managers
 
             if (target == null) return seed;
 
-            UpgradeWeaponResult result = _weapon.BuyWeaponUpgrade(seed, target.WeaponDamage, target.WeaponSpeed, target.WeaponRange);
+            UpgradeWeaponResult result = _tomahawk.BuyWeaponUpgrade(seed, target.WeaponDamage, target.WeaponSpeed, target.WeaponRange);
             
             if (_firstWeaponConfig != null && _firstWeaponConfig.WeaponClass == WeaponClass.Tomahawk)
             {
@@ -165,6 +174,31 @@ namespace Managers
             }
 
             return result.Currency;
+        }
+
+        public int UpgradeLightningWisp(int seed)
+        {
+            if (!_lightningWispPicked)
+            {
+                _lightningWispPicked = true;
+                Events_Wisps.OnChosenWisp?.Invoke("LightningWisp");
+                UpgradeWispResult initialResult = _lightningWisp.BuyWispUpgrade(seed, 0, 0, 0);
+                return initialResult.Currency;
+            }
+            
+            if (_speed.GetUpgradeLevelMaxed()) return seed;
+            UpgradeResult result = _speed.BuyUpgrade(seed, _firstWeaponConfig.WeaponSpeed);
+            if (_firstWeaponConfig != null)
+            {
+                _firstWeaponConfig.WeaponSpeed += result.Value; 
+            }
+            if (_secondWeaponConfig != null)
+            {
+                UpgradeResult secondResult = _speed.BuyUpgrade(seed, _secondWeaponConfig.WeaponSpeed);
+                _secondWeaponConfig.WeaponSpeed += secondResult.Value;
+
+            }
+            return result.Currency;  
         }
         
         
@@ -347,7 +381,9 @@ namespace Managers
             //_knockback = GetUpgrade(UpgradesCategoryType.Knockback);
             _speed = GetUpgrade(UpgradesCategoryType.Speed);
            // _attackSpeed = GetUpgrade(UpgradesCategoryType.AttackSpeed);
-           _weapon = GetUpgrade(UpgradesCategoryType.Tomahawk);
+           _tomahawk = GetUpgrade(UpgradesCategoryType.Tomahawk);
+           
+           _lightningWisp = GetUpgrade(UpgradesCategoryType.LightningWisp);
 
         }
         
@@ -359,7 +395,7 @@ namespace Managers
             float initialKnockback,
             float initialAtkSpeed)
         {
-            float weaponMultiplier = _weapon != null ? _weapon.GetMultiplier() : 1f;
+            float weaponMultiplier = _tomahawk != null ? _tomahawk.GetMultiplier() : 1f;
          
             config.WeaponDamage = initialDamage * _damage.GetMultiplier() * weaponMultiplier;
           //  config.WeaponPierce = initialPierce + (int)_pierce.GetMultiplier();

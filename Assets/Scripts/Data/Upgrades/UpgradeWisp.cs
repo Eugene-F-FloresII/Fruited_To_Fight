@@ -1,43 +1,48 @@
-using Shared.Enums;
 using UnityEngine;
+using Shared.Enums;
+
 
 namespace Data.Upgrades
 {
-    [CreateAssetMenu(menuName = "Data/Create Upgrade Data")]
-    public class Upgrades : UpgradeData
+    public class UpgradeWisp : UpgradeData
     {
-        public override UpgradeResult BuyUpgrade(int seed, float initialValue)
+        public override UpgradeWispResult BuyWispUpgrade(int seed, float damageValue, float speedValue, float rangeValue)
         {
             if (GetSeedPriceUpgrade() > seed)
             {
                 Debug.Log("Not enough seeds");
-                return new UpgradeResult { Currency = seed, Value = initialValue};
+                return new UpgradeWispResult{ Currency = seed, Damage = damageValue, Speed = speedValue, Range = rangeValue};
             }
 
             if (UpgradeLevel.Value > MaxLevel)
             {
                 Debug.Log("Level Maxed");
                 IsMaxed = true;
-                return new UpgradeResult {Currency = seed, Value = initialValue};
+                return new UpgradeWispResult {Currency = seed, Damage = damageValue, Speed =  speedValue, Range = rangeValue};
             }
             
             int currency = seed - GetSeedPriceUpgrade();
             UpgradeLevel.Value++;
 
             float value;
-            float result;
-            if (IsPierceCategoryType())
-            {
-                value = initialValue + 1;
-                result = value - initialValue;
-            }
-            else
-            {
-                value = initialValue * GetMultiplier();
-                result = value - initialValue;
-            }
+            float resultDamage;
+            float resultSpeed;
+            float resultRange;
+            float damage;
+            float speed;
+            float range;
+          
+            damage = damageValue * GetMultiplier();
+            resultDamage = damage - damageValue;
             
-            return new UpgradeResult {Currency = currency, Value = Mathf.RoundToInt(result)};
+            speed = speedValue * GetMultiplier();
+            resultSpeed = speed - speedValue;
+            
+            range = rangeValue * GetMultiplier();
+            resultRange = range - rangeValue;
+        
+            
+            return new UpgradeWispResult {Currency = currency, Damage =  resultDamage, Speed = resultSpeed, Range = resultRange};
         }
 
         public override float GetMultiplier(int level = -1)
@@ -89,6 +94,7 @@ namespace Data.Upgrades
             PriceUpgrade = InitialPriceUpgrade;
             IsMaxed = InitialIsMaxed;
         }
+        
     }
-
+    
 }
