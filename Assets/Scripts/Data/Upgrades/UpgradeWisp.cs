@@ -6,43 +6,36 @@ namespace Data.Upgrades
 {
     public class UpgradeWisp : UpgradeData
     {
-        public override UpgradeWispResult BuyWispUpgrade(int seed, float damageValue, float speedValue, float rangeValue)
+        public override UpgradeWispResult BuyWispUpgrade(int seed, float damageValue, float rangeValue, float atkSpeedValue, float projectileSpeedValue)
         {
             if (GetSeedPriceUpgrade() > seed)
             {
                 Debug.Log("Not enough seeds");
-                return new UpgradeWispResult{ Currency = seed, Damage = damageValue, Speed = speedValue, Range = rangeValue};
+                return new UpgradeWispResult { Currency = seed, Damage = damageValue, Range = rangeValue, AtkSpeed = atkSpeedValue, ProjectileSpeed = projectileSpeedValue };
             }
 
             if (UpgradeLevel.Value > MaxLevel)
             {
                 Debug.Log("Level Maxed");
                 IsMaxed = true;
-                return new UpgradeWispResult {Currency = seed, Damage = damageValue, Speed =  speedValue, Range = rangeValue};
+                return new UpgradeWispResult { Currency = seed, Damage = damageValue, Range = rangeValue, AtkSpeed = atkSpeedValue, ProjectileSpeed = projectileSpeedValue };
             }
             
             int currency = seed - GetSeedPriceUpgrade();
             UpgradeLevel.Value++;
 
-            float value;
             float resultDamage;
-            float resultSpeed;
+            float resultAtkSpeed;
+            float resultProjectileSpeed;
             float resultRange;
-            float damage;
-            float speed;
-            float range;
           
-            damage = damageValue * GetMultiplier();
-            resultDamage = damage - damageValue;
-            
-            speed = speedValue * GetMultiplier();
-            resultSpeed = speed - speedValue;
-            
-            range = rangeValue * GetMultiplier();
-            resultRange = range - rangeValue;
+            resultDamage = (damageValue * GetMultiplier()) - damageValue;
+            resultAtkSpeed = (atkSpeedValue * GetMultiplier()) - atkSpeedValue;
+            resultProjectileSpeed = (projectileSpeedValue * GetMultiplier()) - projectileSpeedValue;
+            resultRange = (rangeValue * GetMultiplier()) - rangeValue;
         
             
-            return new UpgradeWispResult {Currency = currency, Damage =  resultDamage, Speed = resultSpeed, Range = resultRange};
+            return new UpgradeWispResult { Currency = currency, Damage = resultDamage, Range = resultRange, AtkSpeed = resultAtkSpeed, ProjectileSpeed = resultProjectileSpeed };
         }
 
         public override float GetMultiplier(int level = -1)

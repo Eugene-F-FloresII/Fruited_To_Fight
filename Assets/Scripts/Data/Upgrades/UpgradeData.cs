@@ -10,7 +10,8 @@ namespace Data.Upgrades
         public int Currency;
         public float Damage;
         public float Range;
-        public float Speed;
+        public float AtkSpeed;
+        public float ProjectileSpeed;
     }
     
     public struct UpgradeWeaponResult
@@ -46,7 +47,7 @@ namespace Data.Upgrades
         protected int InitialPriceUpgrade;
         protected bool InitialIsMaxed;
 
-        public virtual UpgradeWispResult BuyWispUpgrade(int seed, float damageValue, float rangeValue, float speedValue)
+        public virtual UpgradeWispResult BuyWispUpgrade(int seed, float damageValue, float rangeValue, float atkSpeedValue, float projectileSpeedValue)
         {
             throw new System.NotImplementedException();
         }

@@ -54,6 +54,21 @@ namespace Managers
         private float _secondWeaponInitialSpeed;
         private float _secondWeaponInitialAtkSpeed;
 
+        private float _leftWispInitialDamage;
+        private float _leftWispInitialRange;
+        private float _leftWispInitialAtkSpeed;
+        private float _leftWispInitialProjectileSpeed;
+
+        private float _centerWispInitialDamage;
+        private float _centerWispInitialRange;
+        private float _centerWispInitialAtkSpeed;
+        private float _centerWispInitialProjectileSpeed;
+
+        private float _rightWispInitialDamage;
+        private float _rightWispInitialRange;
+        private float _rightWispInitialAtkSpeed;
+        private float _rightWispInitialProjectileSpeed;
+
         private bool _lightningWispPicked;
         
         public WeaponConfig FirstWeaponConfig => _firstWeaponConfig;
@@ -78,6 +93,7 @@ namespace Managers
         private void OnEnable()
         {
             Events_Weapons.OnChosenWeapon += InitializeCurrentWeapon;
+            Events_Wisps.OnChosenWisp += InitializeCurrentWisp;
             Events_Game.OnGameRestarted += ResetAllUpgrades;
             Events_Game.OnGameExited += ResetAllUpgrades;
         }
@@ -85,6 +101,7 @@ namespace Managers
         private void OnDisable()
         {
             Events_Weapons.OnChosenWeapon -= InitializeCurrentWeapon;
+            Events_Wisps.OnChosenWisp -= InitializeCurrentWisp;
             Events_Game.OnGameRestarted -= ResetAllUpgrades;
             Events_Game.OnGameExited -= ResetAllUpgrades;
         }
@@ -182,23 +199,30 @@ namespace Managers
             {
                 _lightningWispPicked = true;
                 Events_Wisps.OnChosenWisp?.Invoke("LightningWisp");
-                UpgradeWispResult initialResult = _lightningWisp.BuyWispUpgrade(seed, 0, 0, 0);
+                UpgradeWispResult initialResult = _lightningWisp.BuyWispUpgrade(seed, 0, 0, 0, 0);
                 return initialResult.Currency;
             }
-            
-            if (_speed.GetUpgradeLevelMaxed()) return seed;
-            UpgradeResult result = _speed.BuyUpgrade(seed, _firstWeaponConfig.WeaponSpeed);
-            if (_firstWeaponConfig != null)
-            {
-                _firstWeaponConfig.WeaponSpeed += result.Value; 
-            }
-            if (_secondWeaponConfig != null)
-            {
-                UpgradeResult secondResult = _speed.BuyUpgrade(seed, _secondWeaponConfig.WeaponSpeed);
-                _secondWeaponConfig.WeaponSpeed += secondResult.Value;
 
-            }
-            return result.Currency;  
+            WispConfig target = null;
+            if (_leftWispConfig != null && _leftWispConfig.WispType == WispType.Lightning)
+                target = _leftWispConfig;
+            else if (_centerWispConfig != null && _centerWispConfig.WispType == WispType.Lightning)
+                target = _centerWispConfig;
+            else if (_rightWispConfig != null && _rightWispConfig.WispType == WispType.Lightning)
+                target = _rightWispConfig;
+
+            if (target == null) return seed;
+
+            if (_lightningWisp.GetUpgradeLevelMaxed()) return seed;
+
+            UpgradeWispResult result = _lightningWisp.BuyWispUpgrade(seed, target.Damage, target.Range, target.AtkSpeed, target.ProjectileSpeed);
+
+            target.Damage += result.Damage;
+            target.Range += result.Range;
+            target.AtkSpeed += result.AtkSpeed;
+            target.ProjectileSpeed += result.ProjectileSpeed;
+
+            return result.Currency;
         }
         
         
@@ -234,13 +258,37 @@ namespace Managers
                 _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed;
             }
 
+            if (_leftWispConfig != null)
+            {
+                _leftWispConfig.Damage = _leftWispInitialDamage;
+                _leftWispConfig.Range = _leftWispInitialRange;
+                _leftWispConfig.AtkSpeed = _leftWispInitialAtkSpeed;
+                _leftWispConfig.ProjectileSpeed = _leftWispInitialProjectileSpeed;
+            }
+
+            if (_centerWispConfig != null)
+            {
+                _centerWispConfig.Damage = _centerWispInitialDamage;
+                _centerWispConfig.Range = _centerWispInitialRange;
+                _centerWispConfig.AtkSpeed = _centerWispInitialAtkSpeed;
+                _centerWispConfig.ProjectileSpeed = _centerWispInitialProjectileSpeed;
+            }
+
+            if (_rightWispConfig != null)
+            {
+                _rightWispConfig.Damage = _rightWispInitialDamage;
+                _rightWispConfig.Range = _rightWispInitialRange;
+                _rightWispConfig.AtkSpeed = _rightWispInitialAtkSpeed;
+                _rightWispConfig.ProjectileSpeed = _rightWispInitialProjectileSpeed;
+            }
+
             foreach (var upgrades in _upgradesList)
             {
                 upgrades.ResetAllDataValues();
             }
             
             
-            Debug.Log("Upgrades and Weapon Configs have been reset to initial values.");
+            Debug.Log("Upgrades, Weapon and Wisp Configs have been reset to initial values.");
         }
 
         public bool AreAllLevelsMaxed()
@@ -294,6 +342,44 @@ namespace Managers
             else
             {
                 Debug.Log("both arms are occupied");
+            }
+        }
+
+        private async void InitializeCurrentWisp(string label)
+        {
+            var handle = Addressables.LoadAssetAsync<WispConfig>(label);
+            await handle.Task;
+
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                InitializeWispConfig(handle.Result);
+            }
+            else
+            {
+                Debug.LogError($"Failed to load WispConfig with label \'{label}\'");
+            }
+        }
+
+        private void InitializeWispConfig(WispConfig wispConfig)
+        {
+            if (_leftWispConfig == null)
+            {
+                _leftWispConfig = wispConfig;
+                SetUpLeftWispConfig();
+            }
+            else if (_centerWispConfig == null)
+            {
+                _centerWispConfig = wispConfig;
+                SetUpCenterWispConfig();
+            }
+            else if (_rightWispConfig == null)
+            {
+                _rightWispConfig = wispConfig;
+                SetUpRightWispConfig();
+            }
+            else
+            {
+                Debug.Log("all wisp slots are occupied");
             }
         }
 
@@ -371,6 +457,30 @@ namespace Managers
                     _secondWeaponInitialKnockback, 
                     _secondWeaponInitialAtkSpeed);
             }
+        }
+
+        private void SetUpLeftWispConfig()
+        {
+            _leftWispInitialDamage = _leftWispConfig.Damage;
+            _leftWispInitialRange = _leftWispConfig.Range;
+            _leftWispInitialAtkSpeed = _leftWispConfig.AtkSpeed;
+            _leftWispInitialProjectileSpeed = _leftWispConfig.ProjectileSpeed;
+        }
+
+        private void SetUpCenterWispConfig()
+        {
+            _centerWispInitialDamage = _centerWispConfig.Damage;
+            _centerWispInitialRange = _centerWispConfig.Range;
+            _centerWispInitialAtkSpeed = _centerWispConfig.AtkSpeed;
+            _centerWispInitialProjectileSpeed = _centerWispConfig.ProjectileSpeed;
+        }
+
+        private void SetUpRightWispConfig()
+        {
+            _rightWispInitialDamage = _rightWispConfig.Damage;
+            _rightWispInitialRange = _rightWispConfig.Range;
+            _rightWispInitialAtkSpeed = _rightWispConfig.AtkSpeed;
+            _rightWispInitialProjectileSpeed = _rightWispConfig.ProjectileSpeed;
         }
 
         private void ConfigureAllUpgrades()
