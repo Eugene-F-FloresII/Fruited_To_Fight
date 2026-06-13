@@ -4,6 +4,7 @@ using Shared.Enums;
 
 namespace Data.Upgrades
 {
+    [CreateAssetMenu(menuName = "Data/Create Wisp Upgrade Data")]
     public class UpgradeWisp : UpgradeData
     {
         public override UpgradeWispResult BuyWispUpgrade(int seed, float damageValue, float rangeValue, float atkSpeedValue, float projectileSpeedValue)

@@ -86,6 +86,7 @@ namespace Gameplay.Upgrades
 
                 string label = "";
                 float displayValue = 0;
+                bool showValuePrefix = true;
 
                 switch (_upgrades.Category)
                 {
@@ -117,15 +118,27 @@ namespace Gameplay.Upgrades
                         label = "% Increase";
                         displayValue = (_upgrades.GetMultiplier(currentLevel + 1) - 1) * 100;
                         break;
+                    case UpgradesCategoryType.LightningWisp:
+                        if (currentLevel == 0)
+                        {
+                            label = "Lightning wisp";
+                            showValuePrefix = false;
+                        }
+                        else
+                        {
+                            label = "% stats increase";
+                            displayValue = (_upgrades.GetMultiplier(currentLevel + 1) - 1) * 100;
+                        }
+                        break;
                 }
 
-                ApplyStatusTexts(Mathf.RoundToInt(displayValue), label, currentLevel, price);
+                ApplyStatusTexts(Mathf.RoundToInt(displayValue), label, currentLevel, price, showValuePrefix);
             }
         }
 
-        private void ApplyStatusTexts(float value, string label, int level, float price)
+        private void ApplyStatusTexts(float value, string label, int level, float price, bool showValuePrefix = true)
         {
-            if (_percentageText != null) _percentageText.text = "+" + value + label;
+            if (_percentageText != null) _percentageText.text = showValuePrefix ? "+" + value + label : label;
             if (_levelText != null) _levelText.text = "Level " + (level + 1);
             if (_priceText != null) _priceText.text = price + " seeds";
         }

@@ -17,19 +17,71 @@ namespace Managers
 {
     public class UpgradesManager : MonoBehaviour
     {
+        private struct WeaponStatsSnapshot
+        {
+            public float Damage;
+            public int Pierce;
+            public float Range;
+            public float Knockback;
+            public float Speed;
+            public float AtkSpeed;
+
+            public WeaponStatsSnapshot(WeaponConfig config)
+            {
+                Damage = config.WeaponDamage;
+                Pierce = config.WeaponPierce;
+                Range = config.WeaponRange;
+                Knockback = config.WeaponKnockback;
+                Speed = config.WeaponSpeed;
+                AtkSpeed = config.WeaponAtkSpeed;
+            }
+
+            public void RestoreTo(WeaponConfig config)
+            {
+                config.WeaponDamage = Damage;
+                config.WeaponPierce = Pierce;
+                config.WeaponRange = Range;
+                config.WeaponKnockback = Knockback;
+                config.WeaponSpeed = Speed;
+                config.WeaponAtkSpeed = AtkSpeed;
+            }
+        }
+
+        private struct WispStatsSnapshot
+        {
+            public float Damage;
+            public float Range;
+            public float AtkSpeed;
+            public float ProjectileSpeed;
+
+            public WispStatsSnapshot(WispConfig config)
+            {
+                Damage = config.Damage;
+                Range = config.Range;
+                AtkSpeed = config.AtkSpeed;
+                ProjectileSpeed = config.ProjectileSpeed;
+            }
+
+            public void RestoreTo(WispConfig config)
+            {
+                config.Damage = Damage;
+                config.Range = Range;
+                config.AtkSpeed = AtkSpeed;
+                config.ProjectileSpeed = ProjectileSpeed;
+            }
+        }
+
         [Header("Lists of Upgrades")]
         [SerializeField] private List<UpgradeData> _upgradesList;
         [SerializeField] private List<UpgradesCategoryType> _upgradesCategoryList;
         
         private Dictionary<UpgradesCategoryType, UpgradeData> _upgradesDictionary = new Dictionary<UpgradesCategoryType, UpgradeData>();
         
-        private WeaponConfig _firstWeaponConfig;
-        private WeaponConfig _secondWeaponConfig;
-        
-        private WispConfig _leftWispConfig;
-        private WispConfig _centerWispConfig;
-        private WispConfig _rightWispConfig;
+        private List<WeaponConfig> _activeWeapons = new List<WeaponConfig>(2);
+        private List<WispConfig> _activeWisps = new List<WispConfig>(3);
 
+        private Dictionary<WeaponConfig, WeaponStatsSnapshot> _weaponInitialStats = new Dictionary<WeaponConfig, WeaponStatsSnapshot>();
+        private Dictionary<WispConfig, WispStatsSnapshot> _wispInitialStats = new Dictionary<WispConfig, WispStatsSnapshot>();
 
         private UpgradeData _damage;
         private UpgradeData _pierce;
@@ -40,39 +92,10 @@ namespace Managers
         private UpgradeData _tomahawk;
         private UpgradeData _lightningWisp;
         
-        private float _firstWeaponInitialDamage;
-        private int _firstWeaponInitialPierce;
-        private float _firstWeaponInitialRange;
-        private float _firstWeaponInitialKnockback;
-        private float _firstWeaponInitialSpeed;
-        private float _firstWeaponInitialAtkSpeed;
-        
-        private float _secondWeaponInitialDamage;
-        private int _secondWeaponInitialPierce;
-        private float _secondWeaponInitialRange;
-        private float _secondWeaponInitialKnockback;
-        private float _secondWeaponInitialSpeed;
-        private float _secondWeaponInitialAtkSpeed;
-
-        private float _leftWispInitialDamage;
-        private float _leftWispInitialRange;
-        private float _leftWispInitialAtkSpeed;
-        private float _leftWispInitialProjectileSpeed;
-
-        private float _centerWispInitialDamage;
-        private float _centerWispInitialRange;
-        private float _centerWispInitialAtkSpeed;
-        private float _centerWispInitialProjectileSpeed;
-
-        private float _rightWispInitialDamage;
-        private float _rightWispInitialRange;
-        private float _rightWispInitialAtkSpeed;
-        private float _rightWispInitialProjectileSpeed;
-
         private bool _lightningWispPicked;
         
-        public WeaponConfig FirstWeaponConfig => _firstWeaponConfig;
-        public WeaponConfig SecondWeaponConfig => _secondWeaponConfig;
+        public WeaponConfig FirstWeaponConfig => _activeWeapons.Count > 0 ? _activeWeapons[0] : null;
+        public WeaponConfig SecondWeaponConfig => _activeWeapons.Count > 1 ? _activeWeapons[1] : null;
 
         private void Awake()
         {
@@ -113,52 +136,43 @@ namespace Managers
 
         public int UpgradeDamage(int seed)
         {
-            if (_damage.GetUpgradeLevelMaxed()) return seed;
-            UpgradeResult result = _damage.BuyUpgrade(seed, _firstWeaponConfig.WeaponDamage);
-            if (_firstWeaponConfig != null)
+            if (_damage.GetUpgradeLevelMaxed() || _activeWeapons.Count == 0) return seed;
+            
+            UpgradeResult result = _damage.BuyUpgrade(seed, _activeWeapons[0].WeaponDamage);
+            
+            foreach (var weapon in _activeWeapons)
             {
-                _firstWeaponConfig.WeaponDamage += result.Value; 
+                weapon.WeaponDamage += result.Value;
             }
-            if (_secondWeaponConfig != null)
-            {
-                UpgradeResult secondResult = _damage.BuyUpgrade(seed, _secondWeaponConfig.WeaponDamage);
-                _secondWeaponConfig.WeaponDamage += secondResult.Value;
-
-            }
+            
             return result.Currency;     
         }
         
         public int UpgradeRange(int seed)
         {
-            if (_range.GetUpgradeLevelMaxed()) return seed;
-            UpgradeResult result = _range.BuyUpgrade(seed, _firstWeaponConfig.WeaponRange);
-            if (_firstWeaponConfig != null)
+            if (_range.GetUpgradeLevelMaxed() || _activeWeapons.Count == 0) return seed;
+            
+            UpgradeResult result = _range.BuyUpgrade(seed, _activeWeapons[0].WeaponRange);
+            
+            foreach (var weapon in _activeWeapons)
             {
-                _firstWeaponConfig.WeaponRange += result.Value; 
+                weapon.WeaponRange += result.Value;
             }
-            if (_secondWeaponConfig != null)
-            {
-                UpgradeResult secondResult = _range.BuyUpgrade(seed, _secondWeaponConfig.WeaponRange);
-                _secondWeaponConfig.WeaponRange += secondResult.Value;
-
-            }
+            
             return result.Currency;     
         }
 
         public int UpgradeSpeed(int seed)
         {
-            if (_speed.GetUpgradeLevelMaxed()) return seed;
-            UpgradeResult result = _speed.BuyUpgrade(seed, _firstWeaponConfig.WeaponSpeed);
-            if (_firstWeaponConfig != null)
+            if (_speed.GetUpgradeLevelMaxed() || _activeWeapons.Count == 0) return seed;
+            
+            UpgradeResult result = _speed.BuyUpgrade(seed, _activeWeapons[0].WeaponSpeed);
+            
+            foreach (var weapon in _activeWeapons)
             {
-                _firstWeaponConfig.WeaponSpeed += result.Value; 
+                weapon.WeaponSpeed += result.Value;
             }
-            if (_secondWeaponConfig != null)
-            {
-                UpgradeResult secondResult = _speed.BuyUpgrade(seed, _secondWeaponConfig.WeaponSpeed);
-                _secondWeaponConfig.WeaponSpeed += secondResult.Value;
-
-            }
+            
             return result.Currency;  
         }
         
@@ -166,28 +180,16 @@ namespace Managers
         {
             if (_tomahawk.GetUpgradeLevelMaxed()) return seed;
 
-            WeaponConfig target = null;
-            if (_firstWeaponConfig != null && _firstWeaponConfig.WeaponClass == WeaponClass.Tomahawk)
-                target = _firstWeaponConfig;
-            else if (_secondWeaponConfig != null && _secondWeaponConfig.WeaponClass == WeaponClass.Tomahawk)
-                target = _secondWeaponConfig;
-
+            WeaponConfig target = _activeWeapons.FirstOrDefault(w => w.WeaponClass == WeaponClass.Tomahawk);
             if (target == null) return seed;
 
             UpgradeWeaponResult result = _tomahawk.BuyWeaponUpgrade(seed, target.WeaponDamage, target.WeaponSpeed, target.WeaponRange);
             
-            if (_firstWeaponConfig != null && _firstWeaponConfig.WeaponClass == WeaponClass.Tomahawk)
+            foreach (var weapon in _activeWeapons.Where(w => w.WeaponClass == WeaponClass.Tomahawk))
             {
-                _firstWeaponConfig.WeaponDamage += result.Damage;
-                _firstWeaponConfig.WeaponSpeed += result.Speed;
-                _firstWeaponConfig.WeaponRange += result.Range;
-            }
-            
-            if (_secondWeaponConfig != null && _secondWeaponConfig.WeaponClass == WeaponClass.Tomahawk && _secondWeaponConfig != _firstWeaponConfig)
-            {
-                _secondWeaponConfig.WeaponDamage += result.Damage;
-                _secondWeaponConfig.WeaponSpeed += result.Speed;
-                _secondWeaponConfig.WeaponRange += result.Range;
+                weapon.WeaponDamage += result.Damage;
+                weapon.WeaponSpeed += result.Speed;
+                weapon.WeaponRange += result.Range;
             }
 
             return result.Currency;
@@ -197,20 +199,14 @@ namespace Managers
         {
             if (!_lightningWispPicked)
             {
+                Debug.Log("Bought LightningWisp");
                 _lightningWispPicked = true;
                 Events_Wisps.OnChosenWisp?.Invoke("LightningWisp");
                 UpgradeWispResult initialResult = _lightningWisp.BuyWispUpgrade(seed, 0, 0, 0, 0);
                 return initialResult.Currency;
             }
 
-            WispConfig target = null;
-            if (_leftWispConfig != null && _leftWispConfig.WispType == WispType.Lightning)
-                target = _leftWispConfig;
-            else if (_centerWispConfig != null && _centerWispConfig.WispType == WispType.Lightning)
-                target = _centerWispConfig;
-            else if (_rightWispConfig != null && _rightWispConfig.WispType == WispType.Lightning)
-                target = _rightWispConfig;
-
+            WispConfig target = _activeWisps.FirstOrDefault(w => w.WispType == WispType.Lightning);
             if (target == null) return seed;
 
             if (_lightningWisp.GetUpgradeLevelMaxed()) return seed;
@@ -228,65 +224,31 @@ namespace Managers
         
         public void ResetAllUpgrades()
         {
-            if (_firstWeaponConfig != null && _firstWeaponConfig.Afflictions != null)
+            foreach (var weapon in _activeWeapons)
             {
-                _firstWeaponConfig.ResetAfflictions();
+                if (weapon.Afflictions != null)
+                {
+                    weapon.ResetAfflictions();
+                }
+
+                if (_weaponInitialStats.TryGetValue(weapon, out var snapshot))
+                {
+                    snapshot.RestoreTo(weapon);
+                }
             }
 
-            if (_secondWeaponConfig != null && _secondWeaponConfig.Afflictions != null)
+            foreach (var wisp in _activeWisps)
             {
-                _secondWeaponConfig.ResetAfflictions();
-            }
-            
-            if (_secondWeaponConfig != null)
-            {
-                _secondWeaponConfig.WeaponDamage = _secondWeaponInitialDamage;
-                _secondWeaponConfig.WeaponPierce = _secondWeaponInitialPierce;
-                _secondWeaponConfig.WeaponRange = _secondWeaponInitialRange;
-                _secondWeaponConfig.WeaponKnockback = _secondWeaponInitialKnockback;
-                _secondWeaponConfig.WeaponSpeed = _secondWeaponInitialSpeed;
-                _secondWeaponConfig.WeaponAtkSpeed = _secondWeaponInitialAtkSpeed;
-            }
-
-            if (_firstWeaponConfig != null)
-            {
-                _firstWeaponConfig.WeaponDamage = _firstWeaponInitialDamage;
-                _firstWeaponConfig.WeaponPierce = _firstWeaponInitialPierce;
-                _firstWeaponConfig.WeaponRange = _firstWeaponInitialRange;
-                _firstWeaponConfig.WeaponKnockback = _firstWeaponInitialKnockback;
-                _firstWeaponConfig.WeaponSpeed = _firstWeaponInitialSpeed;
-                _firstWeaponConfig.WeaponAtkSpeed = _firstWeaponInitialAtkSpeed;
-            }
-
-            if (_leftWispConfig != null)
-            {
-                _leftWispConfig.Damage = _leftWispInitialDamage;
-                _leftWispConfig.Range = _leftWispInitialRange;
-                _leftWispConfig.AtkSpeed = _leftWispInitialAtkSpeed;
-                _leftWispConfig.ProjectileSpeed = _leftWispInitialProjectileSpeed;
-            }
-
-            if (_centerWispConfig != null)
-            {
-                _centerWispConfig.Damage = _centerWispInitialDamage;
-                _centerWispConfig.Range = _centerWispInitialRange;
-                _centerWispConfig.AtkSpeed = _centerWispInitialAtkSpeed;
-                _centerWispConfig.ProjectileSpeed = _centerWispInitialProjectileSpeed;
-            }
-
-            if (_rightWispConfig != null)
-            {
-                _rightWispConfig.Damage = _rightWispInitialDamage;
-                _rightWispConfig.Range = _rightWispInitialRange;
-                _rightWispConfig.AtkSpeed = _rightWispInitialAtkSpeed;
-                _rightWispConfig.ProjectileSpeed = _rightWispInitialProjectileSpeed;
+                if (_wispInitialStats.TryGetValue(wisp, out var snapshot))
+                {
+                    snapshot.RestoreTo(wisp);
+                }
             }
 
             foreach (var upgrades in _upgradesList)
             {
                 upgrades.ResetAllDataValues();
             }
-            
             
             Debug.Log("Upgrades, Weapon and Wisp Configs have been reset to initial values.");
         }
@@ -298,17 +260,7 @@ namespace Managers
 
         public bool CanUpgradeAfflictions()
         {
-            if (_firstWeaponConfig != null && _firstWeaponConfig.Afflictions.Count < 1)
-            {
-                return true;
-            }
-
-            if (_secondWeaponConfig != null && _secondWeaponConfig.Afflictions.Count < 1)
-            {
-                return true;
-            }
-
-            return false;
+            return _activeWeapons.Any(weapon => weapon.Afflictions.Count < 1);
         }
         
         private async void InitializeCurrentWeapon(string label)
@@ -328,20 +280,26 @@ namespace Managers
 
         private void InitializeWeaponConfig(WeaponConfig weaponConfig)
         {
-            if (_firstWeaponConfig == null)
-            {
-                _firstWeaponConfig = weaponConfig;
-                SetUpFirstWeaponConfig();
-                
-            }
-            else if (_secondWeaponConfig == null)
-            {
-                _secondWeaponConfig = weaponConfig;
-                SetUpSecondWeaponConfig();
-            }
-            else
+            if (_activeWeapons.Count >= 2)
             {
                 Debug.Log("both arms are occupied");
+                return;
+            }
+
+            _activeWeapons.Add(weaponConfig);
+
+            if (!_weaponInitialStats.ContainsKey(weaponConfig))
+            {
+                var snapshot = new WeaponStatsSnapshot(weaponConfig);
+                _weaponInitialStats.Add(weaponConfig, snapshot);
+                
+                ApplyAllUpgrades(weaponConfig, 
+                    snapshot.Damage,
+                    snapshot.Range, 
+                    snapshot.Speed, 
+                    snapshot.Pierce, 
+                    snapshot.Knockback, 
+                    snapshot.AtkSpeed);
             }
         }
 
@@ -362,125 +320,18 @@ namespace Managers
 
         private void InitializeWispConfig(WispConfig wispConfig)
         {
-            if (_leftWispConfig == null)
-            {
-                _leftWispConfig = wispConfig;
-                SetUpLeftWispConfig();
-            }
-            else if (_centerWispConfig == null)
-            {
-                _centerWispConfig = wispConfig;
-                SetUpCenterWispConfig();
-            }
-            else if (_rightWispConfig == null)
-            {
-                _rightWispConfig = wispConfig;
-                SetUpRightWispConfig();
-            }
-            else
+            if (_activeWisps.Count >= 3)
             {
                 Debug.Log("all wisp slots are occupied");
+                return;
             }
-        }
 
-        private void InitializeUpgradeDictionary()
-        {
-            if (_upgradesList.Count != _upgradesCategoryList.Count)
+            _activeWisps.Add(wispConfig);
+
+            if (!_wispInitialStats.ContainsKey(wispConfig))
             {
-                Debug.LogError("Both list is not the same");
+                _wispInitialStats.Add(wispConfig, new WispStatsSnapshot(wispConfig));
             }
-
-            for (int i = 0; i < _upgradesList.Count; i++)
-            {
-                _upgradesDictionary.Add(_upgradesCategoryList[i], _upgradesList[i]);
-            }
-        }
-
-        private UpgradeData GetUpgrade(UpgradesCategoryType upgradesCategory)
-        {
-            if (_upgradesDictionary.TryGetValue(upgradesCategory, out UpgradeData upgrade))
-                return upgrade;
-
-            Debug.LogError($"Upgrade not found for category: {upgradesCategory}");
-            return null;
-        }
-        
-        private void SetUpFirstWeaponConfig()
-        {
-            _firstWeaponInitialDamage = _firstWeaponConfig.WeaponDamage;
-            _firstWeaponInitialPierce = _firstWeaponConfig.WeaponPierce;
-            _firstWeaponInitialRange = _firstWeaponConfig.WeaponRange;
-            _firstWeaponInitialKnockback = _firstWeaponConfig.WeaponKnockback;
-            _firstWeaponInitialSpeed = _firstWeaponConfig.WeaponSpeed;
-            _firstWeaponInitialAtkSpeed = _firstWeaponConfig.WeaponAtkSpeed;
-            
-            ApplyAllUpgrades(_firstWeaponConfig, 
-                _firstWeaponInitialDamage,
-                _firstWeaponInitialRange, 
-                _firstWeaponInitialSpeed, 
-                _firstWeaponInitialPierce, 
-                _firstWeaponInitialKnockback, 
-                _firstWeaponInitialAtkSpeed);
-        }
-        
-        private void SetUpSecondWeaponConfig()
-        {
-            if (_secondWeaponConfig == _firstWeaponConfig)
-            {
-                // Both weapons share the same ScriptableObject.
-                // We copy the initial stats already captured from the first weapon 
-                // to ensure our baseline for future upgrades remains correct.
-                _secondWeaponInitialDamage = _firstWeaponInitialDamage;
-                _secondWeaponInitialPierce = _firstWeaponInitialPierce;
-                _secondWeaponInitialRange = _firstWeaponInitialRange;
-                _secondWeaponInitialKnockback = _firstWeaponInitialKnockback;
-                _secondWeaponInitialSpeed = _firstWeaponInitialSpeed;
-                _secondWeaponInitialAtkSpeed = _firstWeaponInitialAtkSpeed;
-                
-                // We don't call ApplyAllUpgrades here because it's the same instance 
-                // and it was already upgraded during SetUpFirstWeaponConfig.
-            }
-            else
-            {
-                _secondWeaponInitialDamage = _secondWeaponConfig.WeaponDamage;
-                _secondWeaponInitialPierce = _secondWeaponConfig.WeaponPierce;
-                _secondWeaponInitialRange = _secondWeaponConfig.WeaponRange;
-                _secondWeaponInitialKnockback = _secondWeaponConfig.WeaponKnockback;
-                _secondWeaponInitialSpeed = _secondWeaponConfig.WeaponSpeed;
-                _secondWeaponInitialAtkSpeed = _secondWeaponConfig.WeaponAtkSpeed;
-                
-                ApplyAllUpgrades(_secondWeaponConfig,
-                    _secondWeaponInitialDamage,
-                    _secondWeaponInitialRange,
-                    _secondWeaponInitialSpeed,
-                    _secondWeaponInitialPierce,
-                    _secondWeaponInitialKnockback, 
-                    _secondWeaponInitialAtkSpeed);
-            }
-        }
-
-        private void SetUpLeftWispConfig()
-        {
-            _leftWispInitialDamage = _leftWispConfig.Damage;
-            _leftWispInitialRange = _leftWispConfig.Range;
-            _leftWispInitialAtkSpeed = _leftWispConfig.AtkSpeed;
-            _leftWispInitialProjectileSpeed = _leftWispConfig.ProjectileSpeed;
-        }
-
-        private void SetUpCenterWispConfig()
-        {
-            _centerWispInitialDamage = _centerWispConfig.Damage;
-            _centerWispInitialRange = _centerWispConfig.Range;
-            _centerWispInitialAtkSpeed = _centerWispConfig.AtkSpeed;
-            _centerWispInitialProjectileSpeed = _centerWispConfig.ProjectileSpeed;
-        }
-
-        private void SetUpRightWispConfig()
-        {
-            _rightWispInitialDamage = _rightWispConfig.Damage;
-            _rightWispInitialRange = _rightWispConfig.Range;
-            _rightWispInitialAtkSpeed = _rightWispConfig.AtkSpeed;
-            _rightWispInitialProjectileSpeed = _rightWispConfig.ProjectileSpeed;
         }
 
         private void ConfigureAllUpgrades()
@@ -518,27 +369,42 @@ namespace Managers
            config.WeaponAtkSpeed = initialAtkSpeed / weaponMultiplier;
         }
 
+        private void InitializeUpgradeDictionary()
+        {
+            if (_upgradesList.Count != _upgradesCategoryList.Count)
+            {
+                Debug.LogError("Both list is not the same");
+            }
+
+            for (int i = 0; i < _upgradesList.Count; i++)
+            {
+                _upgradesDictionary.Add(_upgradesCategoryList[i], _upgradesList[i]);
+            }
+        }
+
+        private UpgradeData GetUpgrade(UpgradesCategoryType upgradesCategory)
+        {
+            if (_upgradesDictionary.TryGetValue(upgradesCategory, out UpgradeData upgrade))
+                return upgrade;
+
+            Debug.LogError($"Upgrade not found for category: {upgradesCategory}");
+            return null;
+        }
+
         private void RefreshAllWeaponStats()
         {
-            if (_firstWeaponConfig != null)
+            foreach (var weapon in _activeWeapons)
             {
-                ApplyAllUpgrades(_firstWeaponConfig, 
-                    _firstWeaponInitialDamage,
-                    _firstWeaponInitialRange, 
-                    _firstWeaponInitialSpeed, 
-                    _firstWeaponInitialPierce, 
-                    _firstWeaponInitialKnockback, 
-                    _firstWeaponInitialAtkSpeed);
-            }
-            if (_secondWeaponConfig != null)
-            {
-                ApplyAllUpgrades(_secondWeaponConfig,
-                    _secondWeaponInitialDamage,
-                    _secondWeaponInitialRange,
-                    _secondWeaponInitialSpeed,
-                    _secondWeaponInitialPierce,
-                    _secondWeaponInitialKnockback, 
-                    _secondWeaponInitialAtkSpeed);
+                if (_weaponInitialStats.TryGetValue(weapon, out var snapshot))
+                {
+                    ApplyAllUpgrades(weapon, 
+                        snapshot.Damage,
+                        snapshot.Range, 
+                        snapshot.Speed, 
+                        snapshot.Pierce, 
+                        snapshot.Knockback, 
+                        snapshot.AtkSpeed);
+                }
             }
         }
 

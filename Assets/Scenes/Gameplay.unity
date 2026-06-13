@@ -667,7 +667,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c7e0f88e1191bce4c856d626bbe3547c, type: 2}
   - {fileID: 11400000, guid: 3a116ff078c61e149a8a453dc0c4e3d7, type: 2}
   - {fileID: 11400000, guid: b146130a57fbcf748b697f05bad04b49, type: 2}
-  _upgradesCategoryList: 00000000020000000400000006000000
+  - {fileID: 11400000, guid: 1da813dfc43eee3468039c105badfc01, type: 2}
+  _upgradesCategoryList: 0000000002000000040000000600000007000000
 --- !u!4 &668084220
 Transform:
   m_ObjectHideFlags: 0

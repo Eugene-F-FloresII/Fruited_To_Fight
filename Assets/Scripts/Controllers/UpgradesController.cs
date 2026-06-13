@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -30,7 +31,7 @@ namespace Controllers
         [SerializeField] private List<UpgradeData> _upgradesList;
         [SerializeField] private int _maxButtons;
         [SerializeField] private Transform _transform;
-
+        [SerializeField] private bool _debugUpgrades;
         private UpgradeData _damageUpgrade;
         
         private UpgradesManager _upgradesManager;
@@ -38,11 +39,12 @@ namespace Controllers
         private bool _canChoose;
         private int _randomIndex;
         private Button _button;
+        
+       
 
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
-            
         }
 
         private void Start()
@@ -76,9 +78,14 @@ namespace Controllers
 
         private void LoadBaseUpgrades()
         {
-            PrepareUpgrade("DamageUpgrade").Forget();
-            PrepareUpgrade("RangeUpgrade").Forget();
-            PrepareUpgrade("SpeedUpgrade").Forget();
+            if (_debugUpgrades)
+            {
+                 PrepareUpgrade("DamageUpgrade").Forget();
+                 PrepareUpgrade("RangeUpgrade").Forget();
+                 PrepareUpgrade("SpeedUpgrade").Forget(); 
+            }
+          
+            PrepareUpgrade("LightningWispUpgrade").Forget();
         }
         
         private void OnGameRestarted()
@@ -151,6 +158,9 @@ namespace Controllers
                         break;
                     case UpgradesCategoryType.Tomahawk:
                         _button.onClick.AddListener(BuyTomahawkUpgrade);
+                        break;
+                    case UpgradesCategoryType.LightningWisp:
+                        _button.onClick.AddListener(BuyLightningWispUpgrade);
                         break;
                 }
 
@@ -237,6 +247,21 @@ namespace Controllers
             int newSeed = _upgradesManager.UpgradeTomahawk(_seedCollected.Value);
     
             if (newSeed != _seedCollected.Value) // ✅ only close if purchase succeeded
+            {
+                _seedCollected.Value = newSeed;
+                _canChoose = false;
+                TurnOffCanvasGroup();
+            }
+        }
+
+        public void BuyLightningWispUpgrade()
+        {
+            if (!_canChoose) return;
+            if (_upgradesManager == null) return;
+
+            int newSeed = _upgradesManager.UpgradeLightningWisp(_seedCollected.Value);
+    
+            if (newSeed != _seedCollected.Value) 
             {
                 _seedCollected.Value = newSeed;
                 _canChoose = false;

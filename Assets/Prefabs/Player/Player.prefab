@@ -721,6 +721,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8906772358194924185}
+  - component: {fileID: 8682276228736522295}
   m_Layer: 7
   m_Name: CompanionLoader
   m_TagString: Untagged
@@ -744,6 +745,21 @@ Transform:
   - {fileID: 78939238067074896}
   m_Father: {fileID: 6029804757836756755}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8682276228736522295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7258081940343428035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68ce2307e879054fa2604571c1807e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Wisps.WispLoader
+  _leftSpawner: {fileID: 78939238067074896}
+  _centerSpawner: {fileID: 0}
+  _rightSpawner: {fileID: 0}
 --- !u!1 &7864274381754384106
 GameObject:
   m_ObjectHideFlags: 0

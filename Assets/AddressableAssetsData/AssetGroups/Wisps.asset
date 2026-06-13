@@ -15,6 +15,13 @@ MonoBehaviour:
   m_GroupName: Wisps
   m_GUID: 54dd5aa38bbaa794685440dca3a59b53
   m_SerializeEntries:
+  - m_GUID: 1da813dfc43eee3468039c105badfc01
+    m_Address: Assets/Prefabs/Data_Upgrade/LightningWispUpgrade.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LightningWisp
+    - LightningWispUpgrade
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2f283384f9e421841954e133dd9d54ca
     m_Address: Assets/Prefabs/Data_Wisps/LightningWisp.asset
     m_ReadOnly: 0
