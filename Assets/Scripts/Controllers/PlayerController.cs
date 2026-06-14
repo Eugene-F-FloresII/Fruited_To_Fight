@@ -52,6 +52,8 @@ namespace Controllers
 
         private CancellationTokenSource _knockBackCts;
 
+        public Vector2 FacingDirection { get; private set; } = Vector2.right;
+
         private void Awake()
         {
             ServiceLocator.Register(this);
@@ -142,12 +144,26 @@ namespace Controllers
             
             Vector2 moveInput =  MovementInput.action.ReadValue<Vector2>();
             _moveDirection.Value = moveInput.normalized;
+
+            if (_moveDirection.Value != Vector2.zero)
+            {
+                FacingDirection = _moveDirection.Value;
+
+                if (FacingDirection.x < 0)
+                {
+                    _playerCharacter.FlipCharacter(false);
+                }
+                else if (FacingDirection.x > 0)
+                {
+                    _playerCharacter.FlipCharacter(true);
+                }
+            }
             
             if (_playerCharacterAnimator == null) UpdatePlayerStats();
             if (_playerCharacterAnimator == null) return;
 
-            _playerCharacterAnimator.SetFloat(_velocityX, _moveDirection.Value.x);
-            _playerCharacterAnimator.SetFloat(_velocityY, _moveDirection.Value.y);
+            _playerCharacterAnimator.SetFloat(_velocityX, FacingDirection.x);
+            _playerCharacterAnimator.SetFloat(_velocityY, FacingDirection.y);
             _rb.linearVelocity = moveInput.normalized * CharacterConfig.CharacterSpeed;
         }
         

@@ -57,6 +57,18 @@ namespace Gameplay
             _characterConfig = characterConfig;
             CharacterWeaponReady(_characterConfig);
         }
+
+        public void FlipCharacter(bool flipX)
+        {
+            if (_characters == null || _characterConfig == null) return;
+            
+            GameObject activeCharacter = _characters[_characterConfig.CharacterId];
+            if (activeCharacter != null && activeCharacter.TryGetComponent(out SpriteRenderer sr))
+            {
+                Debug.Log("Got Sprite");
+                sr.flipX = flipX;
+            }
+        }
     }
 
 }
