@@ -5,6 +5,7 @@ namespace Shared.Enums
         None,
         Spear,
         Tomahawk,
-        Staff
+        Staff,
+        Sword
     }
 }
