@@ -18,20 +18,20 @@ MonoBehaviour:
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
-  WeaponPrefab: {fileID: 0}
+  WeaponPrefab: {fileID: 2702686868723220390, guid: 181e0fac7889d634eaa351cd5473d734, type: 3}
   WeaponName: Sword
   WeaponID: 3
   WeaponType: 0
-  WeaponClass: 0
-  WeaponAmountToPool: 0
+  WeaponClass: 4
+  WeaponAmountToPool: 30
   WeaponHoming: 0
-  WeaponLevel: {fileID: 0}
-  WeaponRange: 0
-  WeaponDamage: 0
-  WeaponPierce: 0
-  WeaponSpeed: 0
-  WeaponAtkSpeed: 0
-  WeaponKnockback: 0
-  AbilityCooldown: 0
-  AbilityDuration: 0
+  WeaponLevel: {fileID: 11400000, guid: cea69c896ba91b245984cfa669cdf8b1, type: 2}
+  WeaponRange: 10
+  WeaponDamage: 45
+  WeaponPierce: 10
+  WeaponSpeed: 0.6
+  WeaponAtkSpeed: 0.8
+  WeaponKnockback: 15
+  AbilityCooldown: 10
+  AbilityDuration: 5
   Afflictions: []

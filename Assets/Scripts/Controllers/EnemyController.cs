@@ -185,6 +185,23 @@ namespace Controllers
             ApplyDamage(damage);
         }
 
+        public void TakeDamage(float damage, Vector2 sourcePosition, float knockbackForce)
+        {
+            Vector2 knockbackDirection = ((Vector2)transform.position - sourcePosition).normalized;
+            
+            if (_knockbackCts != null)
+            {
+                _knockbackCts.Cancel();
+                _knockbackCts.Dispose();
+                _knockbackCts = null;
+            }
+            _knockbackCts = new CancellationTokenSource();
+            
+            EnemyKnockBack(knockbackDirection, knockbackForce, 0.3f, _knockbackCts.Token).Forget();
+            
+            ApplyDamage(damage);
+        }
+
         public void TakeDamage(float damage)
         {
             ApplyDamage(damage);

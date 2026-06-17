@@ -120,8 +120,17 @@ namespace Gameplay.Weapons
             GameObject slash = GetPooledObject();
             if (slash != null)
             {
-                // Position the slash in front of the player
-                slash.transform.position = transform.position + (Vector3)facingDirection * 0.7f; 
+                // Dynamically scale the visual based on WeaponRange
+                // Using 3f as a baseline range for 1.0x scale.
+                float baseRangeForScale = 3f;
+                float scaleFactor = _weaponConfig != null && _weaponConfig.WeaponRange > 0 
+                    ? _weaponConfig.WeaponRange / baseRangeForScale 
+                    : 1f;
+
+                slash.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+
+                // Position the slash in front of the player, offset scaled by the range factor
+                slash.transform.position = transform.position + (Vector3)facingDirection * (0.7f * scaleFactor); 
                 
                 // Rotate the slash to face the attack direction
                 float angle = Mathf.Atan2(facingDirection.y, facingDirection.x) * Mathf.Rad2Deg;
