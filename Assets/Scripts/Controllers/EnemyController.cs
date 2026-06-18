@@ -20,6 +20,7 @@ namespace Controllers
         [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
         
         [Header("Enemy References")]
+        [SerializeField] private IntVariable _activeEnemyCount;
         [SerializeField] private DefendingController _defendingController;
         [SerializeField] private Animator _animator;
         
@@ -66,6 +67,7 @@ namespace Controllers
 
         private void OnEnable()
         {
+            if (_activeEnemyCount != null) _activeEnemyCount.Value++;
             _isFrozen = false;
             _animator.speed = 1f;
             ResetStatsFromConfig();
@@ -73,6 +75,7 @@ namespace Controllers
 
         private void OnDisable()
         {
+            if (_activeEnemyCount != null) _activeEnemyCount.Value--;
             DisposeTokens();
 
             if (SpriteRenderer != null)

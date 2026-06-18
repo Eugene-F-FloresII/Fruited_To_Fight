@@ -20,6 +20,7 @@ namespace Managers
         [SerializeField] private float _nextRoundDelaySeconds = 2f;
         [SerializeField] private IntVariable _currentRound;
         [SerializeField] private IntVariable _maxRounds;
+        [SerializeField] private IntVariable _activeEnemyCount;
         
         [Header("Multiplicative Scaling")]
         [SerializeField] private float _healthGrowthPerRound = 1.15f;
@@ -31,7 +32,6 @@ namespace Managers
         private EnemySpawnManager _enemySpawnManager;
         private UpgradesManager _upgradesManager;
         
-        private int _enemiesRemainingInRound;
         private bool _roundStarted;
         private bool _isTransitioning;
         private bool _hasReachedMaxRounds;
@@ -45,7 +45,7 @@ namespace Managers
 
         private void OnEnable()
         {
-            Events_Seed.OnEnemyDeath += HandleEnemyDeath;
+            if (_activeEnemyCount != null) _activeEnemyCount.OnValueChanged += HandleActiveEnemyCountChanged;
         }
 
         private void Start()
@@ -59,7 +59,7 @@ namespace Managers
 
         private void OnDisable()
         {
-            Events_Seed.OnEnemyDeath -= HandleEnemyDeath;
+            if (_activeEnemyCount != null) _activeEnemyCount.OnValueChanged -= HandleActiveEnemyCountChanged;
             DisposeRoundFlowToken();
         }
 
@@ -110,25 +110,14 @@ namespace Managers
             }
         }
 
-        private void HandleEnemyDeath(Transform enemyTransform)
+        private void HandleActiveEnemyCountChanged(int currentCount)
         {
-            if (!_roundStarted || _enemiesRemainingInRound <= 0)
+            if (!_roundStarted || currentCount > 0)
             {
                 return;
-            }
-
-            _enemiesRemainingInRound--;
-
-            if (_enemiesRemainingInRound <= 0)
-            {
-                Events_Seed.OnEnemiesDefeated?.Invoke();
             }
             
-            if (_enemiesRemainingInRound > 0)
-            {
-                return;
-            }
-
+            Events_Seed.OnEnemiesDefeated?.Invoke();
             EndCurrentRound();
 
             if (_currentRound.Value >= _maxRounds.Value)
@@ -139,8 +128,6 @@ namespace Managers
             { 
                 StartNextRoundAfterDelay().Forget();
             }
-            
-           
         }
 
         private void EndCurrentRound()
@@ -214,8 +201,9 @@ namespace Managers
             int spawnCount = BuildSpawnCount(_currentRound.Value);
             EnemyStatMultipliers multipliers = BuildStatMultipliers(_currentRound.Value);
 
-            _enemiesRemainingInRound = _enemySpawnManager.SpawnEnemies(spawnCount, _currentRound.Value, multipliers);
-            _roundStarted = _enemiesRemainingInRound > 0;
+            _roundStarted = false; // Ensure false while spawning
+            int spawnedCount = _enemySpawnManager.SpawnEnemies(spawnCount, _currentRound.Value, multipliers);
+            _roundStarted = spawnedCount > 0;
 
             if (!_roundStarted)
             {
