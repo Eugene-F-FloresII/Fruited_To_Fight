@@ -23,9 +23,9 @@ namespace Managers
         [SerializeField] private IntVariable _activeEnemyCount;
         
         [Header("Multiplicative Scaling")]
-        [SerializeField] private float _healthGrowthPerRound = 1.15f;
-        [SerializeField] private float _damageGrowthPerRound = 1.10f;
-        [SerializeField] private float _moveSpeedGrowthPerRound = 1.05f;
+        [SerializeField] private float _healthGrowthPerRound = 1.10f;
+        [SerializeField] private float _damageGrowthPerRound = 1.02f;
+        [SerializeField] private float _moveSpeedGrowthPerRound = 1.02f;
         [SerializeField] private float _attackSpeedGrowthPerRound = 1.04f;
         [SerializeField] private float _knockbackGrowthPerRound = 1.05f;
         
@@ -33,6 +33,7 @@ namespace Managers
         private UpgradesManager _upgradesManager;
         
         private bool _roundStarted;
+        private int _enemiesRemainingToSpawn;
         private bool _isTransitioning;
         private bool _hasReachedMaxRounds;
 
@@ -112,7 +113,7 @@ namespace Managers
 
         private void HandleActiveEnemyCountChanged(int currentCount)
         {
-            if (!_roundStarted || currentCount > 0)
+            if (!_roundStarted || _enemiesRemainingToSpawn > 0 || currentCount > 0)
             {
                 return;
             }
@@ -197,17 +198,20 @@ namespace Managers
                 Events_Upgrades.OnRoundStarted?.Invoke();
             }
            
-
             int spawnCount = BuildSpawnCount(_currentRound.Value);
             EnemyStatMultipliers multipliers = BuildStatMultipliers(_currentRound.Value);
 
-            _roundStarted = false; // Ensure false while spawning
-            int spawnedCount = _enemySpawnManager.SpawnEnemies(spawnCount, _currentRound.Value, multipliers);
-            _roundStarted = spawnedCount > 0;
+            _roundStarted = false; // Ensure false while initializing spawner
+            _enemiesRemainingToSpawn = spawnCount;
 
-            if (!_roundStarted)
+            if (spawnCount > 0)
             {
-                Debug.LogWarning($"Round {_currentRound.Value} spawned 0 enemies.", this);
+                SpawnEnemiesOverTime(spawnCount, _currentRound.Value, multipliers, _roundFlowCts.Token).Forget();
+            }
+            else
+            {
+                Debug.LogWarning($"Round {_currentRound.Value} has 0 enemies to spawn.", this);
+                HandleActiveEnemyCountChanged(0);
             }
         }
 
@@ -246,9 +250,8 @@ namespace Managers
 
         private int BuildSpawnCount(int roundIndex)
         {
-            int additionalSpawns = Mathf.Max(0, roundIndex - 1) * _spawnIncrementPerRound;
-            int spawnCount = _firstRoundSpawnCount + additionalSpawns;
-
+            int elapsedRounds = Mathf.Max(0, roundIndex - 1);
+            int spawnCount = Mathf.RoundToInt(15f + elapsedRounds * 4.2f + elapsedRounds * elapsedRounds * 0.2f);
             return Mathf.Max(0, spawnCount);
         }
 
@@ -263,6 +266,46 @@ namespace Managers
                 Mathf.Pow(Mathf.Max(0.01f, _attackSpeedGrowthPerRound), growthStep),
                 Mathf.Pow(Mathf.Max(0.01f, _knockbackGrowthPerRound), growthStep)
             );
+        }
+
+        private float GetSpawnDelay(int round)
+        {
+            return Mathf.Max(0.1f, 1.0f - round * 0.02f);
+        }
+
+        private async UniTaskVoid SpawnEnemiesOverTime(int totalSpawnCount, int round, EnemyStatMultipliers multipliers, CancellationToken token)
+        {
+            _roundStarted = true;
+            
+            for (int i = 0; i < totalSpawnCount; i++)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    break;
+                }
+
+                bool spawned = _enemySpawnManager.SpawnSingleEnemy(round, multipliers);
+                if (spawned)
+                {
+                    _enemiesRemainingToSpawn--;
+                }
+                else
+                {
+                    _enemiesRemainingToSpawn--;
+                }
+
+                if (i < totalSpawnCount - 1)
+                {
+                    float delay = GetSpawnDelay(round);
+                    int delayMs = Mathf.Max(100, Mathf.RoundToInt(delay * 1000f));
+                    await UniTask.Delay(delayMs, cancellationToken: token);
+                }
+            }
+
+            if (_enemiesRemainingToSpawn == 0 && _activeEnemyCount.Value == 0)
+            {
+                HandleActiveEnemyCountChanged(0);
+            }
         }
 
         private void DisposeRoundFlowToken()

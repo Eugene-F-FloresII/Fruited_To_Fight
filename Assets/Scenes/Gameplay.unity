@@ -25394,15 +25394,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a6947ced72dcc4d82377cd87a713a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Managers.RoundManager
-  _firstRoundSpawnCount: 10
+  _firstRoundSpawnCount: 15
   _spawnIncrementPerRound: 1
   _nextRoundDelaySeconds: 10
   _currentRound: {fileID: 11400000, guid: a2420f190c4aea844900cc6cda5faeea, type: 2}
   _maxRounds: {fileID: 11400000, guid: dd6611b2ef6460644aef18dc8ba16894, type: 2}
   _activeEnemyCount: {fileID: 11400000, guid: a2f91ca57845bbd44a373ab4e7140224, type: 2}
-  _healthGrowthPerRound: 1.15
-  _damageGrowthPerRound: 1.1
-  _moveSpeedGrowthPerRound: 1.05
+  _healthGrowthPerRound: 1.1
+  _damageGrowthPerRound: 1.02
+  _moveSpeedGrowthPerRound: 1.02
   _attackSpeedGrowthPerRound: 1.04
   _knockbackGrowthPerRound: 1.05
 --- !u!4 &1284031687

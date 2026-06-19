@@ -240,7 +240,7 @@ namespace Controllers
         public int GotHitByEnemy()
         {
             if (_enemyConfig == null) return 0;
-            return (int)_enemyConfig.EnemyDamage;
+            return Mathf.RoundToInt(_currentDamage);
         }
 
         public void ApplyRuntimeStats(EnemyRuntimeStats runtimeStats)

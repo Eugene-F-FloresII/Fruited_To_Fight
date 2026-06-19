@@ -106,12 +106,12 @@ namespace Managers
             return null;
         }
         
-        public int SpawnEnemies(int enemyCount, int currentRound, EnemyStatMultipliers multipliers)
+        public bool SpawnSingleEnemy(int currentRound, EnemyStatMultipliers multipliers)
         {
             if (!_isInitialized)
             {
                 Debug.LogWarning("EnemySpawnManager is not initialized yet.", this);
-                return 0;
+                return false;
             }
 
             if (_camera == null)
@@ -122,39 +122,46 @@ namespace Managers
             if (_camera == null || _playerController == null)
             {
                 Debug.LogWarning("EnemySpawnManager is missing camera or player reference.", this);
-                return 0;
+                return false;
             }
 
+            EnemyConfig config = GetRandomVariantConfig(currentRound);
+            if (config == null) return false;
+
+            EnemyController enemy = GetPooledEnemy(config.EnemyID);
+            if (enemy == null) return false;
+
+            Transform enemyTransform = enemy.gameObject.transform;
+            enemyTransform.position = _spawnMode == SpawnMode.CameraEdge 
+                ? GetEdgeSpawnPosition() 
+                : GetAroundTargetSpawnPosition();
+            
+            enemyTransform.rotation = Quaternion.identity;
+            enemy.InitializePlayer(_playerController);
+            
+            EnemyRuntimeStats scaledStats = new EnemyRuntimeStats(
+                config.EnemyHealth * multipliers.HealthMultiplier,
+                config.EnemyDamage * multipliers.DamageMultiplier,
+                config.EnemyMoveSpeed * multipliers.MoveSpeedMultiplier,
+                config.EnemyAtkSpeed * multipliers.AttackSpeedMultiplier,
+                config.EnemyKnockbackForce * multipliers.KnockbackMultiplier
+            );
+            
+            enemy.ApplyRuntimeStats(scaledStats);
+            return true;
+        }
+
+        public int SpawnEnemies(int enemyCount, int currentRound, EnemyStatMultipliers multipliers)
+        {
             int spawnCount = Mathf.Max(0, enemyCount);
             int spawnedEnemies = 0;
 
             for (int i = 0; i < spawnCount; i++)
             {
-                EnemyConfig config = GetRandomVariantConfig(currentRound);
-                if (config == null) continue;
-
-                EnemyController enemy = GetPooledEnemy(config.EnemyID);
-                if (enemy == null) continue;
-
-                Transform enemyTransform = enemy.gameObject.transform;
-                enemyTransform.position = _spawnMode == SpawnMode.CameraEdge 
-                    ? GetEdgeSpawnPosition() 
-                    : GetAroundTargetSpawnPosition();
-                
-                enemyTransform.rotation = Quaternion.identity;
-                enemy.InitializePlayer(_playerController);
-                
-                EnemyRuntimeStats scaledStats = new EnemyRuntimeStats(
-                    config.EnemyHealth * multipliers.HealthMultiplier,
-                    config.EnemyDamage * multipliers.DamageMultiplier,
-                    config.EnemyMoveSpeed * multipliers.MoveSpeedMultiplier,
-                    config.EnemyAtkSpeed * multipliers.AttackSpeedMultiplier,
-                    config.EnemyKnockbackForce * multipliers.KnockbackMultiplier
-                );
-                
-                enemy.ApplyRuntimeStats(scaledStats);
-
-                spawnedEnemies++;
+                if (SpawnSingleEnemy(currentRound, multipliers))
+                {
+                    spawnedEnemies++;
+                }
             }
 
             return spawnedEnemies;
