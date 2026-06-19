@@ -1,6 +1,8 @@
 using UnityEngine;
 using Controllers;
 using Collection;
+using Shared.Events;
+using Shared.Enums;
 
 namespace Gameplay.Weapons
 {
@@ -32,7 +34,7 @@ namespace Gameplay.Weapons
                 if (collider.TryGetComponent(out EnemyController enemy))
                 {
                     // Apply damage and knockback
-                    enemy.TakeDamage(_weaponConfig.WeaponDamage, transform.position, _weaponConfig.WeaponKnockback);
+                    enemy.TakeDamage(_weaponConfig.WeaponDamage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(_weaponConfig.WeaponClass));
 
                     // Apply afflictions
                     if (_weaponConfig.Afflictions != null)

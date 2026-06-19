@@ -19,6 +19,39 @@ namespace Gameplay
         [SerializeField] private float _floatDuration = 0.4f;
         [SerializeField] private Vector2 _spawnOffsetRange = new(0.12f, 0.08f);
 
+        [System.Serializable]
+        public struct WeaponColorConfig
+        {
+            public Shared.Enums.WeaponClass WeaponClass;
+            public Color Color;
+        }
+
+        [System.Serializable]
+        public struct AfflictionColorConfig
+        {
+            public Shared.Enums.AfflictionType AfflictionType;
+            public Color Color;
+        }
+
+        [System.Serializable]
+        public struct WispColorConfig
+        {
+            public Shared.Enums.WispType WispType;
+            public Color Color;
+        }
+
+        [Header("Damage Color Settings")]
+        [SerializeField] private Color _defaultDamageColor = Color.white;
+        [SerializeField] private List<WeaponColorConfig> _weaponColors = new()
+        {
+            new WeaponColorConfig { WeaponClass = Shared.Enums.WeaponClass.Tomahawk, Color = Color.gray }
+        };
+        [SerializeField] private List<AfflictionColorConfig> _afflictionColors = new()
+        {
+            new AfflictionColorConfig { AfflictionType = Shared.Enums.AfflictionType.Burn, Color = new Color(1f, 0.45f, 0f) }
+        };
+        [SerializeField] private List<WispColorConfig> _wispColors = new();
+
         private readonly Queue<DamageNumber> _pool = new();
         private readonly HashSet<DamageNumber> _activeDamageNumbers = new();
 
@@ -39,18 +72,17 @@ namespace Gameplay
             Events_Enemy.OnEnemyHit += OnEnemyHit;
         }
 
-        
         private void OnDisable()
         {
             Events_Enemy.OnEnemyHit -= OnEnemyHit;
         }
 
-        private void OnEnemyHit(Vector2 arg1, int arg2)
+        private void OnEnemyHit(Vector2 position, int damage, DamageSourceInfo sourceInfo)
         {
-            SpawnDamageNumberAsync(arg1, arg2).Forget();
+            SpawnDamageNumberAsync(position, damage, sourceInfo).Forget();
         }
 
-        private async UniTaskVoid SpawnDamageNumberAsync(Vector2 position, int damage)
+        private async UniTaskVoid SpawnDamageNumberAsync(Vector2 position, int damage, DamageSourceInfo sourceInfo)
         {
             var damageNumber = GetDamageNumber();
             if (damageNumber == null)
@@ -63,7 +95,10 @@ namespace Gameplay
             damageNumberTransform.position = position + GetRandomOffset();
 
             damageNumber.gameObject.SetActive(true);
-            damageNumber.InitiateDamageNumber(damage);
+            
+            Color textColor = GetDamageColor(sourceInfo);
+            damageNumber.InitiateDamageNumber(damage, textColor);
+            
             damageNumber.PlayShowTweenAsync(_popDuration, _settleDuration, _floatDistance, _floatDuration).Forget();
 
             try
@@ -75,6 +110,38 @@ namespace Gameplay
             {
                 Return(damageNumber);
             }
+        }
+
+        public Color GetDamageColor(DamageSourceInfo sourceInfo)
+        {
+            if (sourceInfo.IsAffliction)
+            {
+                foreach (var config in _afflictionColors)
+                {
+                    if (config.AfflictionType == sourceInfo.AfflictionType)
+                        return config.Color;
+                }
+            }
+
+            if (sourceInfo.IsWeapon)
+            {
+                foreach (var config in _weaponColors)
+                {
+                    if (config.WeaponClass == sourceInfo.WeaponClass)
+                        return config.Color;
+                }
+            }
+
+            if (sourceInfo.IsWisp)
+            {
+                foreach (var config in _wispColors)
+                {
+                    if (config.WispType == sourceInfo.WispType)
+                        return config.Color;
+                }
+            }
+
+            return _defaultDamageColor;
         }
 
         public void Return(DamageNumber damageNumber)
@@ -131,6 +198,5 @@ namespace Gameplay
                 Random.Range(-_spawnOffsetRange.y, _spawnOffsetRange.y),
                 0f);
         }
-
     }
 }

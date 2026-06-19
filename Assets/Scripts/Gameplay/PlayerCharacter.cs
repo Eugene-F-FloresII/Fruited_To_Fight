@@ -65,7 +65,6 @@ namespace Gameplay
             GameObject activeCharacter = _characters[_characterConfig.CharacterId];
             if (activeCharacter != null && activeCharacter.TryGetComponent(out SpriteRenderer sr))
             {
-                Debug.Log("Got Sprite");
                 sr.flipX = flipX;
             }
         }

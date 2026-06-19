@@ -31,12 +31,13 @@ namespace Gameplay
             transform.localPosition = _baseLocalPosition;
         }
 
-        public void InitiateDamageNumber(int damageNum)
+        public void InitiateDamageNumber(int damageNum, Color color)
         {
             DamageNum = damageNum;
             if (_damageNumbers != null)
             {
                 _damageNumbers.text = DamageNum.ToString();
+                _damageNumbers.color = color;
             }
         }
 

@@ -8,6 +8,7 @@ using Gameplay;
 using Gameplay.Weapons;
 using Obvious.Soap;
 using Shared.Events;
+using Shared.Enums;
 using UnityEngine.AddressableAssets;
 using Random = System.Random;
 using Collection;
@@ -185,10 +186,20 @@ namespace Controllers
             
             EnemyKnockBack(_projectileDirection, projectile.GetWeaponKnockback(), 0.3f, _knockbackCts.Token).Forget();
             
-            ApplyDamage(damage);
+            WeaponClass weaponClass = WeaponClass.None;
+            if (projectile != null && projectile.WeaponConfig != null)
+            {
+                weaponClass = projectile.WeaponConfig.WeaponClass;
+            }
+            ApplyDamage(damage, DamageSourceInfo.FromWeapon(weaponClass));
         }
 
         public void TakeDamage(float damage, Vector2 sourcePosition, float knockbackForce)
+        {
+            TakeDamage(damage, sourcePosition, knockbackForce, DamageSourceInfo.Default);
+        }
+
+        public void TakeDamage(float damage, Vector2 sourcePosition, float knockbackForce, DamageSourceInfo sourceInfo)
         {
             Vector2 knockbackDirection = ((Vector2)transform.position - sourcePosition).normalized;
             
@@ -202,18 +213,23 @@ namespace Controllers
             
             EnemyKnockBack(knockbackDirection, knockbackForce, 0.3f, _knockbackCts.Token).Forget();
             
-            ApplyDamage(damage);
+            ApplyDamage(damage, sourceInfo);
         }
 
         public void TakeDamage(float damage)
         {
-            ApplyDamage(damage);
+            ApplyDamage(damage, DamageSourceInfo.Default);
         }
 
-        private void ApplyDamage(float damage)
+        public void TakeDamage(float damage, DamageSourceInfo sourceInfo)
+        {
+            ApplyDamage(damage, sourceInfo);
+        }
+
+        private void ApplyDamage(float damage, DamageSourceInfo sourceInfo)
         {
             _currentHealth -= damage;
-            Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage));
+            Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage), sourceInfo);
             
             if (_hitEffectCts != null)
             {

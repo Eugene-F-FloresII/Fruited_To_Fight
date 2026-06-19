@@ -4,6 +4,8 @@ using Cysharp.Threading.Tasks;
 using Controllers;
 using Data;
 using UnityEngine;
+using Shared.Events;
+using Shared.Enums;
 
 namespace Collection
 {
@@ -29,7 +31,7 @@ namespace Collection
                     await UniTask.Delay(TimeSpan.FromSeconds(1), cancellationToken: token);
                     if (Enemy != null && Enemy.gameObject.activeInHierarchy)
                     {
-                        Enemy.TakeDamage(Config.Power);
+                        Enemy.TakeDamage(Config.Power, DamageSourceInfo.FromAffliction(AfflictionType.Burn));
                     }
                 }
             }

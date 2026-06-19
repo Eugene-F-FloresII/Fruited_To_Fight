@@ -2,6 +2,8 @@ using UnityEngine;
 using Controllers;
 using Cysharp.Threading.Tasks;
 using System;
+using Shared.Events;
+using Shared.Enums;
 
 namespace Collection
 {
@@ -53,7 +55,7 @@ namespace Collection
             {
                 if (hitCollider.TryGetComponent(out EnemyController enemy))
                 {
-                    enemy.TakeDamage(damage);
+                    enemy.TakeDamage(damage, DamageSourceInfo.FromAffliction(AfflictionType.Lightning));
                     Destroy(_lightningGameObject, 1f);
                 }
             }

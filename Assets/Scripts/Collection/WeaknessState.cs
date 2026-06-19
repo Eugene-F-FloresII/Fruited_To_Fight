@@ -1,6 +1,9 @@
 
 
 
+using Shared.Events;
+using Shared.Enums;
+
 namespace Collection
 {
     public class WeaknessState : AfflictionState
@@ -16,7 +19,7 @@ namespace Collection
             if (Enemy != null)
             {
                 float damage = Enemy.CurrentHealth * 0.1f;
-                Enemy.TakeDamage(damage);
+                Enemy.TakeDamage(damage, DamageSourceInfo.FromAffliction(AfflictionType.Weakness));
             }
         }
     }

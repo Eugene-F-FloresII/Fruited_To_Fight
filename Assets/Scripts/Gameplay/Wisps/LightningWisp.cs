@@ -5,6 +5,8 @@ using Controllers;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
+using Shared.Events;
+using Shared.Enums;
 
 namespace Gameplay.Wisps
 {
@@ -94,7 +96,7 @@ namespace Gameplay.Wisps
 
             if (_wispConfig != null)
             {
-                currentTarget.TakeDamage(_wispConfig.Damage);
+                currentTarget.TakeDamage(_wispConfig.Damage, DamageSourceInfo.FromWisp(WispType.Lightning));
 
                 if (_wispConfig.Afflictions != null)
                 {

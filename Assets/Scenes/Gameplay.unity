@@ -25490,6 +25490,18 @@ MonoBehaviour:
   _floatDistance: 0.35
   _floatDuration: 0.4
   _spawnOffsetRange: {x: 0.12, y: 0.08}
+  _defaultDamageColor: {r: 1, g: 1, b: 1, a: 1}
+  _weaponColors:
+  - WeaponClass: 2
+    Color: {r: 0.5999999, g: 0.5999999, b: 0.5999999, a: 1}
+  _afflictionColors:
+  - AfflictionType: 1
+    Color: {r: 0.9622642, g: 0.6569052, b: 0.2741545, a: 1}
+  - AfflictionType: 4
+    Color: {r: 0.3679244, g: 0.5278941, b: 1, a: 1}
+  _wispColors:
+  - WispType: 3
+    Color: {r: 0.29773572, g: 0.47379416, b: 0.9924528, a: 1}
 --- !u!114 &1587301482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25905,7 +25917,8 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   _pooledTransform: {fileID: 2093485543}
-  _seedsAmountToPool: 20
+  _defaultSeedsToPool: 100
+  _maxSeedsInPool: 100
   _seedSeeker: {fileID: 1337374406}
 --- !u!4 &2036624581
 Transform:

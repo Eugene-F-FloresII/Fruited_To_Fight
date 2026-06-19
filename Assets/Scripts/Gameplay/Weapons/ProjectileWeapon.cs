@@ -12,6 +12,7 @@ namespace Gameplay.Weapons
     {
         [Header("Weapon Config")]
         [SerializeField] protected WeaponConfig _weaponConfig;
+        public WeaponConfig WeaponConfig => _weaponConfig;
         
         [Header("Weapon References")] 
         [SerializeField] private ProjectileWeaponHoming ProjectileWeaponHoming;
