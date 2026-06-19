@@ -22,7 +22,7 @@ namespace Gameplay.Seed
                 
                 Events_Sound.PlaySound?.Invoke(_audioClip);
                 
-                seed.gameObject.SetActive(false);
+                seed.Collect();
             }
         }
     }

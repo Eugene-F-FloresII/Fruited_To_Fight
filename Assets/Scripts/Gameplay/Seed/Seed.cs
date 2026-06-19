@@ -1,3 +1,4 @@
+using System;
 using Collection;
 using Controllers;
 using Data;
@@ -133,9 +134,18 @@ namespace Gameplay.Seed
             }
         }
 
-        public void Initialize(SeedSeeker seedSeeker)
+        private Action<Seed> _onCollect;
+
+        public void Initialize(SeedSeeker seedSeeker, Action<Seed> onCollect)
         {
             _seedSeeker = seedSeeker;
+            _onCollect = onCollect;
+        }
+
+        public void Collect()
+        {
+            gameObject.SetActive(false);
+            _onCollect?.Invoke(this);
         }
     }
 

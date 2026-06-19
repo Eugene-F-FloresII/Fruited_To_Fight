@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Gameplay.Seed;
 using Shared.Events;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Pool;
 
 namespace Managers
 {
@@ -16,12 +17,13 @@ namespace Managers
 
         [Header("Object Pooling Settings")]
         [SerializeField] private Transform _pooledTransform;
-        [SerializeField] private int _seedsAmountToPool = 20;
+        [SerializeField] private int _defaultSeedsToPool = 100;
+        [SerializeField] private int _maxSeedsInPool = 100;
         [SerializeField] private SeedSeeker _seedSeeker;
         
         private SeedConfig _seedConfig;
         private Seed _pooledSeed;
-        private Queue<Seed> _pooledSeeds = new();
+        private ObjectPool<Seed> _seedPool;
         private bool _isInitialized;
         private bool _isInitializing;
 
@@ -79,7 +81,7 @@ namespace Managers
                     Debug.LogWarning($"{nameof(SeedsManager)} has no {nameof(SeedSeeker)} assigned. Spawned seeds will not follow the player.", this);
                 }
 
-                PoolSeeds();
+                InitializePool();
                 _isInitialized = true;
             }
             catch (Exception ex)
@@ -92,42 +94,74 @@ namespace Managers
             }
         }
 
-        private void PoolSeeds()
+        private void InitializePool()
         {
-            _pooledSeeds = new Queue<Seed>();
+            _seedPool = new ObjectPool<Seed>(
+                createFunc: CreateSeedInstance,
+                actionOnGet: OnTakeSeedFromPool,
+                actionOnRelease: OnReturnedSeedToPool,
+                actionOnDestroy: OnDestroyPoolObject,
+                collectionCheck: false,
+                defaultCapacity: _defaultSeedsToPool,
+                maxSize: _maxSeedsInPool
+            );
 
-            for (int i = 0; i < _seedsAmountToPool; i++)
+            // Pre-warm the pool to create initial instances
+            List<Seed> prewarmedSeeds = new List<Seed>(_defaultSeedsToPool);
+            for (int i = 0; i < _defaultSeedsToPool; i++)
             {
-                Seed pooledInstance = Instantiate(_pooledSeed, _pooledTransform);
-                pooledInstance.Initialize(_seedSeeker);
-                pooledInstance.gameObject.SetActive(false);
-                _pooledSeeds.Enqueue(pooledInstance);
+                prewarmedSeeds.Add(_seedPool.Get());
+            }
+            foreach (var seed in prewarmedSeeds)
+            {
+                _seedPool.Release(seed);
+            }
+        }
+
+        private Seed CreateSeedInstance()
+        {
+            Seed pooledInstance = Instantiate(_pooledSeed, _pooledTransform);
+            pooledInstance.gameObject.SetActive(false);
+            pooledInstance.Initialize(_seedSeeker, ReleaseSeed);
+            return pooledInstance;
+        }
+
+        private void ReleaseSeed(Seed seed)
+        {
+            if (_seedPool != null)
+            {
+                _seedPool.Release(seed);
+            }
+        }
+
+        private void OnTakeSeedFromPool(Seed seed)
+        {
+            // Handled explicitly in HandleEnemyDeath to prevent visual/position glitch
+        }
+
+        private void OnReturnedSeedToPool(Seed seed)
+        {
+            if (seed != null)
+            {
+                seed.gameObject.SetActive(false);
+            }
+        }
+
+        private void OnDestroyPoolObject(Seed seed)
+        {
+            if (seed != null)
+            {
+                Destroy(seed.gameObject);
             }
         }
 
         private Seed GetPooledSeed()
         {
-            if (_pooledSeeds == null || _pooledSeeds.Count == 0)
+            if (_seedPool == null)
             {
-                Debug.LogWarning("No seeds left in pool", this);
                 return null;
             }
-
-            int poolSize = _pooledSeeds.Count;
-
-            for (int i = 0; i < poolSize; i++)
-            {
-                Seed seed = _pooledSeeds.Dequeue();
-                _pooledSeeds.Enqueue(seed);
-
-                if (seed != null && !seed.gameObject.activeSelf)
-                {
-                    return seed;
-                }
-            }
-
-            Debug.LogWarning("All pooled seeds are currently active", this);
-            return null;
+            return _seedPool.Get();
         }
 
         private void HandleEnemyDeath(Transform enemyTransform)
