@@ -117,8 +117,6 @@ namespace Managers
             {
                 return;
             }
-            
-            Events_Seed.OnEnemiesDefeated?.Invoke();
             EndCurrentRound();
 
             if (_currentRound.Value >= _maxRounds.Value)

@@ -7,7 +7,6 @@ namespace Shared.Events
     {
         //for testing
         public static Action<Transform> OnEnemyDeath;
-        public static Action OnEnemiesDefeated;
     }
 
 }
