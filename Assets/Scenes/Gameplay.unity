@@ -25493,15 +25493,15 @@ MonoBehaviour:
   _defaultDamageColor: {r: 1, g: 1, b: 1, a: 1}
   _weaponColors:
   - WeaponClass: 2
-    Color: {r: 0.5999999, g: 0.5999999, b: 0.5999999, a: 1}
+    Color: {r: 0.7509433, g: 0.7466927, b: 0.7466927, a: 1}
   _afflictionColors:
   - AfflictionType: 1
-    Color: {r: 0.9622642, g: 0.6569052, b: 0.2741545, a: 1}
+    Color: {r: 0.9924528, g: 0.75598687, b: 0.45503017, a: 1}
   - AfflictionType: 4
-    Color: {r: 0.3679244, g: 0.5278941, b: 1, a: 1}
+    Color: {r: 0.5264151, g: 0.6470175, b: 1, a: 1}
   _wispColors:
   - WispType: 3
-    Color: {r: 0.29773572, g: 0.47379416, b: 0.9924528, a: 1}
+    Color: {r: 0.51886785, g: 0.6411896, b: 1, a: 1}
 --- !u!114 &1587301482
 MonoBehaviour:
   m_ObjectHideFlags: 0
