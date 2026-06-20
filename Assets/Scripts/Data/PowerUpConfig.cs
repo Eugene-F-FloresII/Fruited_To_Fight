@@ -11,8 +11,12 @@ namespace Data
         public float DespawnDuration;
         public AudioClip PowerUpSound;
 
+        [Header("Attraction Settings")]
+        public float AttractionRadius = 5f;
+        public float FollowSpeed = 5f;
+
         [Header("Healing Potion Settings")] 
-        public float HealAmount;
+        public float HealAmount = 25f;
     }
 
 

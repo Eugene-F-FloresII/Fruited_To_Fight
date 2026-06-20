@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Obvious.Soap::Obvious.Soap.FloatVariable
   TagIndex: 0
   Description: 
-  _guid: 667dbaa064bdea946bc3b9e0b0d6f2e5
+  _guid: b962481d1e4515941b6799f73e79849c
   _saveGuid: 0
-  _value: 0
+  _value: 100
   _debugLogEnabled: 0
   _saved: 0
   _defaultValue: 0

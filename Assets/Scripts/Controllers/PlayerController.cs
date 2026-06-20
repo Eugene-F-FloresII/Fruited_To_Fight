@@ -23,8 +23,7 @@ namespace Controllers
         [SerializeField] private PlayerCharacter _playerCharacter;
         [SerializeField] private Rigidbody2D _rb;
         [SerializeField] private BoxCollider2D _boxCollider;
-        [SerializeField] private FloatVariable _characterHealth;
-        [SerializeField] private FloatVariable _characterMaxHealth;
+        [SerializeField] private PlayerHealth _characterHealthComponent;
         [SerializeField] private Vector2Variable _moveDirection;
         
         [Header("Player Settings")]
@@ -73,6 +72,10 @@ namespace Controllers
         private void OnEnable()
         {
             Events_Character.OnCharacterChosen += ChosenCharacter;
+            if (_characterHealthComponent != null)
+            {
+                _characterHealthComponent.OnDeath += GameOver;
+            }
             
             UpdatePlayerStats();
             
@@ -82,6 +85,10 @@ namespace Controllers
         private void OnDisable()
         {
             Events_Character.OnCharacterChosen -= ChosenCharacter;
+            if (_characterHealthComponent != null)
+            {
+                _characterHealthComponent.OnDeath -= GameOver;
+            }
             MovementInput.action.Disable();
             
             _knockBackCts?.Cancel();  
@@ -109,14 +116,16 @@ namespace Controllers
             if(_isKnockedBack) return;
             if (other.TryGetComponent(out EnemyController enemy))
             {
-                _characterHealth.Value -= enemy.GotHitByEnemy();
-
-                if (_characterHealth.Value <= 0)
+                if (_characterHealthComponent != null)
                 {
-                    GameOver();
-                    return;
+                    _characterHealthComponent.TakeDamage(enemy.GotHitByEnemy());
+                    if (_characterHealthComponent.CurrentHealth <= 0)
+                    {
+                        GameOver();
+                        return;
+                    }
                 }
-                
+
                 _enemyDirection = (transform.position - enemy.transform.position).normalized;
                 
                 _knockBackCts = new CancellationTokenSource();
@@ -182,8 +191,10 @@ namespace Controllers
             
             
             _playerCharacterAnimator = _playerCharacter.CharacterAnimator;
-            _characterHealth.Value = CharacterConfig.CharacterHealth;
-            _characterMaxHealth.Value = CharacterConfig.CharacterHealth;
+            if (_characterHealthComponent != null)
+            {
+                _characterHealthComponent.InitializeHealth(CharacterConfig.CharacterHealth);
+            }
         }
 
         private float CalculateKnockbackResistance(float maxKnockbackForce,float knockbackResistance)

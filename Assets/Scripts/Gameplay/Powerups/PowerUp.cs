@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using Data;
 using UnityEngine;
 using Controllers;
+using Collection;
 
 namespace Gameplay.Powerups
 {
@@ -11,82 +12,108 @@ namespace Gameplay.Powerups
     {
         [SerializeField] protected PowerUpConfig _powerUpConfig;
 
-        [Header("Attraction Settings")]
-        [SerializeField] protected float _followSpeed = 5f;
-        [SerializeField] protected Collider2D _collectionCollider;
+        public PowerUpConfig PowerUpConfig => _powerUpConfig;
 
-        protected PlayerController _targetPlayer;
+        protected PlayerController _playerController;
         protected Rigidbody2D _rb;
         private CancellationTokenSource _despawnCts;
+
+        private float _followSpeed;
+        private float _attractionRadius;
+        private bool _isInitialized;
+        private bool _isInitializing;
 
         protected virtual void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
         }
 
+        protected virtual void Start()
+        {
+            EnsureInitialized().Forget();
+        }
+
         protected virtual void OnEnable()
         {
-            _targetPlayer = null;
+            EnsureInitialized().Forget();
             PowerUpDurationAsync().Forget();
         }
 
         protected virtual void OnDisable()
         {
             CancelDespawnTimer();
+            if (_rb != null)
+            {
+                _rb.linearVelocity = Vector2.zero;
+            }
         }
 
         protected virtual void FixedUpdate()
         {
-            if (_targetPlayer == null) return;
+            FollowPlayer();
+        }
+
+        private async UniTask EnsureInitialized()
+        {
+            if (_isInitialized || _isInitializing)
+            {
+                return;
+            }
+
+            _isInitializing = true;
+
+            try
+            {
+                _playerController = ServiceLocator.Get<PlayerController>();
+                if (_powerUpConfig != null)
+                {
+                    _followSpeed = _powerUpConfig.FollowSpeed;
+                    _attractionRadius = _powerUpConfig.AttractionRadius;
+                }
+                _isInitialized = true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex, this);
+            }
+            finally
+            {
+                _isInitializing = false;
+            }
+        }
+
+        protected virtual void FollowPlayer()
+        {
+            if (!_isInitialized || _playerController == null)
+            {
+                return;
+            }
 
             Vector2 currentPosition = _rb != null ? _rb.position : (Vector2)transform.position;
-            Vector2 targetPosition = _targetPlayer.transform.position;
+            Vector2 targetPosition = _playerController.transform.position;
+            float sqrDistance = (targetPosition - currentPosition).sqrMagnitude;
+            float sqrRadius = _attractionRadius * _attractionRadius;
+
+            if (sqrDistance > sqrRadius)
+            {
+                return;
+            }
+
+            // Cancel despawn timer once the player is in range/attracting the power-up
+            CancelDespawnTimer();
+
             Vector2 nextPosition = Vector2.MoveTowards(currentPosition, targetPosition, _followSpeed * Time.fixedDeltaTime);
 
             if (_rb != null)
             {
                 _rb.MovePosition(nextPosition);
+                return;
             }
-            else
-            {
-                transform.position = nextPosition;
-            }
+
+            transform.position = nextPosition;
         }
 
-        protected virtual void OnTriggerStay2D(Collider2D other)
-        {
-            if (other.TryGetComponent(out PlayerController player))
-            {
-                if (_targetPlayer == null)
-                {
-                    StartFollowing(player);
-                }
-
-                if (_collectionCollider != null)
-                {
-                    if (other.IsTouching(_collectionCollider))
-                    {
-                        Collect();
-                    }
-                }
-                else
-                {
-                    // Fallback: collect if distance is very small
-                    if (Vector2.Distance(transform.position, other.transform.position) < 0.3f)
-                    {
-                        Collect();
-                    }
-                }
-            }
-        }
-
-        public virtual void StartFollowing(PlayerController player)
-        {
-            _targetPlayer = player;
-            CancelDespawnTimer();
-        }
-
-        protected virtual void Collect()
+        public virtual void Collect()
         {
             UsePowerUp();
             gameObject.SetActive(false);
@@ -111,10 +138,7 @@ namespace Gameplay.Powerups
 
                 await UniTask.Delay(TimeSpan.FromSeconds(_powerUpConfig.DespawnDuration), cancellationToken: linkedCts.Token);
                 
-                if (_targetPlayer == null)
-                {
-                    gameObject.SetActive(false);
-                }
+                gameObject.SetActive(false);
             }
             catch (OperationCanceledException)
             {

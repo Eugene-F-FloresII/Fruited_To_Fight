@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: HealingPotion
   m_EditorClassIdentifier: Assembly-CSharp::Data.PowerUpConfig
   PowerUp: {fileID: 0}
-  PowerUpDuration: 0
-  DespawnDuration: 0
-  PowerUpSound: {fileID: 0}
+  PowerUpDuration: 5
+  DespawnDuration: 10
+  PowerUpSound: {fileID: 8300000, guid: 4c61dda5bbe5c5540afdaa3e00e02144, type: 3}
+  AttractionRadius: 5
+  FollowSpeed: 5
+  HealAmount: 25
