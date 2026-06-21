@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7045074839317cf4a82bdc54878621cb, type: 3}
   m_Name: HealingPotion
   m_EditorClassIdentifier: Assembly-CSharp::Data.PowerUpConfig
-  PowerUp: {fileID: 0}
+  PowerUp: {fileID: 5170380732870748366, guid: 19abfb4da9bc9944bb4ae42a2cc56f4b, type: 3}
   PowerUpDuration: 5
   DespawnDuration: 10
   PowerUpSound: {fileID: 8300000, guid: 4c61dda5bbe5c5540afdaa3e00e02144, type: 3}

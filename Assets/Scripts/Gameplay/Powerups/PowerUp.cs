@@ -17,6 +17,12 @@ namespace Gameplay.Powerups
         protected PlayerController _playerController;
         protected Rigidbody2D _rb;
         private CancellationTokenSource _despawnCts;
+        private Action<PowerUp> _onCollectedOrDespawned;
+
+        public void InitializePoolCallback(Action<PowerUp> callback)
+        {
+            _onCollectedOrDespawned = callback;
+        }
 
         private float _followSpeed;
         private float _attractionRadius;
@@ -117,6 +123,7 @@ namespace Gameplay.Powerups
         {
             UsePowerUp();
             gameObject.SetActive(false);
+            _onCollectedOrDespawned?.Invoke(this);
         }
 
         public virtual void UsePowerUp()
@@ -139,6 +146,7 @@ namespace Gameplay.Powerups
                 await UniTask.Delay(TimeSpan.FromSeconds(_powerUpConfig.DespawnDuration), cancellationToken: linkedCts.Token);
                 
                 gameObject.SetActive(false);
+                _onCollectedOrDespawned?.Invoke(this);
             }
             catch (OperationCanceledException)
             {

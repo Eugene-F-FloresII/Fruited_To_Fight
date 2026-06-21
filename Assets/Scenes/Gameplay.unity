@@ -25298,7 +25298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
   ImpulseDefinition:
     ImpulseChannel: 1
-    ImpulseShape: 2
+    ImpulseShape: 3
     CustomImpulseShape:
       serializedVersion: 2
       m_Curve: []
@@ -25775,6 +25775,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 919370835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1891604390
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1891604391}
+  m_Layer: 0
+  m_Name: PowerUps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1891604391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891604390}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2123374523}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1953535242
 GameObject:
   m_ObjectHideFlags: 0
@@ -26042,6 +26073,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2123374523}
+  - component: {fileID: 2123374524}
   m_Layer: 0
   m_Name: PowerUpManager
   m_TagString: Untagged
@@ -26061,9 +26093,31 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1891604391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2123374524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123374522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f615da9d6e0aaa47b344c8b400ca45f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Managers.PowerUpManager
+  _managerConfigReference:
+    m_AssetGUID: 76163264782142a4bac4f32c2b61da2f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  _pooledTransform: {fileID: 1891604391}
+  _defaultPowerUpsToPool: 50
+  _maxPowerUpsInPool: 50
 --- !u!1 &2124369936
 GameObject:
   m_ObjectHideFlags: 0
@@ -26186,6 +26240,7 @@ SceneRoots:
   - {fileID: 8475182404646661433}
   - {fileID: 542823201}
   - {fileID: 2124369937}
+  - {fileID: 2123374523}
   - {fileID: 1282125597}
   - {fileID: 2036624581}
   - {fileID: 919370835}
@@ -26197,4 +26252,3 @@ SceneRoots:
   - {fileID: 116994283}
   - {fileID: 1617472706}
   - {fileID: 863423470}
-  - {fileID: 2123374523}
