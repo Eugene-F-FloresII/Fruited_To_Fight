@@ -145,6 +145,11 @@ namespace Controllers
 
                 _button = Instantiate(upgrade.ButtonPrefab, _transform);
 
+                if (_seedCollected != null && _seedCollected.Value < upgrade.GetSeedPriceUpgrade())
+                {
+                    _button.interactable = false;
+                }
+
                 switch (upgrade.Category)
                 {
                     case UpgradesCategoryType.Damage:

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ad71cf4c49c044facbfeb688057eae, type: 3}
+  m_Name: Boss_RottedOrange
+  m_EditorClassIdentifier: Assembly-CSharp::Data.EnemyBossConfig
+  EnemyPrefab: {fileID: 8219122852226264418, guid: de1360d636a0b264fa735e4f9130e8be, type: 3}
+  EnemyID: 3
+  EnemyAmountToPool: 20
+  EnemyHealth: 2000
+  EnemyDamage: 40
+  EnemyMoveSpeed: 5
+  EnemyAtkSpeed: 10
+  EnemyKnockbackForce: 20

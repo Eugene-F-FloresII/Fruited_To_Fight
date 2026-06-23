@@ -14,7 +14,7 @@ namespace Data.Upgrades
                 return new UpgradeResult { Currency = seed, Value = initialValue};
             }
 
-            if (UpgradeLevel.Value > MaxLevel)
+            if (UpgradeLevel.Value >= MaxLevel)
             {
                 Debug.Log("Level Maxed");
                 IsMaxed = true;
@@ -64,7 +64,7 @@ namespace Data.Upgrades
 
         public override bool GetUpgradeLevelMaxed()
         {
-            return IsMaxed;
+            return UpgradeLevel.Value >= MaxLevel;
         }
 
         public override bool IsPierceCategoryType()

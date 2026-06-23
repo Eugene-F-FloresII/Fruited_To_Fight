@@ -25131,6 +25131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1031112902}
+  - component: {fileID: 1031112903}
   m_Layer: 0
   m_Name: EnemyBossSpawnManager
   m_TagString: Untagged
@@ -25154,6 +25155,32 @@ Transform:
   - {fileID: 1086864510}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1031112903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031112901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103a5c88835de0a4bb2f5e92253ae1e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Managers.EnemyBossSpawnManager
+  _bossVariants:
+  - ConfigReference:
+      m_AssetGUID: e2594d02712ac2b4289fbd51fcd609a8
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+    SpawnRound: 2
+    SpawnOnDivisibleRound: 0
+  _camera: {fileID: 519420031}
+  _activeEnemyCount: {fileID: 11400000, guid: a2f91ca57845bbd44a373ab4e7140224, type: 2}
+  _spawnMode: 0
+  _minSpawnDistance: 10
+  _maxSpawnDistance: 15
 --- !u!1 &1080699521
 GameObject:
   m_ObjectHideFlags: 0

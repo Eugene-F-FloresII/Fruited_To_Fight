@@ -30,6 +30,7 @@ namespace Managers
         [SerializeField] private float _knockbackGrowthPerRound = 1.05f;
         
         private EnemySpawnManager _enemySpawnManager;
+        private EnemyBossSpawnManager _enemyBossSpawnManager;
         private UpgradesManager _upgradesManager;
         
         private bool _roundStarted;
@@ -108,6 +109,21 @@ namespace Managers
             while (!_enemySpawnManager.IsInitialized)
             {
                 await UniTask.Yield(PlayerLoopTiming.Update, token);
+            }
+
+            // Resolve EnemyBossSpawnManager if it exists in the scene
+            _enemyBossSpawnManager = ServiceLocator.Get<EnemyBossSpawnManager>();
+            if (_enemyBossSpawnManager == null)
+            {
+                _enemyBossSpawnManager = FindObjectOfType<EnemyBossSpawnManager>();
+            }
+
+            if (_enemyBossSpawnManager != null)
+            {
+                while (!_enemyBossSpawnManager.IsInitialized)
+                {
+                    await UniTask.Yield(PlayerLoopTiming.Update, token);
+                }
             }
         }
 
@@ -274,6 +290,11 @@ namespace Managers
         private async UniTaskVoid SpawnEnemiesOverTime(int totalSpawnCount, int round, EnemyStatMultipliers multipliers, CancellationToken token)
         {
             _roundStarted = true;
+
+            if (_enemyBossSpawnManager != null)
+            {
+                _enemyBossSpawnManager.SpawnBoss(round, multipliers);
+            }
             
             for (int i = 0; i < totalSpawnCount; i++)
             {
