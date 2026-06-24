@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Boss
   m_GUID: 8f68d8f6b5961164483acd1873f39511
   m_SerializeEntries:
+  - m_GUID: 8ab702503e1264840a4b3298f8efc2aa
+    m_Address: Assets/Prefabs/Ui/BossHealthPanel/BHP_BossHealth.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BossHealth
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e2594d02712ac2b4289fbd51fcd609a8
     m_Address: Assets/Prefabs/Data_Enemies/Boss_RottedOrange.asset
     m_ReadOnly: 0

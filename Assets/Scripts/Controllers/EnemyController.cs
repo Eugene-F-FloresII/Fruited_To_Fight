@@ -43,7 +43,9 @@ namespace Controllers
         
         private bool _isKnockedBack;
         private bool _isFrozen;
+        private bool _hasRuntimeStats;
         private float _currentHealth;
+        private float _maxHealth;
         private float _currentDamage;
         private float _currentSpeed;
         private float _currentAttackSpeed;
@@ -59,6 +61,7 @@ namespace Controllers
         private readonly string _velocityY = "VelocityY";
 
         public float CurrentHealth => _currentHealth;
+        public float MaxHealth => _maxHealth;
 
         private void Awake()
         {
@@ -78,6 +81,7 @@ namespace Controllers
         {
             if (_activeEnemyCount != null) _activeEnemyCount.Value--;
             DisposeTokens();
+            _hasRuntimeStats = false;
 
             if (SpriteRenderer != null)
                 SpriteRenderer.material = _defaultMaterial;
@@ -261,6 +265,8 @@ namespace Controllers
 
         public void ApplyRuntimeStats(EnemyRuntimeStats runtimeStats)
         {
+            _hasRuntimeStats = true;
+            _maxHealth = runtimeStats.Health;
             _currentHealth = runtimeStats.Health;
             _currentDamage = runtimeStats.Damage;
             _currentSpeed = runtimeStats.MoveSpeed;
@@ -301,6 +307,12 @@ namespace Controllers
                 return;
             }
 
+            if (_hasRuntimeStats)
+            {
+                return;
+            }
+
+            _maxHealth = _enemyConfig.EnemyHealth;
             _currentHealth = _enemyConfig.EnemyHealth;
             _currentDamage = _enemyConfig.EnemyDamage;
             _currentKnockbackForce = _enemyConfig.EnemyKnockbackForce;

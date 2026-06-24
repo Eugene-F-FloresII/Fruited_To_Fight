@@ -157,9 +157,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: UICanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 4236122542872685130, guid: 7c5f8105a02f1894cb149c114a31f90d, type: 3}
+      propertyPath: _listTransform
+      value: 
+      objectReference: {fileID: 5102044228921215238}
     - target: {fileID: 4451540541148069419, guid: 7c5f8105a02f1894cb149c114a31f90d, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684223556383571414, guid: 7c5f8105a02f1894cb149c114a31f90d, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -189,5 +197,10 @@ CanvasGroup:
 --- !u!224 &3070842561547142513 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1917749978366707552, guid: 7c5f8105a02f1894cb149c114a31f90d, type: 3}
+  m_PrefabInstance: {fileID: 3459015735024845329}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &5102044228921215238 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8561059536457878295, guid: 7c5f8105a02f1894cb149c114a31f90d, type: 3}
   m_PrefabInstance: {fileID: 3459015735024845329}
   m_PrefabAsset: {fileID: 0}

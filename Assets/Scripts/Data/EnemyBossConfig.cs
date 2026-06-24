@@ -5,6 +5,8 @@ namespace Data
     [CreateAssetMenu(menuName = "Data/Create Enemy Boss Configuration", fileName = "EnemyBoss")]
     public class EnemyBossConfig : EnemyConfig
     {
-        // Custom boss data can be added here in the future
+        [Header("Boss Details")]
+        public string BossName;
+        public int BossLevel = 1;
     }
 }

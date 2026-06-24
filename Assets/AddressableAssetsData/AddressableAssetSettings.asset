@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 2992e0799de6d22478a9bbee20abcc7a
   m_currentHash:
     serializedVersion: 2
-    Hash: 5ce5d14cb0b30c1f97d93a057d5b20a6
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -116,6 +116,7 @@ MonoBehaviour:
     - LightningAffliction
     - LightningWisp
     - LightningWispUpgrade
+    - BossHealth
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 0c70afc2454749243a855e125e9b3ac2, type: 2}

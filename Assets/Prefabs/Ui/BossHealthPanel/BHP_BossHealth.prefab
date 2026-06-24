@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4871293900475815394}
   - component: {fileID: 8227832034216106066}
   m_Layer: 0
-  m_Name: HealthBar
+  m_Name: Fill_HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -570,6 +570,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6113849543304075650}
+  - component: {fileID: 6386768219464821885}
   m_Layer: 0
   m_Name: BHP_BossHealth
   m_TagString: Untagged
@@ -596,8 +597,25 @@ RectTransform:
   - {fileID: 683643594340972759}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 550, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6386768219464821885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375053611617769781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 377093141c3c07048bc86ef6ddd8d770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossHealth
+  _healthBar: {fileID: 8227832034216106066}
+  _bossName: {fileID: 1731669242967795796}
+  _bossLevel: {fileID: 1504042733825247387}
+  _bossHealth: {fileID: 5704325029717797542}
+  _canvasGroup: {fileID: 0}

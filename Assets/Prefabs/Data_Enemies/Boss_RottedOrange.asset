@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ad71cf4c49c044facbfeb688057eae, type: 3}
   m_Name: Boss_RottedOrange
   m_EditorClassIdentifier: Assembly-CSharp::Data.EnemyBossConfig
-  EnemyPrefab: {fileID: 8219122852226264418, guid: de1360d636a0b264fa735e4f9130e8be, type: 3}
+  EnemyPrefab: {fileID: 1428015302341451411, guid: de1360d636a0b264fa735e4f9130e8be, type: 3}
   EnemyID: 3
   EnemyAmountToPool: 20
-  EnemyHealth: 2000
+  EnemyHealth: 500
   EnemyDamage: 40
   EnemyMoveSpeed: 5
   EnemyAtkSpeed: 10
   EnemyKnockbackForce: 20
+  BossName: Oradian
+  BossLevel: 1

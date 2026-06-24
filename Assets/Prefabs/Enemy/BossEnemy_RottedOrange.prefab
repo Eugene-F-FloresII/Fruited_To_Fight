@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8642704902383617352}
   - component: {fileID: 4090929272528799532}
-  - component: {fileID: 8219122852226264418}
+  - component: {fileID: 1428015302341451411}
   - component: {fileID: 1779643901948791470}
   - component: {fileID: 2710715450788840562}
   - component: {fileID: 6170445283240097834}
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8143752793364716913}
@@ -98,7 +98,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &8219122852226264418
+--- !u!114 &1428015302341451411
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,9 +107,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4191412059391474361}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1b5c317efc32b648b8bac6b78ad6fb5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a9af886a266e8e47a1e3816fa25c5a7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Controllers.EnemyController
+  m_EditorClassIdentifier: Assembly-CSharp::Controllers.BossController
   _enemyConfigReference:
     m_AssetGUID: e2594d02712ac2b4289fbd51fcd609a8
     m_SubObjectName: 

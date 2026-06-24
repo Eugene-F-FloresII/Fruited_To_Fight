@@ -811,6 +811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9101269914888089050}
   - component: {fileID: 4397551218875583613}
+  - component: {fileID: 7366718250621345382}
   m_Layer: 0
   m_Name: BossHealthPanel
   m_TagString: Untagged
@@ -850,6 +851,31 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &7366718250621345382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7632369160300230668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba866b8bced2ed408519a4ed313fe8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossUIController
+  _bossList:
+  - m_AssetGUID: e2594d02712ac2b4289fbd51fcd609a8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  _bossHealthPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  _canvasGroup: {fileID: 4397551218875583613}
 --- !u!1 &8466697853671581474
 GameObject:
   m_ObjectHideFlags: 0

@@ -124,6 +124,7 @@ namespace Managers
             );
 
             boss.ApplyRuntimeStats(scaledStats);
+            Events_Boss.OnBossSpawned?.Invoke(boss, config);
             return true;
         }
 
