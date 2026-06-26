@@ -11,5 +11,6 @@ namespace Shared.Events
         public static Action OnGameRestarted;
         public static Action OnGameExited;
         public static Action<PlayerController> OnGameStarted;
+        public static Action<bool> OnShowResultPanel;
     }
 }

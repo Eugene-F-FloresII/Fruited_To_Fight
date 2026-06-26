@@ -226,7 +226,7 @@ namespace Controllers
         {
             ResetStats();
             Events_Game.OnGameExited?.Invoke();
-            Events_Game.OnSceneChange?.Invoke("MainMenu");
+            Events_Game.OnShowResultPanel?.Invoke(false);
         }
 
         private void ResetStats()

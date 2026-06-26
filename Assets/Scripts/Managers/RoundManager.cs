@@ -259,7 +259,7 @@ namespace Managers
 
             Debug.Log("Max rounds reached. Run complete.", this);
             Events_Game.OnGameExited?.Invoke();
-            Events_Game.OnSceneChange?.Invoke("MainMenu");
+            Events_Game.OnShowResultPanel?.Invoke(true);
         }
 
         private int BuildSpawnCount(int roundIndex)
