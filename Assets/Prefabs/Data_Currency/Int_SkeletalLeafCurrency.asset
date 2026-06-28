@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Obvious.Soap::Obvious.Soap.IntVariable
   TagIndex: 0
   Description: 
-  _guid: 
+  _guid: 5aa4863497e302047acf1b8b61af836e
   _saveGuid: 0
-  _value: 0
+  _value: 10
   _debugLogEnabled: 0
   _saved: 0
   _defaultValue: 0
