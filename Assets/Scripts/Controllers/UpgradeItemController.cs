@@ -3,44 +3,61 @@ using Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
 
 namespace Controllers
 {
     public abstract class UpgradeItemController : MonoBehaviour
     {
         [Header("Upgrade Settings")]
-        [SerializeField] private CurrencyConfig _currencyConfig;
-        [SerializeField] private int _upgradeCost;
-        [SerializeField] private TextMeshProUGUI _upgradeItemLevel;
-        [SerializeField] private Transform _starsTransform;
-        [SerializeField] private int _maxStars;
-        [SerializeField] private GameObject _starPrefab;
-        [SerializeField] private TextMeshProUGUI _upgradePrice;
-        [SerializeField] private Button _buyButton;
+        [SerializeField] protected CurrencyConfig _currencyConfig;
+        [SerializeField] protected int _upgradeCost;
+        [SerializeField] protected TextMeshProUGUI _upgradeItemLevel;
+        [SerializeField] protected Transform _starsTransform;
+        [SerializeField] protected int _maxStars;
+        [SerializeField] protected AssetReferenceGameObject _starPrefab;
+        [SerializeField] protected TextMeshProUGUI _upgradePrice;
+        [SerializeField] protected Button _buyButton;
 
-        private int _currentMoney;
-        private int _currentStars;
-        private int _currentLevel;
+        protected int _currentMoney;
+        protected int _currentStars;
+        protected int _currentLevel;
+        protected int _baseUpgradeCost;
+
+        protected virtual void Awake()
+        {
+            _baseUpgradeCost = _upgradeCost;
+        }
         
         public virtual void Start()
         {   
+            if (_buyButton != null)
+            {
+                _buyButton.onClick.AddListener(BuyUpgradeItem);
+            }
             UpdateUpgradeCost();    
         }
 
         public virtual void UpdateUpgradeCost()
         {
-            _currentLevel++;
-            
-            if (_currentLevel == (_maxStars + 1))
+            if (_upgradeItemLevel != null)
+            {
+                _upgradeItemLevel.text = $"Lvl {_currentLevel}";
+            }
+
+            if (_currentLevel >= (_maxStars + 1))
             {
                 Debug.Log("Max Stars Reached");
-                _buyButton.interactable = false;
+                if (_buyButton != null) _buyButton.interactable = false;
+                if (_upgradePrice != null) _upgradePrice.text = "MAX";
                 return;
             }
             
-            _upgradePrice.text = _upgradePrice.ToString();
+            if (_upgradePrice != null)
+            {
+                _upgradePrice.text = _upgradeCost.ToString();
+            }
             _currentMoney = _currencyConfig.SkeletalLeafCurrency.Value;
-            _buyButton.onClick.AddListener(BuyUpgradeItem);
         }
 
         public virtual void BuyUpgradeItem()
@@ -52,6 +69,7 @@ namespace Controllers
             }
             
             _currencyConfig.SkeletalLeafCurrency.Value = CalculateRemainingCost(_currentMoney, _upgradeCost);
+            _currentLevel++;
             UpdateUpgradeCost();
             AddStars();
             OnBoughtUpgradeItem();
@@ -70,7 +88,15 @@ namespace Controllers
                 return;
             }
             _currentStars++;
-            Instantiate(_starPrefab, _starsTransform);
+            InstantiateStar();
+        }
+
+        protected virtual void InstantiateStar()
+        {
+            if (_starPrefab != null && _starsTransform != null)
+            {
+                Addressables.InstantiateAsync(_starPrefab, _starsTransform);
+            }
         }
 
         public virtual int CalculateRemainingCost(int currentMoney, int upgradeCost)

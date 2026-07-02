@@ -2781,6 +2781,7 @@ GameObject:
   - component: {fileID: 5145776523254240549}
   - component: {fileID: 3181459474246940516}
   - component: {fileID: 2984762000639429900}
+  - component: {fileID: 3168104055142199750}
   m_Layer: 5
   m_Name: UpgradeItemWeaponTomahawk
   m_TagString: Untagged
@@ -2851,6 +2852,45 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3168104055142199750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3157208878594811902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228ebb6a0134c5443a75623d5768638b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Upgrades.UpgradeItemWeapon
+  _currencyConfig: {fileID: 11400000, guid: 4bd14a58ace667e4b98525398107d0bd, type: 2}
+  _upgradeCost: 100
+  _upgradeItemLevel: {fileID: 320411356179072157}
+  _starsTransform: {fileID: 3711521415450790015}
+  _maxStars: 5
+  _starPrefab:
+    m_AssetGUID: 4f5cf230832d1854397a907afbf80892
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  _upgradePrice: {fileID: 7275070635125191101}
+  _buyButton: {fileID: 2713941609372795306}
+  _weaponConfig: {fileID: 11400000, guid: e25e6241b0aceac4c9b816e19d8c1f7b, type: 2}
+  _statUpgradePercentage: 0.5
+  _currentDamageText: {fileID: 4593244568749213299}
+  _currentPierceText: {fileID: 2893598563869942898}
+  _currentRangeText: {fileID: 2836953495437279703}
+  _currentProjectileSpeedText: {fileID: 234379090699625331}
+  _currentAttackSpeedText: {fileID: 4553656442665868842}
+  _currentKnockbackText: {fileID: 6236757331565510149}
+  _futureDamageText: {fileID: 1008673344080446458}
+  _futurePierceText: {fileID: 2358552272507959616}
+  _futureRangeText: {fileID: 4628217492312381662}
+  _futureProjectileSpeedText: {fileID: 5924417393589816738}
+  _futureAttackSpeedText: {fileID: 6278826561452641654}
+  _futureKnockbackText: {fileID: 8790475031242513871}
 --- !u!1 &3313710607238474313
 GameObject:
   m_ObjectHideFlags: 0
