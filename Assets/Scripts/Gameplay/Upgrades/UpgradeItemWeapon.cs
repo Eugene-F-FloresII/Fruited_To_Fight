@@ -9,7 +9,7 @@ namespace Gameplay.Upgrades
     {
         [Header("Weapon Settings")]
         [SerializeField] private WeaponConfig _weaponConfig;
-        [SerializeField] private float _statUpgradePercentage = 0.1f; // 10% per level
+        [SerializeField] private float _statUpgradePercentage = 0.5f; // 50% per level
 
         [Header("Current Weapon Settings")]
         [SerializeField] private TextMeshProUGUI _currentDamageText;
@@ -27,52 +27,6 @@ namespace Gameplay.Upgrades
         [SerializeField] private TextMeshProUGUI _futureAttackSpeedText;
         [SerializeField] private TextMeshProUGUI _futureKnockbackText;
 
-        public override void Start()
-        {
-            if (_weaponConfig != null && _weaponConfig.WeaponLevel != null)
-            {
-                _currentLevel = _weaponConfig.WeaponLevel.Value;
-                
-                // Keep level bounded to at least 1
-                if (_currentLevel < 1)
-                {
-                    _currentLevel = 1;
-                    _weaponConfig.WeaponLevel.Value = 1;
-                }
-
-                _currentStars = Mathf.Max(0, _currentLevel - 1);
-            }
-            else
-            {
-                _currentLevel = 1;
-                _currentStars = 0;
-            }
-
-            // Sync cost based on current loaded level
-            int cost = _baseUpgradeCost;
-            for (int i = 1; i < _currentLevel; i++)
-            {
-                cost = IncreaseUpgradeCost(cost);
-            }
-            _upgradeCost = cost;
-
-            base.Start();
-
-            // Populate stars matching current loaded level
-            if (_starsTransform != null)
-            {
-                foreach (Transform child in _starsTransform)
-                {
-                    Destroy(child.gameObject);
-                }
-
-                for (int i = 0; i < _currentStars; i++)
-                {
-                    InstantiateStar();
-                }
-            }
-        }
-
         public override void UpdateUpgradeCost()
         {
             base.UpdateUpgradeCost();
@@ -83,16 +37,10 @@ namespace Gameplay.Upgrades
         {
             if (_weaponConfig == null) return;
 
-            // 1. Sync level on ScriptableObject
-            if (_weaponConfig.WeaponLevel != null)
-            {
-                _weaponConfig.WeaponLevel.Value = _currentLevel;
-            }
-
-            // 2. Apply permanent stats upgrade
+            // 1. Apply permanent stats upgrade
             ApplyPermanentStatsUpgrade();
 
-            // 3. Update texts to show the newly upgraded stats
+            // 2. Update texts to show the newly upgraded stats
             UpdateWeaponTexts();
         }
 

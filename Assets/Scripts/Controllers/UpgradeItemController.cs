@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Data;
+using Obvious.Soap;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ namespace Controllers
     {
         [Header("Upgrade Settings")]
         [SerializeField] protected CurrencyConfig _currencyConfig;
+        [SerializeField] protected IntVariable _levelVariable;
         [SerializeField] protected int _upgradeCost;
         [SerializeField] protected TextMeshProUGUI _upgradeItemLevel;
         [SerializeField] protected Transform _starsTransform;
@@ -30,12 +32,51 @@ namespace Controllers
         }
         
         public virtual void Start()
-        {   
+        {
+            if (_levelVariable != null)
+            {
+                _currentLevel = _levelVariable.Value;
+                if (_currentLevel < 1)
+                {
+                    _currentLevel = 1;
+                    _levelVariable.Value = 1;
+                }
+                _currentStars = Mathf.Max(0, _currentLevel - 1);
+            }
+            else
+            {
+                _currentLevel = 1;
+                _currentStars = 0;
+            }
+
+            // Sync cost based on current loaded level
+            int cost = _baseUpgradeCost;
+            for (int i = 1; i < _currentLevel; i++)
+            {
+                cost = IncreaseUpgradeCost(cost);
+            }
+            _upgradeCost = cost;
+
             if (_buyButton != null)
             {
                 _buyButton.onClick.AddListener(BuyUpgradeItem);
             }
-            UpdateUpgradeCost();    
+
+            // Populate stars matching current loaded level
+            if (_starsTransform != null)
+            {
+                foreach (Transform child in _starsTransform)
+                {
+                    Destroy(child.gameObject);
+                }
+
+                for (int i = 0; i < _currentStars; i++)
+                {
+                    InstantiateStar();
+                }
+            }
+
+            UpdateUpgradeCost();
         }
 
         public virtual void UpdateUpgradeCost()
@@ -70,6 +111,10 @@ namespace Controllers
             
             _currencyConfig.SkeletalLeafCurrency.Value = CalculateRemainingCost(_currentMoney, _upgradeCost);
             _currentLevel++;
+            if (_levelVariable != null)
+            {
+                _levelVariable.Value = _currentLevel;
+            }
             UpdateUpgradeCost();
             AddStars();
             OnBoughtUpgradeItem();
