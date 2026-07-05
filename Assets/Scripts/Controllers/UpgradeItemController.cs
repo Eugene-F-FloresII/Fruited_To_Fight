@@ -21,7 +21,7 @@ namespace Controllers
         [SerializeField] protected TextMeshProUGUI _upgradePrice;
         [SerializeField] protected Button _buyButton;
 
-        protected int _currentMoney;
+        protected int _currentMoney => (_currencyConfig != null && _currencyConfig.SkeletalLeafCurrency != null) ? _currencyConfig.SkeletalLeafCurrency.Value : 0;
         protected int _currentStars;
         protected int _currentLevel;
         protected int _baseUpgradeCost;
@@ -98,7 +98,7 @@ namespace Controllers
             {
                 _upgradePrice.text = _upgradeCost.ToString();
             }
-            _currentMoney = _currencyConfig.SkeletalLeafCurrency.Value;
+
         }
 
         public virtual void BuyUpgradeItem()
@@ -151,11 +151,39 @@ namespace Controllers
             return currentMoney;
         }
 
+        public IntVariable LevelVariable => _levelVariable;
+
         public virtual int IncreaseUpgradeCost(int previousCost)
         {
             int percentageValue = Mathf.RoundToInt(previousCost * 0.5f);
             int addedValue = previousCost + percentageValue;
             return addedValue;
+        }
+
+        public virtual void ResetUpgrade()
+        {
+            if (_levelVariable != null)
+            {
+                _levelVariable.Value = 1;
+            }
+            _currentLevel = 1;
+            _currentStars = 0;
+            _upgradeCost = _baseUpgradeCost;
+            
+            if (_buyButton != null)
+            {
+                _buyButton.interactable = true;
+            }
+            
+            if (_starsTransform != null)
+            {
+                foreach (Transform child in _starsTransform)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+            
+            UpdateUpgradeCost();
         }
     }
 

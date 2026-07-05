@@ -17,6 +17,8 @@ namespace Gameplay
         public float CurrentHealth => _characterHealth != null ? _characterHealth.Value : 0f;
         public float MaxHealth => _characterMaxHealth != null ? _characterMaxHealth.Value : 0f;
 
+        public bool IsInvincible { get; set; } = false;
+
         private void OnEnable()
         {
             Events_PowerUps.Healing += HealPlayer;
@@ -41,6 +43,7 @@ namespace Gameplay
 
         public void TakeDamage(float damage)
         {
+            if (IsInvincible) return;
             if (damage <= 0) return;
 
             if (_characterHealth != null)

@@ -26,12 +26,12 @@ MonoBehaviour:
   WeaponAmountToPool: 50
   WeaponHoming: 0
   WeaponLevel: {fileID: 11400000, guid: 1c73f343ac90cd2469d6a16ccf74ff8d, type: 2}
-  WeaponRange: 4
+  WeaponRange: 6
   WeaponDamage: 45
   WeaponPierce: 3
-  WeaponSpeed: 15
+  WeaponSpeed: 10
   WeaponAtkSpeed: 0.9
-  WeaponKnockback: 4
+  WeaponKnockback: 10
   AbilityCooldown: 10
   AbilityDuration: 6
   Afflictions: []

@@ -52,6 +52,7 @@ namespace Controllers
         private CancellationTokenSource _knockBackCts;
 
         public Vector2 FacingDirection { get; private set; } = Vector2.right;
+        public PlayerHealth HealthComponent => _characterHealthComponent;
 
         private void Awake()
         {

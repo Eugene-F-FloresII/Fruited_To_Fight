@@ -333,6 +333,40 @@ namespace Managers
             _roundFlowCts?.Dispose();
             _roundFlowCts = null;
         }
+
+        public void SkipRound()
+        {
+            if (!_roundStarted && !_isTransitioning)
+            {
+                return;
+            }
+
+            // Cancel current spawning loop
+            DisposeRoundFlowToken();
+            _enemiesRemainingToSpawn = 0;
+            
+            // Kill all active enemies
+            var enemies = FindObjectsByType<Controllers.EnemyController>(FindObjectsSortMode.None);
+            bool killedAny = false;
+            foreach (var enemy in enemies)
+            {
+                if (enemy.gameObject.activeInHierarchy)
+                {
+                    enemy.KillEnemy();
+                    killedAny = true;
+                }
+            }
+            
+            // Recreate token for the next round
+            _roundFlowCts = new CancellationTokenSource();
+            
+            // Force transition if no enemies were active to trigger the value-changed event
+            if (!killedAny || (_activeEnemyCount != null && _activeEnemyCount.Value == 0))
+            {
+                _roundStarted = true; // Ensure the guard passes
+                HandleActiveEnemyCountChanged(0);
+            }
+        }
     }
 
 }

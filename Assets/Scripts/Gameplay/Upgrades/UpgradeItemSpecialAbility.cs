@@ -11,6 +11,51 @@ namespace Gameplay.Upgrades
         [SerializeField] private WeaponConfig _weaponConfig;
         [SerializeField] private float _statUpgradePercentage = 0.1f; // 10% per level
 
+        private float _baseCooldown;
+        private float _baseDuration;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            InitializeBaseStats();
+        }
+
+        private void InitializeBaseStats()
+        {
+            if (_weaponConfig == null) return;
+
+            int currentLvl = (_levelVariable != null) ? _levelVariable.Value : 1;
+            if (currentLvl < 1) currentLvl = 1;
+
+            float cooldown = _weaponConfig.AbilityCooldown;
+            float duration = _weaponConfig.AbilityDuration;
+
+            for (int i = currentLvl; i > 1; i--)
+            {
+                if (!Mathf.Approximately(1f - _statUpgradePercentage, 0f))
+                {
+                    cooldown /= (1f - _statUpgradePercentage);
+                }
+                if (!Mathf.Approximately(1f + _statUpgradePercentage, 0f))
+                {
+                    duration /= (1f + _statUpgradePercentage);
+                }
+            }
+
+            _baseCooldown = cooldown;
+            _baseDuration = duration;
+        }
+
+        public override void ResetUpgrade()
+        {
+            if (_weaponConfig != null)
+            {
+                _weaponConfig.AbilityCooldown = _baseCooldown;
+                _weaponConfig.AbilityDuration = _baseDuration;
+            }
+            base.ResetUpgrade();
+        }
+
         [Header("Current Special Ability Settings")]
         [SerializeField] private TextMeshProUGUI _currentCooldownText;
         [SerializeField] private TextMeshProUGUI _currentDurationText;
