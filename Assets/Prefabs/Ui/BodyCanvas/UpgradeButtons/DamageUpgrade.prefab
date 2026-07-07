@@ -969,6 +969,7 @@ MonoBehaviour:
   _percentageText: {fileID: 3174244467389907096}
   _levelText: {fileID: 2248529704297771043}
   _priceText: {fileID: 3004065250003497095}
+  _animationDuration: 0.5
 --- !u!225 &6184764822214414862
 CanvasGroup:
   m_ObjectHideFlags: 0

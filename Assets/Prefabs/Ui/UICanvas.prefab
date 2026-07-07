@@ -244,6 +244,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7150851716952685968, guid: 20ef0f78f9c7f9c429deee6bc16c7990, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7827128091569342945, guid: 20ef0f78f9c7f9c429deee6bc16c7990, type: 3}
       propertyPath: m_Name
       value: BodyCanvas
