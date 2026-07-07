@@ -29,6 +29,12 @@ namespace Gameplay.UI
         [SerializeField] private FloatVariable _playerMaxHealth;
         [SerializeField] private IntVariable _currentRounds;
         [SerializeField] private IntVariable _maxRounds;
+        [SerializeField] private IntVariable _seedsCollected;
+
+        [Header("Leaderboard Settings")]
+        [SerializeField] private LeaderboardUI _leaderboardUI;
+        [SerializeField] private TMP_InputField _inputPlayerName;
+        [SerializeField] private Button _btnSubmitScore;
 
         [Header("Objectives UI checkmarks")]
         [SerializeField] private GameObject _objective1Star; // Img_ObjectiveStar for Objective 1
@@ -58,6 +64,10 @@ namespace Gameplay.UI
             {
                 _btnBackToMainMenu.onClick.AddListener(OnBackToMainMenuClicked);
             }
+            if (_btnSubmitScore != null)
+            {
+                _btnSubmitScore.onClick.AddListener(OnSubmitScoreClicked);
+            }
         }
 
         private void OnDisable()
@@ -66,6 +76,10 @@ namespace Gameplay.UI
             if (_btnBackToMainMenu != null)
             {
                 _btnBackToMainMenu.onClick.RemoveListener(OnBackToMainMenuClicked);
+            }
+            if (_btnSubmitScore != null)
+            {
+                _btnSubmitScore.onClick.RemoveListener(OnSubmitScoreClicked);
             }
         }
 
@@ -78,6 +92,11 @@ namespace Gameplay.UI
 
         private void ShowResults(bool didWin)
         {
+            // Reset leaderboard UI and refresh list
+            if (_inputPlayerName != null) _inputPlayerName.text = string.Empty;
+            if (_btnSubmitScore != null) _btnSubmitScore.interactable = true;
+            if (_leaderboardUI != null) _leaderboardUI.RefreshLeaderboardAsync().Forget();
+
             // Pause the game so nothing moves in the background
             Time.timeScale = 0f;
 
@@ -216,6 +235,47 @@ namespace Gameplay.UI
 
             HidePanel();
             Events_Game.OnSceneChange?.Invoke("MainMenu");
+        }
+
+        private void OnSubmitScoreClicked()
+        {
+            SubmitScoreSequence().Forget();
+        }
+
+        private async UniTaskVoid SubmitScoreSequence()
+        {
+            if (_btnSubmitScore != null) _btnSubmitScore.interactable = false;
+
+            string playerName = _inputPlayerName != null ? _inputPlayerName.text : string.Empty;
+            if (string.IsNullOrWhiteSpace(playerName))
+            {
+                playerName = "Anonymous";
+            }
+
+            int score = _seedsCollected != null ? _seedsCollected.Value : 0;
+            int rounds = _currentRounds != null ? _currentRounds.Value : 0;
+
+            var manager = Managers.SupabaseLeaderboardManager.Instance;
+            if (manager != null)
+            {
+                bool success = await manager.SubmitScoreAsync(playerName, score, rounds);
+                if (success)
+                {
+                    if (_leaderboardUI != null)
+                    {
+                        await _leaderboardUI.RefreshLeaderboardAsync();
+                    }
+                }
+                else
+                {
+                    if (_btnSubmitScore != null) _btnSubmitScore.interactable = true;
+                }
+            }
+            else
+            {
+                Debug.LogError("SupabaseLeaderboardManager not found in scene!");
+                if (_btnSubmitScore != null) _btnSubmitScore.interactable = true;
+            }
         }
     }
 }
