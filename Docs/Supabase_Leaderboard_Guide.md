@@ -242,3 +242,48 @@ namespace Managers
 
 ## 4. UI Integration & Display
 
+We will create a sub-panel inside `ResultSystemPanel` (in the gameplay HUD) to submit scores and display the leaderboards immediately.
+
+### Result Screen Integration (`ResultSystemPanel.cs`)
+When `ShowResults` runs (i.e. on Game Over or Level Completed):
+1. Show an input field for the player's name.
+2. When the user clicks the "Submit Score" button:
+   - Call `SupabaseLeaderboardManager.Instance.SubmitScoreAsync(...)` using the current player stats (rounds completed and score/seeds).
+   - Once submitted, fetch the top scores and populate the leaderboard list.
+
+---
+
+## 5. Editor Setup & Prefab Configuration Checklist
+
+Follow these steps to fully configure the Leaderboard in the Unity Editor:
+
+### A. Manager Configuration
+1. Locate the `SupabaseManager` GameObject in the `MainMenu.unity` scene (it has the `SupabaseLeaderboardManager` script attached).
+2. Verify the credentials, Table Name (`Leaderboard`), and column keys are correctly mapped.
+3. Exposes **Debug Settings** (`_testPlayerName`, `_testScore`, `_testRounds`) and a clickable **"Submit Test Score"** inspector button (utilizing `NaughtyAttributes`) to test score insertion during Play Mode.
+
+### B. Leaderboard Panel Prefab Setup
+Open the isolation prefab stage for [LeaderboardPanel.prefab](file:///d:/UnityProjects/Fruited_To_Fight/Assets/Prefabs/Ui/Leaderboard/LeaderboardPanel.prefab) and perform the following:
+1. **Components:** Ensure both `LeaderboardUI` and `LeaderboardController` are attached to the root of the prefab.
+2. **Placeholders:** Create simple UI placeholders under `Content_Body` for status display:
+   - `Img_LoadingOverlay` (dark background image with "Loading..." text, deactivated by default).
+   - `Txt_NoScores` (TextMeshProUGUI displaying "No scores found.", deactivated by default).
+3. **Ghost Rows:** Make sure **no** static placeholder `Content_PlayerRank` child rows are left under `ScrollMenu/Content` (delete them from the prefab to prevent empty/duplicate rows at runtime).
+4. **Inspector Binding:**
+   - **`LeaderboardUI` component:**
+     - Drag `ScrollMenu/Content` into `_entryContainer`.
+     - Drag the `Img_LoadingOverlay` and `Txt_NoScores` GameObjects into their respective slots.
+     - Leave the `_entryPrefab` slot **unassigned (null)**. It is configured as an `AssetReferenceGameObject` for Addressables.
+   - **`LeaderboardController` component:**
+     - Drag the root `CanvasGroup` component into `_canvasGroup`.
+     - Drag `Content_Leaderboard` into `_contentLeaderboard`.
+     - Drag `Content_Leaderboard/Content_Header/Btn_ExitLeaderboard` into `_exitButton`.
+     - Link `_leaderboardUI` to the root `LeaderboardUI` component.
+5. **Addressables Configuration:** Drag your [Content_PlayerRank.prefab](file:///d:/UnityProjects/Fruited_To_Fight/Assets/Prefabs/Ui/Leaderboard/Content_PlayerRank.prefab) Addressable asset from your Addressables Group panel onto the empty **`Entry Prefab`** asset reference slot on the `LeaderboardUI` inspector component. Save and close the prefab stage.
+
+### C. Main Menu Scene Setup
+1. In the `MainMenu.unity` scene, select `MainMenuCanvas/Container/Btn_LeaderBoard`.
+2. Configure the button's **`onClick`** persistent event list:
+   - Target: `MainMenuCanvas/LeaderboardPanel` GameObject.
+   - Function: `GameObject.SetActive` (checked / set to `true`).
+3. When clicked, this will set the panel active, triggering the `LeaderboardController`'s `OnEnable()` script, which plays the fade-in/pop-up animation and auto-refreshes the scores.
