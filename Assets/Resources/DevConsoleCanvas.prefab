@@ -333,6 +333,8 @@ MonoBehaviour:
   _contentContainer: {fileID: 6194179993169916499}
   _buttonPrefab: {fileID: 4224699633829844301, guid: 7d96598cd2845bd4686736fba1e3a959, type: 3}
   _seedsCollected: {fileID: 11400000, guid: 4036d8a9afb68704cb37959d5bb41968, type: 2}
+  _enemiesDefeated: {fileID: 11400000, guid: ac31289e1640a6e42a0b6305f4a81922, type: 2}
+  _currentRounds: {fileID: 11400000, guid: a2420f190c4aea844900cc6cda5faeea, type: 2}
   _currencyConfig: {fileID: 11400000, guid: 4bd14a58ace667e4b98525398107d0bd, type: 2}
   _permaUpgradeVariables:
   - {fileID: 11400000, guid: ea1e53e731b64714cab52e2713683603, type: 2}

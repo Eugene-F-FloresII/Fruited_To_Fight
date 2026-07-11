@@ -12,6 +12,7 @@ namespace Controllers
     {
         [Header("References")]
         [SerializeField] private TextMeshProUGUI _enemiesDefeatedText;
+        [SerializeField] private IntVariable _enemiesDefeatedSO;
         
         private Transform _enemiesDefeatedGameObject;
         private int _enemiesDefeated;
@@ -19,6 +20,10 @@ namespace Controllers
         private void Start()
         {
             InitializeEnemyDefeated();
+            if (_enemiesDefeatedSO != null)
+            {
+                _enemiesDefeatedSO.Value = 0;
+            }
             UpdateUI();
         }
 
@@ -39,12 +44,20 @@ namespace Controllers
         private void OnGameRestarted()
         {
             _enemiesDefeated = 0;
+            if (_enemiesDefeatedSO != null)
+            {
+                _enemiesDefeatedSO.Value = 0;
+            }
             UpdateUI();
         }
 
         private void OnEnemyDefeated()
         {
             _enemiesDefeated++;
+            if (_enemiesDefeatedSO != null)
+            {
+                _enemiesDefeatedSO.Value = _enemiesDefeated;
+            }
             UpdateUI();
             IncreaseScale().Forget();
         }

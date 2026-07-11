@@ -21,6 +21,18 @@ namespace Gameplay.UI
         [SerializeField] private Button _btnBackToMainMenu;
         [SerializeField] private TextMeshProUGUI _txtResultTitle;
 
+        [Header("Score UI References")]
+        [SerializeField] private TextMeshProUGUI _txtEnemiesDefeatedCount;
+        [SerializeField] private TextMeshProUGUI _txtEnemiesDefeatedScore;
+        [SerializeField] private TextMeshProUGUI _txtSeedsCollectedCount;
+        [SerializeField] private TextMeshProUGUI _txtSeedsCollectedScore;
+        [SerializeField] private TextMeshProUGUI _txtRoundsSurvivedCount;
+        [SerializeField] private TextMeshProUGUI _txtRoundsSurvivedScore;
+        [SerializeField] private TextMeshProUGUI _txtOverallScore;
+
+        [Header("Score Animation Settings")]
+        [SerializeField] private float _scoreStampDuration = 0.25f;
+
         [Header("Audio")]
         [SerializeField] private AudioClip _starSpawnSound;
 
@@ -30,6 +42,7 @@ namespace Gameplay.UI
         [SerializeField] private IntVariable _currentRounds;
         [SerializeField] private IntVariable _maxRounds;
         [SerializeField] private IntVariable _seedsCollected;
+        [SerializeField] private IntVariable _enemiesDefeated;
 
         [Header("Leaderboard Settings")]
         [SerializeField] private LeaderboardUI _leaderboardUI;
@@ -96,6 +109,15 @@ namespace Gameplay.UI
             if (_inputPlayerName != null) _inputPlayerName.text = string.Empty;
             if (_btnSubmitScore != null) _btnSubmitScore.interactable = true;
             if (_leaderboardUI != null) _leaderboardUI.RefreshLeaderboardAsync().Forget();
+
+            // Set initial text values to empty or 0 to prevent "9999" flash
+            if (_txtEnemiesDefeatedCount != null) _txtEnemiesDefeatedCount.text = "0";
+            if (_txtEnemiesDefeatedScore != null) _txtEnemiesDefeatedScore.text = "0";
+            if (_txtSeedsCollectedCount != null) _txtSeedsCollectedCount.text = "0";
+            if (_txtSeedsCollectedScore != null) _txtSeedsCollectedScore.text = "0";
+            if (_txtRoundsSurvivedCount != null) _txtRoundsSurvivedCount.text = "0";
+            if (_txtRoundsSurvivedScore != null) _txtRoundsSurvivedScore.text = "0";
+            if (_txtOverallScore != null) _txtOverallScore.text = "0";
 
             // Pause the game so nothing moves in the background
             Time.timeScale = 0f;
@@ -173,8 +195,9 @@ namespace Gameplay.UI
                 Destroy(child.gameObject);
             }
 
-            // Instantiate and animate stars sequentially
-            await AnimateStarsSequence(objectiveResults);
+            // Start stars and scores animations concurrently (don't await stars to finish first)
+            AnimateStarsSequence(objectiveResults).Forget();
+            AnimateScoresSequence().Forget();
         }
 
         private async UniTask AnimateStarsSequence(List<bool> objectiveResults)
@@ -207,6 +230,61 @@ namespace Gameplay.UI
                 // Wait 0.5s before next star (unscaled time because Time.timeScale = 0)
                 await UniTask.Delay(TimeSpan.FromSeconds(0.5f), delayType: DelayType.UnscaledDeltaTime);
             }
+        }
+
+        private async UniTask AnimateScoresSequence()
+        {
+            float enemiesDefeatedCount = _enemiesDefeated != null ? _enemiesDefeated.Value : 0;
+            float enemiesDefeatedScore = enemiesDefeatedCount * 0.5f;
+
+            float seedsCollectedCount = _seedsCollected != null ? _seedsCollected.Value : 0;
+            float seedsCollectedScore = seedsCollectedCount * 2.5f;
+
+            float roundsSurvivedCount = _currentRounds != null ? _currentRounds.Value : 0;
+            float roundsSurvivedScore = roundsSurvivedCount * 5f;
+
+            float overallScore = enemiesDefeatedScore + seedsCollectedScore + roundsSurvivedScore;
+
+            // Set counts immediately
+            if (_txtEnemiesDefeatedCount != null) _txtEnemiesDefeatedCount.text = enemiesDefeatedCount.ToString();
+            if (_txtSeedsCollectedCount != null) _txtSeedsCollectedCount.text = seedsCollectedCount.ToString();
+            if (_txtRoundsSurvivedCount != null) _txtRoundsSurvivedCount.text = roundsSurvivedCount.ToString();
+
+            // Play sound once at the start of scores animation
+            if (_starSpawnSound != null)
+            {
+                Events_Sound.PlaySound?.Invoke(_starSpawnSound);
+            }
+
+            // Run all stamp animations concurrently
+            await UniTask.WhenAll(
+                AnimateScoreStamp(_txtEnemiesDefeatedScore, enemiesDefeatedScore, "0.#"),
+                AnimateScoreStamp(_txtSeedsCollectedScore, seedsCollectedScore, "0.#"),
+                AnimateScoreStamp(_txtRoundsSurvivedScore, roundsSurvivedScore, "0.#"),
+                AnimateScoreStamp(_txtOverallScore, overallScore, "0.#")
+            );
+        }
+
+        private async UniTask AnimateScoreStamp(TextMeshProUGUI txtComponent, float finalValue, string format)
+        {
+            if (txtComponent == null) return;
+
+            // Reset text size/scale and value
+            txtComponent.transform.localScale = Vector3.one * 5f;
+            txtComponent.text = "0";
+
+            float duration = _scoreStampDuration;
+
+            var scaleTween = Tween.Scale(txtComponent.transform, endValue: 1f, duration: duration, ease: Ease.OutBack, useUnscaledTime: true);
+            var valueTween = Tween.Custom(0f, finalValue, duration: duration, onValueChange: val =>
+            {
+                if (txtComponent != null)
+                {
+                    txtComponent.text = val.ToString(format);
+                }
+            }, ease: Ease.OutQuad, useUnscaledTime: true);
+
+            await UniTask.WhenAll(scaleTween.ToUniTask(this), valueTween.ToUniTask(this));
         }
 
         private void OnBackToMainMenuClicked()

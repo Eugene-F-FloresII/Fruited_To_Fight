@@ -378,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Enemies.EnemiesDefeated
   _enemiesDefeatedText: {fileID: 195437503852289591}
+  _enemiesDefeatedSO: {fileID: 11400000, guid: ac31289e1640a6e42a0b6305f4a81922, type: 2}
 --- !u!1 &2011283268660306083
 GameObject:
   m_ObjectHideFlags: 0

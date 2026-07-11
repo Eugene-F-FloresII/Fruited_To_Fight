@@ -5,6 +5,7 @@ using Obvious.Soap;
 using Data;
 using Collection;
 using Managers;
+using Shared.Events;
 
 namespace Controllers
 {
@@ -19,6 +20,8 @@ namespace Controllers
 
         [Header("SOAP References")]
         [SerializeField] private IntVariable _seedsCollected;
+        [SerializeField] private IntVariable _enemiesDefeated;
+        [SerializeField] private IntVariable _currentRounds;
         [SerializeField] private CurrencyConfig _currencyConfig;
         [SerializeField] private List<IntVariable> _permaUpgradeVariables = new List<IntVariable>();
 
@@ -104,6 +107,7 @@ namespace Controllers
             _commands.Add(new DevConsoleCommand("Reset Gameplay Upgrades", "Reset", ResetGameplayUpgrades));
             _commands.Add(new DevConsoleCommand("Set Skeletal Leafs to 9999", "Cheat", SetSkeletalLeafCurrency));
             _commands.Add(new DevConsoleCommand("Reset Permanent Upgrades", "Reset", ResetPermanentUpgrades));
+            _commands.Add(new DevConsoleCommand("Show Results Panel (5k/100/20)", "Show", TriggerResultPanelCheat));
         }
 
         private void PopulateConsoleUI()
@@ -272,6 +276,25 @@ namespace Controllers
             }
 
             Debug.Log($"[DevConsole] Reset {resetCount} permanent upgrade SOAP variables and updated {uiControllers.Length} UI items.");
+        }
+
+        private void TriggerResultPanelCheat()
+        {
+            if (_enemiesDefeated != null)
+            {
+                _enemiesDefeated.Value = 5000;
+            }
+            if (_seedsCollected != null)
+            {
+                _seedsCollected.Value = 100;
+            }
+            if (_currentRounds != null)
+            {
+                _currentRounds.Value = 20;
+            }
+
+            SetConsoleActive(false);
+            Events_Game.OnShowResultPanel?.Invoke(true);
         }
 
         // --- AUTOMATIC INSTANTIATION ---
