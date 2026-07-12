@@ -2676,8 +2676,8 @@ MonoBehaviour:
   _maxRounds: {fileID: 11400000, guid: dd6611b2ef6460644aef18dc8ba16894, type: 2}
   _seedsCollected: {fileID: 11400000, guid: 4036d8a9afb68704cb37959d5bb41968, type: 2}
   _enemiesDefeated: {fileID: 11400000, guid: ac31289e1640a6e42a0b6305f4a81922, type: 2}
+  _overallScore: {fileID: 11400000, guid: adb433b822d85c249ac697cba426020d, type: 2}
   _leaderboardUI: {fileID: 0}
-  _inputPlayerName: {fileID: 0}
   _btnSubmitScore: {fileID: 0}
   _objective1Star: {fileID: 679212146934733182}
   _objective2Star: {fileID: 200226253918495857}
@@ -2769,6 +2769,7 @@ GameObject:
   - component: {fileID: 3729811393296580386}
   - component: {fileID: 9124798006035372824}
   - component: {fileID: 5806671941319039170}
+  - component: {fileID: -2575672388491692438}
   m_Layer: 0
   m_Name: Btn_SubmitScore
   m_TagString: Untagged
@@ -2878,6 +2879,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-2575672388491692438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6132768782982614687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835689e1d5db3e84b875d19b54710300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.UI.OpenSubmitScoreConfirmation
+  _btnSubmitScore: {fileID: 0}
+  _confirmationCanvasGroup: {fileID: 0}
+  _confirmationAnimation: {fileID: 0}
 --- !u!1 &6352811564456402527
 GameObject:
   m_ObjectHideFlags: 0

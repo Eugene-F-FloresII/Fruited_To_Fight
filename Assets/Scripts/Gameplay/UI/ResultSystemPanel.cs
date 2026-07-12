@@ -43,10 +43,10 @@ namespace Gameplay.UI
         [SerializeField] private IntVariable _maxRounds;
         [SerializeField] private IntVariable _seedsCollected;
         [SerializeField] private IntVariable _enemiesDefeated;
+        [SerializeField] private IntVariable _overallScore;
 
         [Header("Leaderboard Settings")]
         [SerializeField] private LeaderboardUI _leaderboardUI;
-        [SerializeField] private TMP_InputField _inputPlayerName;
         [SerializeField] private Button _btnSubmitScore;
 
         [Header("Objectives UI checkmarks")]
@@ -77,10 +77,6 @@ namespace Gameplay.UI
             {
                 _btnBackToMainMenu.onClick.AddListener(OnBackToMainMenuClicked);
             }
-            if (_btnSubmitScore != null)
-            {
-                _btnSubmitScore.onClick.AddListener(OnSubmitScoreClicked);
-            }
         }
 
         private void OnDisable()
@@ -89,10 +85,6 @@ namespace Gameplay.UI
             if (_btnBackToMainMenu != null)
             {
                 _btnBackToMainMenu.onClick.RemoveListener(OnBackToMainMenuClicked);
-            }
-            if (_btnSubmitScore != null)
-            {
-                _btnSubmitScore.onClick.RemoveListener(OnSubmitScoreClicked);
             }
         }
 
@@ -106,7 +98,6 @@ namespace Gameplay.UI
         private void ShowResults(bool didWin)
         {
             // Reset leaderboard UI and refresh list
-            if (_inputPlayerName != null) _inputPlayerName.text = string.Empty;
             if (_btnSubmitScore != null) _btnSubmitScore.interactable = true;
             if (_leaderboardUI != null) _leaderboardUI.RefreshLeaderboardAsync().Forget();
 
@@ -245,6 +236,11 @@ namespace Gameplay.UI
 
             float overallScore = enemiesDefeatedScore + seedsCollectedScore + roundsSurvivedScore;
 
+            if (_overallScore != null)
+            {
+                _overallScore.Value = Mathf.RoundToInt(overallScore);
+            }
+
             // Set counts immediately
             if (_txtEnemiesDefeatedCount != null) _txtEnemiesDefeatedCount.text = enemiesDefeatedCount.ToString();
             if (_txtSeedsCollectedCount != null) _txtSeedsCollectedCount.text = seedsCollectedCount.ToString();
@@ -311,48 +307,23 @@ namespace Gameplay.UI
             // Resume the game time scale
             Time.timeScale = 1f;
 
+            if (_overallScore != null)
+            {
+                _overallScore.Value = 0;
+            }
+
             HidePanel();
             Events_Game.OnSceneChange?.Invoke("MainMenu");
         }
 
-        private void OnSubmitScoreClicked()
+        /// <summary>
+        /// Disables the submit score button on this panel (called on successful submission).
+        /// </summary>
+        public void DisableSubmitButton()
         {
-            SubmitScoreSequence().Forget();
-        }
-
-        private async UniTaskVoid SubmitScoreSequence()
-        {
-            if (_btnSubmitScore != null) _btnSubmitScore.interactable = false;
-
-            string playerName = _inputPlayerName != null ? _inputPlayerName.text : string.Empty;
-            if (string.IsNullOrWhiteSpace(playerName))
+            if (_btnSubmitScore != null)
             {
-                playerName = "Anonymous";
-            }
-
-            int score = _seedsCollected != null ? _seedsCollected.Value : 0;
-            int rounds = _currentRounds != null ? _currentRounds.Value : 0;
-
-            var manager = Managers.SupabaseLeaderboardManager.Instance;
-            if (manager != null)
-            {
-                bool success = await manager.SubmitScoreAsync(playerName, score, rounds);
-                if (success)
-                {
-                    if (_leaderboardUI != null)
-                    {
-                        await _leaderboardUI.RefreshLeaderboardAsync();
-                    }
-                }
-                else
-                {
-                    if (_btnSubmitScore != null) _btnSubmitScore.interactable = true;
-                }
-            }
-            else
-            {
-                Debug.LogError("SupabaseLeaderboardManager not found in scene!");
-                if (_btnSubmitScore != null) _btnSubmitScore.interactable = true;
+                _btnSubmitScore.interactable = false;
             }
         }
     }
