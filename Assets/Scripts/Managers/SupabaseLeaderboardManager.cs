@@ -12,7 +12,7 @@ namespace Managers
 {
     public class SupabaseLeaderboardManager : MonoBehaviour
     {
-        public static SupabaseLeaderboardManager Instance { get; private set; }
+        private static bool _exists;
 
         [Header("Supabase Settings")]
         [SerializeField] private string _supabaseUrl = "https://fjanaixxiwwktqhazrbp.supabase.co";
@@ -31,14 +31,32 @@ namespace Managers
 
         private void Awake()
         {
-            if (Instance == null)
+            if (!_exists)
             {
-                Instance = this;
+                _exists = true;
                 DontDestroyOnLoad(gameObject);
             }
             else
             {
                 Destroy(gameObject);
+            }
+        }
+
+        private void OnEnable()
+        {
+            Shared.Events.Events_Leaderboard.OnSubmitScore = SubmitScoreAsync;
+            Shared.Events.Events_Leaderboard.OnFetchLeaderboard = FetchTopScoresAsync;
+        }
+
+        private void OnDisable()
+        {
+            if (Shared.Events.Events_Leaderboard.OnSubmitScore == SubmitScoreAsync)
+            {
+                Shared.Events.Events_Leaderboard.OnSubmitScore = null;
+            }
+            if (Shared.Events.Events_Leaderboard.OnFetchLeaderboard == FetchTopScoresAsync)
+            {
+                Shared.Events.Events_Leaderboard.OnFetchLeaderboard = null;
             }
         }
 

@@ -40,15 +40,14 @@ namespace Gameplay.UI
             if (_loadingOverlay != null) _loadingOverlay.SetActive(true);
             if (_noScoresText != null) _noScoresText.gameObject.SetActive(false);
 
-            var manager = SupabaseLeaderboardManager.Instance;
-            if (manager == null)
+            if (Shared.Events.Events_Leaderboard.OnFetchLeaderboard == null)
             {
-                Debug.LogError("SupabaseLeaderboardManager instance is missing.");
+                Debug.LogError("Events_Leaderboard.OnFetchLeaderboard is not registered.");
                 if (_loadingOverlay != null) _loadingOverlay.SetActive(false);
                 return;
             }
 
-            var entries = await manager.FetchTopScoresAsync(_limit);
+            var entries = await Shared.Events.Events_Leaderboard.OnFetchLeaderboard.Invoke(_limit);
 
             if (_loadingOverlay != null) _loadingOverlay.SetActive(false);
 

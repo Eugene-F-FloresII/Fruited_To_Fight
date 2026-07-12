@@ -180,12 +180,11 @@ namespace Gameplay.UI
             }
 
             bool success = false;
-            var manager = Managers.SupabaseLeaderboardManager.Instance;
-            if (manager != null)
+            if (Shared.Events.Events_Leaderboard.OnSubmitScore != null)
             {
                 try
                 {
-                    success = await manager.SubmitScoreAsync(playerName, score, rounds).AttachExternalCancellation(token);
+                    success = await Shared.Events.Events_Leaderboard.OnSubmitScore.Invoke(playerName, score, rounds).AttachExternalCancellation(token);
                 }
                 catch (Exception e)
                 {
@@ -195,7 +194,7 @@ namespace Gameplay.UI
             }
             else
             {
-                Debug.LogError("SupabaseLeaderboardManager Instance not found.");
+                Debug.LogError("Events_Leaderboard.OnSubmitScore is not registered.");
                 success = false;
             }
 
