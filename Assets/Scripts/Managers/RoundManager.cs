@@ -258,7 +258,6 @@ namespace Managers
             _isTransitioning = false;
 
             Debug.Log("Max rounds reached. Run complete.", this);
-            Events_Game.OnGameExited?.Invoke();
             Events_Game.OnShowResultPanel?.Invoke(true);
         }
 

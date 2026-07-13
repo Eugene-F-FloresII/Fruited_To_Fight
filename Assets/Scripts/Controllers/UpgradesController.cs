@@ -55,6 +55,10 @@ namespace Controllers
             _canvasGroup.alpha = 0f;
             _canvasGroup.interactable  = false;
             _canvasGroup.blocksRaycasts = false;
+            if (_seedCollected != null)
+            {
+                _seedCollected.Value = 0;
+            }
             LoadBaseUpgrades();
         }
 

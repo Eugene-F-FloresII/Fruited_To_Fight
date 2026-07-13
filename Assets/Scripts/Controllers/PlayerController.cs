@@ -226,7 +226,6 @@ namespace Controllers
         private void GameOver()
         {
             ResetStats();
-            Events_Game.OnGameExited?.Invoke();
             Events_Game.OnShowResultPanel?.Invoke(false);
         }
 

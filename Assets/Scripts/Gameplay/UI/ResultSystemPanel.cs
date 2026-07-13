@@ -313,6 +313,7 @@ namespace Gameplay.UI
             }
 
             HidePanel();
+            Events_Game.OnGameExited?.Invoke();
             Events_Game.OnSceneChange?.Invoke("MainMenu");
         }
 
