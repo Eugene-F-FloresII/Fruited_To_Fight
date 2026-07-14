@@ -19,8 +19,8 @@ namespace Gameplay
         private Button _button;
         private WeaponConfig _weaponConfig;
         private float _cooldown;
-        private TomahawkAbilityState _tomahawkAbilityState;
         private bool _interactable;
+        
         private void Awake()
         {
             _cooldownText = GetComponentInChildren<TextMeshProUGUI>();
@@ -30,10 +30,13 @@ namespace Gameplay
 
         private void Start()
         {
-            _tomahawkAbilityState = ServiceLocator.TryGet<TomahawkAbilityState>();
             _interactable = true;
         }
 
+        /// <summary>
+        /// Initializes the interactable button with its corresponding weapon configuration.
+        /// </summary>
+        /// <param name="weaponConfig">The WeaponConfig configuration to apply.</param>
         public void InitializeWeaponConfig(WeaponConfig weaponConfig)
         {
             _weaponConfig = weaponConfig;
@@ -41,16 +44,14 @@ namespace Gameplay
             _cooldown = _weaponConfig.AbilityCooldown;
         }
 
+        /// <summary>
+        /// Triggers the special ability for the assigned weapon if the button is interactable.
+        /// </summary>
         public void UseSpecialAbility()
         {
-            if (_interactable)
+            if (_interactable && _weaponConfig != null)
             {
-                switch (_weaponConfig.WeaponClass)
-                {
-                    case WeaponClass.Tomahawk:
-                        _tomahawkAbilityState.UseWeaponAbility();
-                        break;
-                }
+                Events_Weapons.OnUsedSpecialAbility?.Invoke(_weaponConfig.WeaponClass);
             }
             
             AbilityCooldown(_cooldown).Forget();

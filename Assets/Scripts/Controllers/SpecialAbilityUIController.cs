@@ -19,7 +19,7 @@ using UnityEngine.UI;
 
 namespace Controllers
 {
-    public class SpecialAbilityController : MonoBehaviour
+    public class SpecialAbilityUIController : MonoBehaviour
     {
         [Header("Button References")]
         [SerializeField] private Button _firstButton;

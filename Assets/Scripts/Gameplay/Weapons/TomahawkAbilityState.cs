@@ -176,8 +176,15 @@ namespace Gameplay.Weapons
             }
             _activeProjectiles.Clear();
         }
-        
-        
+
+        /// <summary>
+        /// Initializes the Tomahawk special ability with the target transform.
+        /// </summary>
+        /// <param name="target">The target transform (e.g. player) around which the axes spin.</param>
+        public override void Initialize(Transform target)
+        {
+            _target = target;
+        }
     }
 
     /// <summary>

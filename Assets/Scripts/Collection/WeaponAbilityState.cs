@@ -16,5 +16,13 @@ namespace Collection
         public abstract void UseWeaponAbility();
         public abstract UniTask UseWeaponAbilityAsync(CancellationToken token);
         public abstract UniTask WeaponAbilityCooldown(CancellationToken token);
+
+        /// <summary>
+        /// Initializes the weapon ability with the injected target transform.
+        /// </summary>
+        /// <param name="target">The target transform to associate with the ability.</param>
+        public virtual void Initialize(Transform target)
+        {
+        }
     }
 }
