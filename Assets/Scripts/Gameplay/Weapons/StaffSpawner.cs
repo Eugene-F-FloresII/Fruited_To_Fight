@@ -9,7 +9,10 @@ using Shared.Events;
 
 namespace Gameplay.Weapons
 {
-    public class FireballSpawner : ProjectileSpawner
+    /// <summary>
+    /// Handles detecting enemies in range and controlling the firing loop for Staff fireballs.
+    /// </summary>
+    public class StaffSpawner : ProjectileSpawner
     {
         [Header("Audio")] 
         [SerializeField] private AudioClip _audioClip;
@@ -17,6 +20,10 @@ namespace Gameplay.Weapons
         [Header("Burst Settings")] 
         [SerializeField] private float _burstDelay = 0.2f;
         
+        /// <summary>
+        /// Asynchronously executes the attack loop spawning fireballs target-by-target.
+        /// </summary>
+        /// <param name="token">Cancellation token for cleaning up async task on destroy.</param>
         protected override async UniTask AttackEnemyAsync(CancellationToken token)
         {
             try
@@ -35,7 +42,7 @@ namespace Gameplay.Weapons
 
                     for (int i = 0; i < projectileCount; i++)
                     {
-                        var enemies = GetSortedEnemies();
+                        List<EnemyController> enemies = GetSortedEnemies();
 
                         if (enemies.Count == 0)
                         {
@@ -66,7 +73,7 @@ namespace Gameplay.Weapons
                             }
                             else
                             {
-                                Debug.LogWarning($"{nameof(ProjectileSpawner)} spawned projectile without Rigidbody2D.", this);
+                                Debug.LogWarning($"{nameof(StaffSpawner)} spawned projectile without Rigidbody2D.", this);
                                 fireball.SetActive(false);
                             }
                         }
@@ -90,5 +97,4 @@ namespace Gameplay.Weapons
             }
         }
     }
-
 }

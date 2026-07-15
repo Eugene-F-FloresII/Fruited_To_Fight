@@ -136,9 +136,22 @@ MonoBehaviour:
     - TomahawkConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e732d01dbf9ae4945b393e07fc230965
-    m_Address: Assets/Prefabs/Weapon/StaffSpawner.prefab
+    m_Address: StaffSpawner
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - StaffConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed18afab736b88d4791808afdaa3322f
+    m_Address: Fire_Staff
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - StaffConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2c4227efc94aef45b2765b5d5f15c92
+    m_Address: StaffUpgrade
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - StaffConfig
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3f98cc3d43238a947aa6a142a2b489e0, type: 2}

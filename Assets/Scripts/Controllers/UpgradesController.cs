@@ -168,6 +168,9 @@ namespace Controllers
                     case UpgradesCategoryType.Tomahawk:
                         _button.onClick.AddListener(BuyTomahawkUpgrade);
                         break;
+                    case UpgradesCategoryType.Staff:
+                        _button.onClick.AddListener(BuyStaffUpgrade);
+                        break;
                     case UpgradesCategoryType.LightningWisp:
                         _button.onClick.AddListener(BuyLightningWispUpgrade);
                         break;
@@ -256,6 +259,24 @@ namespace Controllers
             int newSeed = _upgradesManager.UpgradeTomahawk(_seedCollected.Value);
     
             if (newSeed != _seedCollected.Value) // ✅ only close if purchase succeeded
+            {
+                _seedCollected.Value = newSeed;
+                _canChoose = false;
+                TurnOffCanvasGroup();
+            }
+        }
+
+        /// <summary>
+        /// Attempts to purchase the Staff upgrade and updates UI state on success.
+        /// </summary>
+        public void BuyStaffUpgrade()
+        {
+            if (!_canChoose) return;
+            if (_upgradesManager == null) return;
+
+            int newSeed = _upgradesManager.UpgradeStaff(_seedCollected.Value);
+    
+            if (newSeed != _seedCollected.Value) // only close if purchase succeeded
             {
                 _seedCollected.Value = newSeed;
                 _canChoose = false;

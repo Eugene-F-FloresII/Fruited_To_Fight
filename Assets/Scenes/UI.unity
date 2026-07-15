@@ -815,6 +815,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8736866957599274212, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: _iconList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736866957599274212, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: '_iconList.Array.data[1]'
+      value: 
+      objectReference: {fileID: -6952502772371916579, guid: 6af2c274656326e4a8f77029ebffe14a, type: 3}
+    - target: {fileID: 8736866957599274212, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: _weaponClass.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736866957599274212, guid: b05d30b34220dee449935913348e8f49, type: 3}
+      propertyPath: '_weaponClass.Array.data[1]'
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8917718058268598372, guid: b05d30b34220dee449935913348e8f49, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

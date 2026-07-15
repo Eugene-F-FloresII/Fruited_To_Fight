@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Special Abilities
   m_GUID: 51a0e17ac7f01ad4885fa1872faaca2f
   m_SerializeEntries:
+  - m_GUID: 4454c89532acd334d999f5dc1651ad8c
+    m_Address: FireMeteor
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44a9578758b500e499dda16147f69bf5
+    m_Address: StaffSpecialAbility
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b7f872aa138310e45a4b5a5d2ec0e7a4
     m_Address: Assets/Prefabs/Weapon/SpecialAbilities/TomahawkSpecialAbility.prefab
     m_ReadOnly: 0

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 016c96fd51c8d944fb9b76ebf94c9ee4, type: 3}
+  m_Name: StaffUpgrade
+  m_EditorClassIdentifier: Assembly-CSharp::Data.Upgrades.UpgradeWeapon
+  Category: 8
+  PercentageIncreasePerLevel: 0.1
+  UpgradeLevel: {fileID: 11400000, guid: c9a27fd29f6c60b4e8c7bc8fab172fe5, type: 2}
+  MaxLevel: 5
+  PriceUpgrade: 15
+  IsMaxed: 0
+  ButtonPrefab: {fileID: 3854389167948340839, guid: 5c73e5993057b8d49adf93cc132ee528, type: 3}

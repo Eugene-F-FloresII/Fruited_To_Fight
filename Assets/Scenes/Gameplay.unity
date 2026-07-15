@@ -699,7 +699,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3a116ff078c61e149a8a453dc0c4e3d7, type: 2}
   - {fileID: 11400000, guid: b146130a57fbcf748b697f05bad04b49, type: 2}
   - {fileID: 11400000, guid: 1da813dfc43eee3468039c105badfc01, type: 2}
-  _upgradesCategoryList: 0000000002000000040000000600000007000000
+  - {fileID: 11400000, guid: f2c4227efc94aef45b2765b5d5f15c92, type: 2}
+  _upgradesCategoryList: 000000000200000004000000060000000700000008000000
 --- !u!4 &668084220
 Transform:
   m_ObjectHideFlags: 0
@@ -26294,6 +26295,18 @@ PrefabInstance:
     - target: {fileID: 440890682060734769, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2234186703989424637, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+      propertyPath: _weaponAbilitiesList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2234186703989424637, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+      propertyPath: _weaponAbilitiesList.Array.data[1].WeaponClass
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2234186703989424637, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+      propertyPath: _weaponAbilitiesList.Array.data[1].AbilityPrefabReference.m_AssetGUID
+      value: 44a9578758b500e499dda16147f69bf5
       objectReference: {fileID: 0}
     - target: {fileID: 2527980715708105462, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
       propertyPath: m_Constraints

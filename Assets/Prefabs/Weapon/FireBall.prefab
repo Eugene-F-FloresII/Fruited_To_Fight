@@ -138,8 +138,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4073394740471155067}
-  - component: {fileID: 3069233808988461055}
   - component: {fileID: 4734670097678898562}
+  - component: {fileID: 4504943555846206333}
   m_Layer: 0
   m_Name: FireBall
   m_TagString: Untagged
@@ -165,23 +165,6 @@ Transform:
   - {fileID: 5091701729659855940}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3069233808988461055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5432684180257592977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68b2a059244440f43a8a202d3543542e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.Spear
-  _weaponConfig: {fileID: 11400000, guid: 3cd373512670cf341824ec6a5281b3d8, type: 2}
-  ProjectileWeaponHoming: {fileID: 5719271683169619955}
-  _weaponTriggerRb: {fileID: 8974319110440768554}
-  _homingTurnSpeed: 520
-  _retargetInterval: 0.08
 --- !u!50 &4734670097678898562
 Rigidbody2D:
   serializedVersion: 5
@@ -209,6 +192,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4504943555846206333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5432684180257592977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3b4f471c8bd734e8ca554f7f7987aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.Staff
+  _weaponConfig: {fileID: 11400000, guid: 3cd373512670cf341824ec6a5281b3d8, type: 2}
+  ProjectileWeaponHoming: {fileID: 5719271683169619955}
+  _weaponTriggerRb: {fileID: 8974319110440768554}
+  _homingTurnSpeed: 540
+  _retargetInterval: 0.08
+  _weaponAffliction: {fileID: 0}
 --- !u!1 &7948533437633855009
 GameObject:
   m_ObjectHideFlags: 0

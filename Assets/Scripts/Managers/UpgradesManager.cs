@@ -90,6 +90,7 @@ namespace Managers
         private UpgradeData _speed;
         private UpgradeData _attackSpeed;
         private UpgradeData _tomahawk;
+        private UpgradeData _staff;
         private UpgradeData _lightningWisp;
         
         private bool _lightningWispPicked;
@@ -186,6 +187,30 @@ namespace Managers
             UpgradeWeaponResult result = _tomahawk.BuyWeaponUpgrade(seed, target.WeaponDamage, target.WeaponSpeed, target.WeaponRange);
             
             foreach (var weapon in _activeWeapons.Where(w => w.WeaponClass == WeaponClass.Tomahawk))
+            {
+                weapon.WeaponDamage += result.Damage;
+                weapon.WeaponSpeed += result.Speed;
+                weapon.WeaponRange += result.Range;
+            }
+
+            return result.Currency;
+        }
+
+        /// <summary>
+        /// Purchases the upgrade for the Staff weapon, increasing its damage, speed, and range stats.
+        /// </summary>
+        /// <param name="seed">The current seed count (currency).</param>
+        /// <returns>The remaining seed count after purchase.</returns>
+        public int UpgradeStaff(int seed)
+        {
+            if (_staff.GetUpgradeLevelMaxed()) return seed;
+
+            WeaponConfig target = _activeWeapons.FirstOrDefault(w => w.WeaponClass == WeaponClass.Staff);
+            if (target == null) return seed;
+
+            UpgradeWeaponResult result = _staff.BuyWeaponUpgrade(seed, target.WeaponDamage, target.WeaponSpeed, target.WeaponRange);
+            
+            foreach (var weapon in _activeWeapons.Where(w => w.WeaponClass == WeaponClass.Staff))
             {
                 weapon.WeaponDamage += result.Damage;
                 weapon.WeaponSpeed += result.Speed;
@@ -342,7 +367,8 @@ namespace Managers
             //_knockback = GetUpgrade(UpgradesCategoryType.Knockback);
             _speed = GetUpgrade(UpgradesCategoryType.Speed);
            // _attackSpeed = GetUpgrade(UpgradesCategoryType.AttackSpeed);
-           _tomahawk = GetUpgrade(UpgradesCategoryType.Tomahawk);
+            _tomahawk = GetUpgrade(UpgradesCategoryType.Tomahawk);
+           _staff = GetUpgrade(UpgradesCategoryType.Staff);
            
            _lightningWisp = GetUpgrade(UpgradesCategoryType.LightningWisp);
 
@@ -356,7 +382,15 @@ namespace Managers
             float initialKnockback,
             float initialAtkSpeed)
         {
-            float weaponMultiplier = _tomahawk != null ? _tomahawk.GetMultiplier() : 1f;
+            float weaponMultiplier = 1f;
+            if (config.WeaponClass == WeaponClass.Tomahawk && _tomahawk != null)
+            {
+                weaponMultiplier = _tomahawk.GetMultiplier();
+            }
+            else if (config.WeaponClass == WeaponClass.Staff && _staff != null)
+            {
+                weaponMultiplier = _staff.GetMultiplier();
+            }
          
             config.WeaponDamage = initialDamage * _damage.GetMultiplier() * weaponMultiplier;
           //  config.WeaponPierce = initialPierce + (int)_pierce.GetMultiplier();

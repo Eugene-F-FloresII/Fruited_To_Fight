@@ -22,13 +22,16 @@ MonoBehaviour:
   WeaponName: Staff
   WeaponID: 1
   WeaponType: 1
-  WeaponClass: 0
+  WeaponClass: 3
   WeaponAmountToPool: 20
   WeaponHoming: 1
   WeaponLevel: {fileID: 11400000, guid: c9a27fd29f6c60b4e8c7bc8fab172fe5, type: 2}
   WeaponRange: 6
-  WeaponDamage: 20
+  WeaponDamage: 35
   WeaponPierce: 1
-  WeaponSpeed: 25
-  WeaponAtkSpeed: 0.5
-  WeaponKnockback: 2
+  WeaponSpeed: 15
+  WeaponAtkSpeed: 1
+  WeaponKnockback: 5
+  AbilityCooldown: 2
+  AbilityDuration: 5
+  Afflictions: []

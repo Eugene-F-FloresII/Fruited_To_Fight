@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 21014998223286775}
   - component: {fileID: 3271039653007392293}
   - component: {fileID: 463720974518500535}
-  - component: {fileID: 3354106929324020850}
   - component: {fileID: 1552226248234724494}
+  - component: {fileID: 1308476747641693059}
   m_Layer: 7
   m_Name: StaffSpawner
   m_TagString: Untagged
@@ -132,23 +132,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1
---- !u!114 &3354106929324020850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5399525038416986603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 819caaa11ea648d428379e4cd958fada, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.FireballSpawner
-  _weaponConfig: {fileID: 11400000, guid: 3cd373512670cf341824ec6a5281b3d8, type: 2}
-  _enemies: []
-  _pooledProjectile: {fileID: 0}
-  _pooledTransform: {fileID: 8426704519022382382}
-  _audioClip: {fileID: 8300000, guid: 47be42555ce790a4983d5415ae64881a, type: 3}
 --- !u!50 &1552226248234724494
 Rigidbody2D:
   serializedVersion: 5
@@ -176,6 +159,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1308476747641693059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5399525038416986603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e472f9754ee2043afd9dd9300b6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.StaffSpawner
+  _weaponConfig: {fileID: 11400000, guid: 3cd373512670cf341824ec6a5281b3d8, type: 2}
+  _weaponAfflictionSprite: {fileID: 0}
+  _weaponAffliction: {fileID: 0}
+  _enemies: []
+  _pooledProjectile: {fileID: 5432684180257592977, guid: 9c3780723b4b33647a94175ddabc350a, type: 3}
+  _pooledTransform: {fileID: 8426704519022382382}
+  _audioClip: {fileID: 0}
+  _burstDelay: 0.2
 --- !u!1 &6483377470488172191
 GameObject:
   m_ObjectHideFlags: 0
