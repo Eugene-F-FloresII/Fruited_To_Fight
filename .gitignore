@@ -76,3 +76,6 @@ il2cppOutput/
 # ========== Others ==========
 *.opendb
 *.VC.db
+
+# ========== Graphify ==========
+graphify-out/
