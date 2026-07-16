@@ -34,4 +34,7 @@ MonoBehaviour:
   WeaponKnockback: 10
   AbilityCooldown: 10
   AbilityDuration: 6
+  AbilityRadius: 6
+  AbilitySpawnCount: 7
+  AbilitySpeed: 300
   Afflictions: []

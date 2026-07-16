@@ -21,10 +21,11 @@ namespace Gameplay.Weapons
     {
         [Header("Meteor Settings")]
         [SerializeField] private AssetReferenceGameObject _meteorPrefabReference;
-        [SerializeField] private float _meteorRadius = 4.0f;
-        [SerializeField] private float _spawnInterval = 0.5f; // 2 meteors per second
-        [SerializeField] private int _meteorsPerSpawn = 1;
         [SerializeField] private Transform _target;
+
+        private float MeteorRadius => _weaponConfig != null ? _weaponConfig.AbilityRadius : 4.0f;
+        private float SpawnInterval => _weaponConfig != null ? (1.0f / Mathf.Max(0.01f, _weaponConfig.AbilitySpeed)) : 0.5f;
+        private int MeteorsPerSpawn => _weaponConfig != null ? _weaponConfig.AbilitySpawnCount : 1;
 
         private void Awake()
         {
@@ -171,10 +172,10 @@ namespace Gameplay.Weapons
 
             while (Time.time - startTime < duration && !token.IsCancellationRequested)
             {
-                if (Time.time - lastSpawnTime >= _spawnInterval)
+                if (Time.time - lastSpawnTime >= SpawnInterval)
                 {
                     lastSpawnTime = Time.time;
-                    for (int i = 0; i < _meteorsPerSpawn; i++)
+                    for (int spawnIndex = 0; spawnIndex < MeteorsPerSpawn; spawnIndex++)
                     {
                         SpawnMeteorAtRandomPosition(meteorPrefab);
                     }
@@ -192,7 +193,7 @@ namespace Gameplay.Weapons
         {
             if (_target == null) return;
 
-            Vector2 randomCirclePoint = Random.insideUnitCircle * _meteorRadius;
+            Vector2 randomCirclePoint = Random.insideUnitCircle * MeteorRadius;
             Vector3 landingPosition = _target.position + new Vector3(randomCirclePoint.x, randomCirclePoint.y, 0f);
 
             GameObject meteor = Instantiate(meteorPrefab, landingPosition, Quaternion.identity, null);

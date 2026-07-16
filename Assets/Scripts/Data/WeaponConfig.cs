@@ -34,6 +34,9 @@ namespace Data
         [Header("Special Ability Settings")] 
         public float AbilityCooldown;
         public float AbilityDuration;
+        public float AbilityRadius;
+        public int AbilitySpawnCount;
+        public float AbilitySpeed;
 
         [Header("Afflictions")]
         public List<AfflictionConfig> Afflictions;

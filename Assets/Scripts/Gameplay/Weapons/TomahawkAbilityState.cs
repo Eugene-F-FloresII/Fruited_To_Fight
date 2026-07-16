@@ -14,10 +14,12 @@ namespace Gameplay.Weapons
     public class TomahawkAbilityState : WeaponAbilityState
     {
         [Header("Spin Settings")] 
-        [SerializeField] private float _spinRadius = 2.5f;
-        [SerializeField] private float _spinSpeed = 300f;
         [SerializeField] private float _projectileScale = 2f;
         [SerializeField] private Transform _target;
+
+        private float SpinRadius => _weaponConfig != null ? _weaponConfig.AbilityRadius : 2.5f;
+        private float SpinSpeed => _weaponConfig != null ? _weaponConfig.AbilitySpeed : 300f;
+        private int ProjectileCount => _weaponConfig != null ? _weaponConfig.AbilitySpawnCount : 4;
 
         private readonly List<GameObject> _activeProjectiles = new List<GameObject>();
 
@@ -79,7 +81,7 @@ namespace Gameplay.Weapons
                 {
                     if (_target == null) break;
 
-                    currentAngle += _spinSpeed * Time.deltaTime;
+                    currentAngle += SpinSpeed * Time.deltaTime;
                     UpdateProjectilesPosition(currentAngle);
 
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
@@ -124,7 +126,8 @@ namespace Gameplay.Weapons
         {
             CleanupProjectiles();
 
-            for (int i = 0; i < 4; i++)
+            int count = ProjectileCount;
+            for (int projectileIndex = 0; projectileIndex < count; projectileIndex++)
             {
                 GameObject projectile = Instantiate(_weaponConfig.WeaponPrefab);
                 projectile.transform.localScale = Vector3.one * _projectileScale;
@@ -151,17 +154,21 @@ namespace Gameplay.Weapons
 
         private void UpdateProjectilesPosition(float baseAngle)
         {
-            for (int i = 0; i < _activeProjectiles.Count; i++)
-            {
-                if (_activeProjectiles[i] == null) continue;
+            int count = _activeProjectiles.Count;
+            if (count == 0) return;
 
-                float angle = (baseAngle + (i * 90f)) * Mathf.Deg2Rad;
-                Vector3 offset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * _spinRadius;
-                _activeProjectiles[i].transform.position = _target.position + offset;
+            float angleStep = 360f / count;
+            for (int projectileIndex = 0; projectileIndex < count; projectileIndex++)
+            {
+                if (_activeProjectiles[projectileIndex] == null) continue;
+
+                float angle = (baseAngle + (projectileIndex * angleStep)) * Mathf.Deg2Rad;
+                Vector3 offset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * SpinRadius;
+                _activeProjectiles[projectileIndex].transform.position = _target.position + offset;
                 
                 // Rotate to face the direction of rotation (tangent)
-                float rotationAngle = (baseAngle + (i * 90f) + 90f);
-                _activeProjectiles[i].transform.rotation = Quaternion.Euler(0, 0, rotationAngle);
+                float rotationAngle = (baseAngle + (projectileIndex * angleStep) + 90f);
+                _activeProjectiles[projectileIndex].transform.rotation = Quaternion.Euler(0, 0, rotationAngle);
             }
         }
 

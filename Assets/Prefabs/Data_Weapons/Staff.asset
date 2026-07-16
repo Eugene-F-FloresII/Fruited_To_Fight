@@ -34,5 +34,8 @@ MonoBehaviour:
   WeaponKnockback: 5
   AbilityCooldown: 2
   AbilityDuration: 5
+  AbilityRadius: 4.0
+  AbilitySpawnCount: 1
+  AbilitySpeed: 2.0
   Afflictions:
   - {fileID: 11400000, guid: 43ddac93c3704fb42b1d6995d7ab4909, type: 2}
