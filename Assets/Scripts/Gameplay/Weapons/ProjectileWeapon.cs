@@ -79,8 +79,6 @@ namespace Gameplay.Weapons
         {
             if (other.TryGetComponent(out EnemyController enemy))
             { 
-                enemy.TakeDamage(CurrentDamage, this);
-
                 if (_weaponConfig.Afflictions != null)
                 {
                     foreach (var affliction in _weaponConfig.Afflictions)
@@ -88,6 +86,8 @@ namespace Gameplay.Weapons
                         enemy.ApplyAffliction(affliction);
                     }
                 }
+
+                enemy.TakeDamage(CurrentDamage, this);
 
                 CurrentPierce--;
                 OnPierceValueChanged();

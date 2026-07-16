@@ -33,9 +33,6 @@ namespace Gameplay.Weapons
             {
                 if (collider.TryGetComponent(out EnemyController enemy))
                 {
-                    // Apply damage and knockback
-                    enemy.TakeDamage(_weaponConfig.WeaponDamage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(_weaponConfig.WeaponClass));
-
                     // Apply afflictions
                     if (_weaponConfig.Afflictions != null)
                     {
@@ -44,6 +41,9 @@ namespace Gameplay.Weapons
                             enemy.ApplyAffliction(affliction);
                         }
                     }
+
+                    // Apply damage and knockback
+                    enemy.TakeDamage(_weaponConfig.WeaponDamage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(_weaponConfig.WeaponClass));
                 }
             }
         }

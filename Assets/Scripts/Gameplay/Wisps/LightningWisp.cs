@@ -96,8 +96,6 @@ namespace Gameplay.Wisps
 
             if (_wispConfig != null)
             {
-                currentTarget.TakeDamage(_wispConfig.Damage, DamageSourceInfo.FromWisp(WispType.Lightning));
-
                 if (_wispConfig.Afflictions != null)
                 {
                     foreach (var affliction in _wispConfig.Afflictions)
@@ -105,6 +103,8 @@ namespace Gameplay.Wisps
                         currentTarget.ApplyAffliction(affliction);
                     }
                 }
+
+                currentTarget.TakeDamage(_wispConfig.Damage, DamageSourceInfo.FromWisp(WispType.Lightning));
             }
 
             // Get visual from pool and set it up

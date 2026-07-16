@@ -68,11 +68,6 @@ namespace Gameplay.Weapons
             {
                 _hitEnemies.Add(enemy);
                 
-                float damage = _weaponConfig.WeaponDamage * _percentageIncrease;
-                Debug.Log($"[MeteorExplosion] Trigger hit enemy '{enemy.gameObject.name}' for {damage} damage.");
-                
-                enemy.TakeDamage(damage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(WeaponClass.Staff));
-
                 if (_weaponConfig.Afflictions != null)
                 {
                     foreach (var affliction in _weaponConfig.Afflictions)
@@ -80,6 +75,11 @@ namespace Gameplay.Weapons
                         enemy.ApplyAffliction(affliction);
                     }
                 }
+
+                float damage = _weaponConfig.WeaponDamage * _percentageIncrease;
+                Debug.Log($"[MeteorExplosion] Trigger hit enemy '{enemy.gameObject.name}' for {damage} damage.");
+                
+                enemy.TakeDamage(damage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(WeaponClass.Staff));
             }
         }
 

@@ -207,9 +207,6 @@ namespace Gameplay.Weapons
         {
             if (other.TryGetComponent(out EnemyController enemy))
             {
-                var damage = _config.WeaponDamage * _percentageIncrease;
-                enemy.TakeDamage(damage, _weapon);
-
                 if (_config.Afflictions != null)
                 {
                     foreach (var affliction in _config.Afflictions)
@@ -217,6 +214,9 @@ namespace Gameplay.Weapons
                         enemy.ApplyAffliction(affliction);
                     }
                 }
+
+                var damage = _config.WeaponDamage * _percentageIncrease;
+                enemy.TakeDamage(damage, _weapon);
             }
         }
     }
