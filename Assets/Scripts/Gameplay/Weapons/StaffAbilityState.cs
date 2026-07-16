@@ -234,6 +234,14 @@ namespace Gameplay.Weapons
             {
                 float damage = _config.WeaponDamage * _percentageIncrease;
                 enemy.TakeDamage(damage, transform.position, _config.WeaponKnockback, DamageSourceInfo.FromWeapon(WeaponClass.Staff));
+
+                if (_config.Afflictions != null)
+                {
+                    foreach (var affliction in _config.Afflictions)
+                    {
+                        enemy.ApplyAffliction(affliction);
+                    }
+                }
             }
         }
     }

@@ -209,6 +209,14 @@ namespace Gameplay.Weapons
             {
                 var damage = _config.WeaponDamage * _percentageIncrease;
                 enemy.TakeDamage(damage, _weapon);
+
+                if (_config.Afflictions != null)
+                {
+                    foreach (var affliction in _config.Afflictions)
+                    {
+                        enemy.ApplyAffliction(affliction);
+                    }
+                }
             }
         }
     }

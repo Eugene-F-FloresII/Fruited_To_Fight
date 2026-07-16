@@ -233,6 +233,12 @@ namespace Controllers
         private void ApplyDamage(float damage, DamageSourceInfo sourceInfo)
         {
             _currentHealth -= damage;
+            var activeAffliction = GetComponent<AfflictionState>();
+            if (activeAffliction != null)
+            {
+                sourceInfo.TargetAfflictionType = activeAffliction.AfflictionType;
+                sourceInfo.HasTargetAffliction = true;
+            }
             Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage), sourceInfo);
             
             if (_hitEffectCts != null)

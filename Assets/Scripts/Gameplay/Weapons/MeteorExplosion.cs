@@ -72,6 +72,14 @@ namespace Gameplay.Weapons
                 Debug.Log($"[MeteorExplosion] Trigger hit enemy '{enemy.gameObject.name}' for {damage} damage.");
                 
                 enemy.TakeDamage(damage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(WeaponClass.Staff));
+
+                if (_weaponConfig.Afflictions != null)
+                {
+                    foreach (var affliction in _weaponConfig.Afflictions)
+                    {
+                        enemy.ApplyAffliction(affliction);
+                    }
+                }
             }
         }
 

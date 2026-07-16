@@ -114,6 +114,15 @@ namespace Gameplay
 
         public Color GetDamageColor(DamageSourceInfo sourceInfo)
         {
+            if (sourceInfo.HasTargetAffliction)
+            {
+                foreach (var config in _afflictionColors)
+                {
+                    if (config.AfflictionType == sourceInfo.TargetAfflictionType)
+                        return config.Color;
+                }
+            }
+
             if (sourceInfo.IsAffliction)
             {
                 foreach (var config in _afflictionColors)
