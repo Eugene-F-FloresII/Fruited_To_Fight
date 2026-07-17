@@ -73,13 +73,12 @@ namespace Gameplay.Upgrades
                     radius /= (1f + _statUpgradePercentage);
                     speed /= (1f + _statUpgradePercentage);
                 }
-                spawnCount = Mathf.Max(1, spawnCount - 1);
             }
 
             _baseCooldown = cooldown;
             _baseDuration = duration;
             _baseRadius = radius;
-            _baseSpawnCount = spawnCount;
+            _baseSpawnCount = Mathf.Max(1, spawnCount - (currentLvl - 1) / 2);
             _baseSpeed = speed;
         }
 
@@ -164,10 +163,16 @@ namespace Gameplay.Upgrades
             if (_futureSpeedText != null) _futureSpeedText.text = GetFutureSpeed().ToString("F1");
         }
 
+        /// <summary>
+        /// Calculates the spawn count for a specific upgrade level.
+        /// Increases spawn count by 1 every 2 levels.
+        /// </summary>
+        private int GetSpawnCountForLevel(int level) => _baseSpawnCount + (level - 1) / 2;
+
         private float GetFutureCooldown() => _weaponConfig.AbilityCooldown * (1f - _statUpgradePercentage);
         private float GetFutureDuration() => _weaponConfig.AbilityDuration * (1f + _statUpgradePercentage);
         private float GetFutureRadius() => _weaponConfig.AbilityRadius * (1f + _statUpgradePercentage);
-        private int GetFutureSpawnCount() => _weaponConfig.AbilitySpawnCount + 1;
+        private int GetFutureSpawnCount() => GetSpawnCountForLevel(_currentLevel + 1);
         private float GetFutureSpeed() => _weaponConfig.AbilitySpeed * (1f + _statUpgradePercentage);
 
         /// <summary>
@@ -180,7 +185,7 @@ namespace Gameplay.Upgrades
             _weaponConfig.AbilityCooldown = GetFutureCooldown();
             _weaponConfig.AbilityDuration = GetFutureDuration();
             _weaponConfig.AbilityRadius = GetFutureRadius();
-            _weaponConfig.AbilitySpawnCount = GetFutureSpawnCount();
+            _weaponConfig.AbilitySpawnCount = GetSpawnCountForLevel(_currentLevel);
             _weaponConfig.AbilitySpeed = GetFutureSpeed();
         }
     }
