@@ -242,7 +242,13 @@ namespace Gameplay.Weapons
                 }
 
                 float damage = _config.WeaponDamage * _percentageIncrease;
-                enemy.TakeDamage(damage, transform.position, _config.WeaponKnockback, DamageSourceInfo.FromWeapon(WeaponClass.Staff));
+                AfflictionType afflictionType = AfflictionType.None;
+                if (_config.Afflictions != null && _config.Afflictions.Count > 0)
+                {
+                    afflictionType = _config.Afflictions[0].Type;
+                }
+
+                enemy.TakeDamage(damage, transform.position, _config.WeaponKnockback, DamageSourceInfo.FromWeapon(WeaponClass.Staff, afflictionType));
             }
         }
     }

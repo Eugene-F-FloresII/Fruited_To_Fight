@@ -10,17 +10,16 @@ namespace Shared.Events
         public bool IsWeapon;
         public bool IsAffliction;
         public bool IsWisp;
-        public AfflictionType TargetAfflictionType;
-        public bool HasTargetAffliction;
 
         public static DamageSourceInfo Default => new DamageSourceInfo();
 
-        public static DamageSourceInfo FromWeapon(WeaponClass weaponClass)
+        public static DamageSourceInfo FromWeapon(WeaponClass weaponClass, AfflictionType afflictionType = AfflictionType.None)
         {
             return new DamageSourceInfo
             {
                 WeaponClass = weaponClass,
-                IsWeapon = true
+                IsWeapon = true,
+                AfflictionType = afflictionType
             };
         }
 

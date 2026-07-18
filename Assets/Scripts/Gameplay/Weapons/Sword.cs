@@ -42,8 +42,14 @@ namespace Gameplay.Weapons
                         }
                     }
 
+                    AfflictionType afflictionType = AfflictionType.None;
+                    if (_weaponConfig.Afflictions != null && _weaponConfig.Afflictions.Count > 0)
+                    {
+                        afflictionType = _weaponConfig.Afflictions[0].Type;
+                    }
+
                     // Apply damage and knockback
-                    enemy.TakeDamage(_weaponConfig.WeaponDamage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(_weaponConfig.WeaponClass));
+                    enemy.TakeDamage(_weaponConfig.WeaponDamage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(_weaponConfig.WeaponClass, afflictionType));
                 }
             }
         }

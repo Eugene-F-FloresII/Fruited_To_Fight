@@ -79,7 +79,13 @@ namespace Gameplay.Weapons
                 float damage = _weaponConfig.WeaponDamage * _percentageIncrease;
                 Debug.Log($"[MeteorExplosion] Trigger hit enemy '{enemy.gameObject.name}' for {damage} damage.");
                 
-                enemy.TakeDamage(damage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(WeaponClass.Staff));
+                AfflictionType afflictionType = AfflictionType.None;
+                if (_weaponConfig.Afflictions != null && _weaponConfig.Afflictions.Count > 0)
+                {
+                    afflictionType = _weaponConfig.Afflictions[0].Type;
+                }
+
+                enemy.TakeDamage(damage, transform.position, _weaponConfig.WeaponKnockback, DamageSourceInfo.FromWeapon(WeaponClass.Staff, afflictionType));
             }
         }
 

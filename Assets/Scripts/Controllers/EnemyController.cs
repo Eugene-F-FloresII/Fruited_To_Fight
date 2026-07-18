@@ -178,7 +178,9 @@ namespace Controllers
 
         public void TakeDamage(float damage, ProjectileWeapon projectile)
         {
-            _projectileDirection = (transform.position - projectile.transform.position).normalized;
+            if (projectile == null) return;
+            
+            Vector2 _projectileDirection = projectile.transform.right;
             
             if (_knockbackCts != null)
             {
@@ -186,16 +188,21 @@ namespace Controllers
                 _knockbackCts.Dispose();
                 _knockbackCts = null;
             }
-            _knockbackCts =  new CancellationTokenSource();
+            _knockbackCts = new CancellationTokenSource();
             
             EnemyKnockBack(_projectileDirection, projectile.GetWeaponKnockback(), 0.3f, _knockbackCts.Token).Forget();
             
             WeaponClass weaponClass = WeaponClass.None;
-            if (projectile != null && projectile.WeaponConfig != null)
+            AfflictionType afflictionType = AfflictionType.None;
+            if (projectile.WeaponConfig != null)
             {
                 weaponClass = projectile.WeaponConfig.WeaponClass;
+                if (projectile.WeaponConfig.Afflictions != null && projectile.WeaponConfig.Afflictions.Count > 0)
+                {
+                    afflictionType = projectile.WeaponConfig.Afflictions[0].Type;
+                }
             }
-            ApplyDamage(damage, DamageSourceInfo.FromWeapon(weaponClass));
+            ApplyDamage(damage, DamageSourceInfo.FromWeapon(weaponClass, afflictionType));
         }
 
         public void TakeDamage(float damage, Vector2 sourcePosition, float knockbackForce)
@@ -233,12 +240,6 @@ namespace Controllers
         private void ApplyDamage(float damage, DamageSourceInfo sourceInfo)
         {
             _currentHealth -= damage;
-            var activeAffliction = GetComponent<AfflictionState>();
-            if (activeAffliction != null)
-            {
-                sourceInfo.TargetAfflictionType = activeAffliction.AfflictionType;
-                sourceInfo.HasTargetAffliction = true;
-            }
             Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage), sourceInfo);
             
             if (_hitEffectCts != null)
