@@ -82,12 +82,9 @@ namespace Controllers
 
         private void LoadBaseUpgrades()
         {
-            if (_debugUpgrades)
-            {
-                 PrepareUpgrade("DamageUpgrade").Forget();
-                 PrepareUpgrade("RangeUpgrade").Forget();
-                 PrepareUpgrade("SpeedUpgrade").Forget(); 
-            }
+            PrepareUpgrade("DamageUpgrade").Forget();
+            PrepareUpgrade("RangeUpgrade").Forget();
+            PrepareUpgrade("SpeedUpgrade").Forget(); 
           
             PrepareUpgrade("LightningWispUpgrade").Forget();
         }
@@ -126,27 +123,49 @@ namespace Controllers
 
             ClearUpgrades();
 
-            // Create a temporary list of available (non-maxed) upgrades
-            List<UpgradeData> availableUpgrades = new List<UpgradeData>();
+            // Create separate lists of available (non-maxed) regular upgrades and fillable upgrades
+            List<UpgradeData> availableRegular = new List<UpgradeData>();
+            List<UpgradeData> availableFillable = new List<UpgradeData>();
+
             foreach (var upgrade in _upgradesList)
             {
                 if (!upgrade.GetUpgradeLevelMaxed())
                 {
-                    availableUpgrades.Add(upgrade);
+                    if (upgrade.Category == UpgradesCategoryType.Damage ||
+                        upgrade.Category == UpgradesCategoryType.Range ||
+                        upgrade.Category == UpgradesCategoryType.Speed)
+                    {
+                        availableFillable.Add(upgrade);
+                    }
+                    else
+                    {
+                        availableRegular.Add(upgrade);
+                    }
                 }
             }
 
-            // Determine how many buttons to spawn (minimum of _maxButtons or available count)
-            int buttonsToSpawn = Mathf.Min(_maxButtons, availableUpgrades.Count);
+            List<UpgradeData> selectedUpgrades = new List<UpgradeData>();
 
-            for (int i = 0; i < buttonsToSpawn; i++)
+            // 1. Select as many regular upgrades as possible up to _maxButtons
+            while (selectedUpgrades.Count < _maxButtons && availableRegular.Count > 0)
             {
-                _randomIndex = Random.Range(0, availableUpgrades.Count);
-                var upgrade = availableUpgrades[_randomIndex];
+                int index = Random.Range(0, availableRegular.Count);
+                selectedUpgrades.Add(availableRegular[index]);
+                availableRegular.RemoveAt(index);
+            }
 
-                // Remove from available list so it can't be picked again in this session
-                availableUpgrades.RemoveAt(_randomIndex);
+            // 2. If we need more upgrades to reach _maxButtons, fill the remaining slots with fillable upgrades
+            while (selectedUpgrades.Count < _maxButtons && availableFillable.Count > 0)
+            {
+                int index = Random.Range(0, availableFillable.Count);
+                selectedUpgrades.Add(availableFillable[index]);
+                availableFillable.RemoveAt(index);
+            }
 
+            // 3. Spawn buttons for the selected upgrades
+            for (int i = 0; i < selectedUpgrades.Count; i++)
+            {
+                var upgrade = selectedUpgrades[i];
                 _button = Instantiate(upgrade.ButtonPrefab, _transform);
 
                 if (_seedCollected != null && _seedCollected.Value < upgrade.GetSeedPriceUpgrade())
