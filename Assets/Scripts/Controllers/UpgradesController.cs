@@ -190,6 +190,9 @@ namespace Controllers
                     case UpgradesCategoryType.Staff:
                         _button.onClick.AddListener(BuyStaffUpgrade);
                         break;
+                    case UpgradesCategoryType.Spear:
+                        _button.onClick.AddListener(BuySpearUpgrade);
+                        break;
                     case UpgradesCategoryType.LightningWisp:
                         _button.onClick.AddListener(BuyLightningWispUpgrade);
                         break;
@@ -294,6 +297,21 @@ namespace Controllers
             if (_upgradesManager == null) return;
 
             int newSeed = _upgradesManager.UpgradeStaff(_seedCollected.Value);
+    
+            if (newSeed != _seedCollected.Value) // only close if purchase succeeded
+            {
+                _seedCollected.Value = newSeed;
+                _canChoose = false;
+                TurnOffCanvasGroup();
+            }
+        }
+
+        public void BuySpearUpgrade()
+        {
+            if (!_canChoose) return;
+            if (_upgradesManager == null) return;
+
+            int newSeed = _upgradesManager.UpgradeSpear(_seedCollected.Value);
     
             if (newSeed != _seedCollected.Value) // only close if purchase succeeded
             {

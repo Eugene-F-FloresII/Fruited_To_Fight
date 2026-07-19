@@ -552,6 +552,20 @@ MonoBehaviour:
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
+  - WeaponClass: 3
+    AbilityPrefabReference:
+      m_AssetGUID: 44a9578758b500e499dda16147f69bf5
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+  - WeaponClass: 1
+    AbilityPrefabReference:
+      m_AssetGUID: 192049182a47b48192a83749182a47b4
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
   _targetTransform: {fileID: 8776139535328001396}
 --- !u!1 &4564134413012432769
 GameObject:

@@ -65,6 +65,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - BurnAffliction
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a8192048192a47b48192a8374910293
+    m_Address: SpearUpgrade
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SpearConfig
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5c62695bdc7329349907f367bf9231fe
     m_Address: Assets/Prefabs/Data_Upgrade/DamageUpgrade.asset
     m_ReadOnly: 0
@@ -104,6 +110,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9bdaa3c0e4591f46acc20d82bbeeadb
+    m_Address: SpearSpike
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bc3223387b63c8c4b9fd3200fe413aa9
     m_Address: Assets/Prefabs/Data_Weapons/Spear.asset
     m_ReadOnly: 0
@@ -116,6 +127,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tomahawk
     - TomahawkConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c37f9fdccf5a73b4e999270058a784ff
+    m_Address: AbilityWarningCircle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7e0f88e1191bce4c856d626bbe3547c
     m_Address: Assets/Prefabs/Data_Upgrade/RangeUpgrade.asset

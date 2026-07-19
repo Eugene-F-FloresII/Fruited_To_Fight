@@ -91,6 +91,7 @@ namespace Managers
         private UpgradeData _attackSpeed;
         private UpgradeData _tomahawk;
         private UpgradeData _staff;
+        private UpgradeData _spear;
         private UpgradeData _lightningWisp;
         
         private bool _lightningWispPicked;
@@ -211,6 +212,30 @@ namespace Managers
             UpgradeWeaponResult result = _staff.BuyWeaponUpgrade(seed, target.WeaponDamage, target.WeaponSpeed, target.WeaponRange);
             
             foreach (var weapon in _activeWeapons.Where(w => w.WeaponClass == WeaponClass.Staff))
+            {
+                weapon.WeaponDamage += result.Damage;
+                weapon.WeaponSpeed += result.Speed;
+                weapon.WeaponRange += result.Range;
+            }
+
+            return result.Currency;
+        }
+
+        /// <summary>
+        /// Purchases the upgrade for the Spear weapon, increasing its damage, speed, and range stats.
+        /// </summary>
+        /// <param name="seed">The current seed count (currency).</param>
+        /// <returns>The remaining seed count after purchase.</returns>
+        public int UpgradeSpear(int seed)
+        {
+            if (_spear.GetUpgradeLevelMaxed()) return seed;
+
+            WeaponConfig target = _activeWeapons.FirstOrDefault(w => w.WeaponClass == WeaponClass.Spear);
+            if (target == null) return seed;
+
+            UpgradeWeaponResult result = _spear.BuyWeaponUpgrade(seed, target.WeaponDamage, target.WeaponSpeed, target.WeaponRange);
+            
+            foreach (var weapon in _activeWeapons.Where(w => w.WeaponClass == WeaponClass.Spear))
             {
                 weapon.WeaponDamage += result.Damage;
                 weapon.WeaponSpeed += result.Speed;
@@ -369,6 +394,7 @@ namespace Managers
            // _attackSpeed = GetUpgrade(UpgradesCategoryType.AttackSpeed);
             _tomahawk = GetUpgrade(UpgradesCategoryType.Tomahawk);
            _staff = GetUpgrade(UpgradesCategoryType.Staff);
+           _spear = GetUpgrade(UpgradesCategoryType.Spear);
            
            _lightningWisp = GetUpgrade(UpgradesCategoryType.LightningWisp);
 
@@ -390,6 +416,10 @@ namespace Managers
             else if (config.WeaponClass == WeaponClass.Staff && _staff != null)
             {
                 weaponMultiplier = _staff.GetMultiplier();
+            }
+            else if (config.WeaponClass == WeaponClass.Spear && _spear != null)
+            {
+                weaponMultiplier = _spear.GetMultiplier();
             }
          
             config.WeaponDamage = initialDamage * _damage.GetMultiplier() * weaponMultiplier;

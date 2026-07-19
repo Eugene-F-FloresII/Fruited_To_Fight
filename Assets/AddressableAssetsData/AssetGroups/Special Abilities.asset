@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Special Abilities
   m_GUID: 51a0e17ac7f01ad4885fa1872faaca2f
   m_SerializeEntries:
+  - m_GUID: 192049182a47b48192a83749182a47b4
+    m_Address: SpearSpecialAbility
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4454c89532acd334d999f5dc1651ad8c
     m_Address: FireMeteor
     m_ReadOnly: 0
