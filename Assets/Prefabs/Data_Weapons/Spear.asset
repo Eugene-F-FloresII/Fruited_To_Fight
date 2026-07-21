@@ -18,10 +18,10 @@ MonoBehaviour:
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
-  WeaponPrefab: {fileID: 7903187229947716330, guid: dad15acf0d267934498d69240f441483, type: 3}
+  WeaponPrefab: {fileID: 2702686868723220390, guid: 181e0fac7889d634eaa351cd5473d734, type: 3}
   WeaponName: Spear
   WeaponID: 0
-  WeaponType: 1
+  WeaponType: 0
   WeaponAmountToPool: 20
   WeaponHoming: 1
   WeaponLevel: 1
