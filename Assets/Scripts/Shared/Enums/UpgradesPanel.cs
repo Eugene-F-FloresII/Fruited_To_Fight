@@ -12,8 +12,7 @@ namespace Shared.Enums
         AttackSpeed,
         Tomahawk,
         LightningWisp,
-        Staff,
-        Spear
+        Staff
     }
 
 }

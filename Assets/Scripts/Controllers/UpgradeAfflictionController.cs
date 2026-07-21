@@ -75,27 +75,16 @@ namespace Controllers
 
         private async UniTask LoadAfflictions(string label)
         {
-            try
-            {
-                var handle = Addressables.LoadAssetAsync<UpgradeAfflictionData>(label);
-                await handle.Task;
+            var handle = Addressables.LoadAssetAsync<UpgradeAfflictionData>(label);
+            await handle.Task;
 
-                if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    _afflictionList.Add(handle.Result);
-                }
-                else
-                {
-                    Debug.LogWarning($"No UpgradeAfflictionData found with label '{label}'");
-                }
-            }
-            catch (UnityEngine.AddressableAssets.InvalidKeyException)
+            if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                Debug.Log($"No UpgradeAfflictionData registered with label '{label}' (this is normal if the weapon has no affliction upgrades).");
+                _afflictionList.Add(handle.Result);
             }
-            catch (System.Exception ex)
+            else
             {
-                Debug.LogWarning($"Exception loading UpgradeAfflictionData with label '{label}': {ex.Message}");
+                Debug.LogError($"Failed to load UpgradeAfflictionData with label '{label}'");
             }
         }
 

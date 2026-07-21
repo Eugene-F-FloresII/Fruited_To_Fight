@@ -22,10 +22,6 @@ namespace Gameplay.Weapons
         [Header("Meteor Settings")]
         [SerializeField] private AssetReferenceGameObject _meteorPrefabReference;
         [SerializeField] private Transform _target;
-        [SerializeField] private float _explosionRadius = 2.5f;
-
-        [Header("Warning Circle Settings")]
-        [SerializeField] private AssetReferenceGameObject _warningCirclePrefabReference;
 
         private float MeteorRadius => _weaponConfig != null ? _weaponConfig.AbilityRadius : 4.0f;
         private float SpawnInterval => _weaponConfig != null ? (1.0f / Mathf.Max(0.01f, _weaponConfig.AbilitySpeed)) : 0.5f;
@@ -51,10 +47,6 @@ namespace Gameplay.Weapons
             if (_meteorPrefabReference != null && _meteorPrefabReference.IsValid())
             {
                 _meteorPrefabReference.ReleaseAsset();
-            }
-            if (_warningCirclePrefabReference != null && _warningCirclePrefabReference.IsValid())
-            {
-                _warningCirclePrefabReference.ReleaseAsset();
             }
         }
 
@@ -85,24 +77,20 @@ namespace Gameplay.Weapons
         {
             try
             {
-                if (_meteorPrefabReference == null || _warningCirclePrefabReference == null)
+                if (_meteorPrefabReference == null)
                 {
-                    Debug.LogError("[StaffAbility] Prefab reference is null!");
+                    Debug.LogError("[StaffAbility] Meteor prefab reference is null!");
                     return;
                 }
 
-                var (meteorPrefab, warningCirclePrefab) = await UniTask.WhenAll(
-                    LoadPrefabAsync(_meteorPrefabReference, token),
-                    LoadPrefabAsync(_warningCirclePrefabReference, token)
-                );
-
-                if (meteorPrefab == null || warningCirclePrefab == null)
+                GameObject meteorPrefab = await LoadMeteorPrefabAsyncAddress(token);
+                if (meteorPrefab == null)
                 {
-                    Debug.LogError("[StaffAbility] Failed to load ability prefabs!");
+                    Debug.LogError("[StaffAbility] Failed to load meteor prefab!");
                     return;
                 }
 
-                await SpawnMeteorsLoopAsync(meteorPrefab, warningCirclePrefab, token);
+                await SpawnMeteorsLoopAsync(meteorPrefab, token);
             }
             catch (OperationCanceledException)
             {
@@ -148,14 +136,19 @@ namespace Gameplay.Weapons
             _target = target;
         }
 
-        private async UniTask<GameObject> LoadPrefabAsync(AssetReferenceGameObject assetRef, CancellationToken token)
+        /// <summary>
+        /// Loads the meteor prefab asset using Addressables.
+        /// </summary>
+        /// <param name="token">Cancellation token.</param>
+        /// <returns>The loaded meteor prefab GameObject.</returns>
+        private async UniTask<GameObject> LoadMeteorPrefabAsyncAddress(CancellationToken token)
         {
-            if (assetRef.Asset != null)
+            if (_meteorPrefabReference.Asset != null)
             {
-                return assetRef.Asset as GameObject;
+                return _meteorPrefabReference.Asset as GameObject;
             }
 
-            AsyncOperationHandle<GameObject> handle = assetRef.LoadAssetAsync<GameObject>();
+            AsyncOperationHandle<GameObject> handle = _meteorPrefabReference.LoadAssetAsync<GameObject>();
             await handle.ToUniTask(cancellationToken: token);
 
             if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -166,16 +159,12 @@ namespace Gameplay.Weapons
             return null;
         }
 
-        [Obsolete("Use LoadPrefabAsync instead.")]
-        private async UniTask<GameObject> LoadMeteorPrefabAsyncAddress(CancellationToken token)
-        {
-            return await LoadPrefabAsync(_meteorPrefabReference, token);
-        }
-
         /// <summary>
         /// Loops for the ability's duration, spawning meteors at regular intervals.
         /// </summary>
-        private async UniTask SpawnMeteorsLoopAsync(GameObject meteorPrefab, GameObject warningCirclePrefab, CancellationToken token)
+        /// <param name="meteorPrefab">The meteor prefab to instantiate.</param>
+        /// <param name="token">Cancellation token.</param>
+        private async UniTask SpawnMeteorsLoopAsync(GameObject meteorPrefab, CancellationToken token)
         {
             float duration = _weaponConfig.AbilityDuration;
             float startTime = Time.time;
@@ -188,7 +177,7 @@ namespace Gameplay.Weapons
                     lastSpawnTime = Time.time;
                     for (int spawnIndex = 0; spawnIndex < MeteorsPerSpawn; spawnIndex++)
                     {
-                        SpawnMeteorAtRandomPosition(meteorPrefab, warningCirclePrefab);
+                        SpawnMeteorAtRandomPosition(meteorPrefab);
                     }
                 }
 
@@ -199,22 +188,13 @@ namespace Gameplay.Weapons
         /// <summary>
         /// Instantiates a single meteor at a random position within the defined radius.
         /// </summary>
-        private void SpawnMeteorAtRandomPosition(GameObject meteorPrefab, GameObject warningCirclePrefab)
+        /// <param name="meteorPrefab">The meteor prefab to instantiate.</param>
+        private void SpawnMeteorAtRandomPosition(GameObject meteorPrefab)
         {
             if (_target == null) return;
 
             Vector2 randomCirclePoint = Random.insideUnitCircle * MeteorRadius;
             Vector3 landingPosition = _target.position + new Vector3(randomCirclePoint.x, randomCirclePoint.y, 0f);
-
-            // Spawn warning circle first (meteor impacts after ~0.33s on frame 4)
-            if (warningCirclePrefab != null)
-            {
-                GameObject circleObj = Instantiate(warningCirclePrefab, landingPosition, Quaternion.identity);
-                if (circleObj.TryGetComponent(out AbilityWarningCircle warningCircle))
-                {
-                    warningCircle.Initialize(_explosionRadius, 0.33f);
-                }
-            }
 
             GameObject meteor = Instantiate(meteorPrefab, landingPosition, Quaternion.identity, null);
             meteor.transform.SetParent(null); // Ensure the meteor is unparented from player hierarchy
