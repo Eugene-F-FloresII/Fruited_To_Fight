@@ -164,7 +164,7 @@ namespace Gameplay.Upgrades
         private int GetFuturePierce() => _weaponConfig.WeaponPierce + Mathf.Max(1, Mathf.RoundToInt(_weaponConfig.WeaponPierce * _statUpgradePercentage));
         private float GetFutureRange() => _weaponConfig.WeaponRange * (1f + _statUpgradePercentage);
         private float GetFutureProjectileSpeed() => _weaponConfig.WeaponSpeed * (1f + _statUpgradePercentage);
-        private float GetFutureAttackSpeed() => _weaponConfig.WeaponAtkSpeed * (1f - _statUpgradePercentage);
+        private float GetFutureAttackSpeed() => Mathf.Max(0.1f, _weaponConfig.WeaponAtkSpeed * (1f - _statUpgradePercentage));
         private float GetFutureKnockback() => _weaponConfig.WeaponKnockback * (1f + _statUpgradePercentage);
 
         private void ApplyPermanentStatsUpgrade()

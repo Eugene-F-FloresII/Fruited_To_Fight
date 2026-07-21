@@ -7,9 +7,11 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Shared.Enums;
 
-
 namespace Gameplay.Weapons
 {
+    /// <summary>
+    /// Base class for projectile weapon spawners that handle enemy detection, attack loops, and object pooling.
+    /// </summary>
     public class ProjectileSpawner : MonoBehaviour
     {
         [Header("References")]
@@ -21,7 +23,6 @@ namespace Gameplay.Weapons
         [SerializeField] private List<EnemyController> _enemies = new();
         
         [Header("Object Pooling Settings")]
-      
         [SerializeField] private GameObject _pooledProjectile;
         [SerializeField] private Transform _pooledTransform;
         
@@ -34,6 +35,16 @@ namespace Gameplay.Weapons
         protected readonly float _projectileRotationOffset = -90f;
         
         private Queue<GameObject> _pooledObjects;
+
+        /// <summary>
+        /// Gets the effective attack speed with a enforced minimum delay floor of 0.1 seconds.
+        /// </summary>
+        protected float GetEffectiveAttackSpeed()
+        {
+            float atkSpeed = _weaponConfig != null ? _weaponConfig.WeaponAtkSpeed : 1f;
+            return Mathf.Max(0.1f, atkSpeed);
+        }
+
         private void Awake()
         {
             _enemies ??= new List<EnemyController>();
@@ -83,6 +94,8 @@ namespace Gameplay.Weapons
         {
             if (other.TryGetComponent(out EnemyController enemy))
             {
+                _enemies.RemoveAll(e => e == null || !e.gameObject.activeInHierarchy);
+
                 if (!_enemies.Contains(enemy))
                 {
                     _enemies.Add(enemy);
@@ -95,7 +108,6 @@ namespace Gameplay.Weapons
                 }
             }
         }
-        
 
         private void OnTriggerExit2D(Collider2D other)
         {
@@ -113,23 +125,28 @@ namespace Gameplay.Weapons
 
         private void UpdateWeaponStats()
         {
+            if (_weaponConfig == null) return;
+
             _pooledProjectile = _weaponConfig.WeaponPrefab;
-            _currentAtkSpeed = _weaponConfig.WeaponAtkSpeed;
+            _currentAtkSpeed = GetEffectiveAttackSpeed();
             _currentRange = _weaponConfig.WeaponRange;
             _amountToPool = _weaponConfig.WeaponAmountToPool;
             
-            _circleCollider2D = GetComponent<CircleCollider2D>();
-            _circleCollider2D.radius = _currentRange;
+            if (_circleCollider2D == null)
+                _circleCollider2D = GetComponent<CircleCollider2D>();
+
+            if (_circleCollider2D != null)
+                _circleCollider2D.radius = _currentRange;
         }
 
         private void PoolObjects()
         {
             _pooledObjects = new Queue<GameObject>();
-            GameObject pool;
+            if (_pooledProjectile == null) return;
 
             for (int i = 0; i < _amountToPool; i++)
             {
-                pool = Instantiate(_pooledProjectile, _pooledTransform);
+                GameObject pool = Instantiate(_pooledProjectile, _pooledTransform);
                 pool.SetActive(false);
                 _pooledObjects.Enqueue(pool);
             }
@@ -142,17 +159,18 @@ namespace Gameplay.Weapons
                 return;
             }
 
-            _attackCts?.Cancel();
-            _attackCts?.Dispose();
+            var cts = _attackCts;
             _attackCts = null;
+            cts.Cancel();
+            cts.Dispose();
         }
 
+        /// <summary>
+        /// Retrieves an inactive pooled object, dynamically expanding the pool if all objects are active.
+        /// </summary>
         public GameObject GetPooledObject()
         {
-            if (_pooledObjects == null || _pooledObjects.Count == 0)
-            {
-                return null;
-            }
+            _pooledObjects ??= new Queue<GameObject>();
 
             int poolSize = _pooledObjects.Count;
 
@@ -165,6 +183,15 @@ namespace Gameplay.Weapons
                 {
                     return pooledObject;
                 }
+            }
+
+            // Pool exhausted: Dynamically expand pool if prefab reference is available
+            if (_pooledProjectile != null)
+            {
+                GameObject newObject = Instantiate(_pooledProjectile, _pooledTransform);
+                newObject.SetActive(false);
+                _pooledObjects.Enqueue(newObject);
+                return newObject;
             }
 
             return null;
@@ -212,26 +239,28 @@ namespace Gameplay.Weapons
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                     Quaternion rotation = Quaternion.Euler(0, 0, angle + _projectileRotationOffset);
                     
-                    GameObject spear = GetPooledObject();
+                    GameObject projectile = GetPooledObject();
 
-                    if (spear != null)
+                    if (projectile != null)
                     {
-                        spear.transform.position = transform.position;
-                        spear.transform.rotation = rotation;
-                        spear.SetActive(true);
+                        projectile.transform.position = transform.position;
+                        projectile.transform.rotation = rotation;
+                        projectile.SetActive(true);
 
-                        if (spear.TryGetComponent(out Rigidbody2D rb))
+                        if (projectile.TryGetComponent(out Rigidbody2D rb))
                         {
-                            rb.linearVelocity = direction.normalized * _weaponConfig.WeaponSpeed;
+                            float speed = _weaponConfig != null ? _weaponConfig.WeaponSpeed : 10f;
+                            rb.linearVelocity = direction.normalized * speed;
                         }
                         else
                         {
                             Debug.LogWarning($"{nameof(ProjectileSpawner)} spawned projectile without Rigidbody2D.", this);
-                            spear.SetActive(false);
+                            projectile.SetActive(false);
                         }
                     }
                     
-                    await UniTask.Delay(TimeSpan.FromSeconds(Mathf.Max(0.01f, _currentAtkSpeed)), cancellationToken: token);
+                    float delay = GetEffectiveAttackSpeed();
+                    await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
                 }
             }
             catch (OperationCanceledException)
@@ -243,8 +272,5 @@ namespace Gameplay.Weapons
                 StopAttackLoop();
             }
         }
-        
-        
     }
-
 }

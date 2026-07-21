@@ -232,14 +232,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4951161623196988664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb4bb6376a90e94ea1f9bc6d1b8c50e, type: 3}
+  m_Script: {fileID: 11500000, guid: 68b2a059244440f43a8a202d3543542e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.SpearSpawner
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Weapons.Spear
   _weaponConfig: {fileID: 11400000, guid: bc3223387b63c8c4b9fd3200fe413aa9, type: 2}
-  _enemies: []
-  _pooledProjectile: {fileID: 0}
   _pooledTransform: {fileID: 3964961008253599873}
-  _audioClip: {fileID: 8300000, guid: e5738f050fc14c44c92ee55456003374, type: 3}
+  _enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!50 &899070817516979274
 Rigidbody2D:
   serializedVersion: 5

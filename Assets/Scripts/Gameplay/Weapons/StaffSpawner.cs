@@ -30,7 +30,9 @@ namespace Gameplay.Weapons
             {
                 while (!token.IsCancellationRequested)
                 {
-                    int weaponLevel = _weaponConfig.WeaponLevel.Value;
+                    int weaponLevel = (_weaponConfig != null && _weaponConfig.WeaponLevel != null) 
+                        ? _weaponConfig.WeaponLevel.Value 
+                        : 0;
                     int projectileCount = weaponLevel switch
                     {
                         0 => 1,
@@ -52,6 +54,7 @@ namespace Gameplay.Weapons
 
                         // Cycle through enemies: Shot 1 -> nearest, Shot 2 -> second nearest, etc.
                         EnemyController target = enemies[i % enemies.Count];
+                        if (target == null) continue;
 
                         Vector2 direction = (Vector2)target.transform.position - (Vector2)transform.position;
                         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -69,7 +72,8 @@ namespace Gameplay.Weapons
 
                             if (fireball.TryGetComponent(out Rigidbody2D rb))
                             {
-                                rb.linearVelocity = direction.normalized * _weaponConfig.WeaponSpeed;
+                                float speed = _weaponConfig != null ? _weaponConfig.WeaponSpeed : 15f;
+                                rb.linearVelocity = direction.normalized * speed;
                             }
                             else
                             {
@@ -80,11 +84,13 @@ namespace Gameplay.Weapons
 
                         if (i < projectileCount - 1)
                         {
-                            await UniTask.Delay(TimeSpan.FromSeconds(_burstDelay), cancellationToken: token);
+                            float effectiveBurstDelay = Mathf.Max(0.05f, _burstDelay);
+                            await UniTask.Delay(TimeSpan.FromSeconds(effectiveBurstDelay), cancellationToken: token);
                         }
                     }
                     
-                    await UniTask.Delay(TimeSpan.FromSeconds(Mathf.Max(0.01f, _currentAtkSpeed)), cancellationToken: token);
+                    float delay = GetEffectiveAttackSpeed();
+                    await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
                 }
             }
             catch (OperationCanceledException)

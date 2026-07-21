@@ -9,11 +9,18 @@ using Shared.Events;
 
 namespace Gameplay.Weapons
 {
+    /// <summary>
+    /// Spawner implementation for Tomahawk projectile weapon.
+    /// </summary>
     public class TomahawkSpawner : ProjectileSpawner
     {
         [Header("Audio")] 
         [SerializeField] private AudioClip _audioClip;
         
+        /// <summary>
+        /// Asynchronously executes the attack loop spawning fan-spread tomahawk projectiles.
+        /// </summary>
+        /// <param name="token">Cancellation token.</param>
         protected override async UniTask AttackEnemyAsync(CancellationToken token)
         {
             try
@@ -31,7 +38,9 @@ namespace Gameplay.Weapons
                     Vector2 directionToTarget = (Vector2)target.transform.position - (Vector2)transform.position;
                     float baseAngle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
 
-                    int weaponLevel = _weaponConfig.WeaponLevel.Value;
+                    int weaponLevel = (_weaponConfig != null && _weaponConfig.WeaponLevel != null) 
+                        ? _weaponConfig.WeaponLevel.Value 
+                        : 0;
                     int projectileCount = weaponLevel == 0 ? 1 : 1 + (weaponLevel + 1) / 2;
 
                     for (int i = 0; i < projectileCount; i++)
@@ -59,17 +68,19 @@ namespace Gameplay.Weapons
                             if (tomahawk.TryGetComponent(out Rigidbody2D rb))
                             {
                                 Vector2 direction = new Vector2(Mathf.Cos(finalAngle * Mathf.Deg2Rad), Mathf.Sin(finalAngle * Mathf.Deg2Rad));
-                                rb.linearVelocity = direction * _weaponConfig.WeaponSpeed;
+                                float speed = _weaponConfig != null ? _weaponConfig.WeaponSpeed : 10f;
+                                rb.linearVelocity = direction * speed;
                             }
                             else
                             {
-                                Debug.LogWarning($"{nameof(ProjectileSpawner)} spawned projectile without Rigidbody2D.", this);
+                                Debug.LogWarning($"{nameof(TomahawkSpawner)} spawned projectile without Rigidbody2D.", this);
                                 tomahawk.SetActive(false);
                             }
                         }
                     }
                     
-                    await UniTask.Delay(TimeSpan.FromSeconds(Mathf.Max(0.01f, _currentAtkSpeed)), cancellationToken: token);
+                    float delay = GetEffectiveAttackSpeed();
+                    await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
                 }
             }
             catch (OperationCanceledException)
@@ -82,5 +93,4 @@ namespace Gameplay.Weapons
             }
         }
     }
-
 }
