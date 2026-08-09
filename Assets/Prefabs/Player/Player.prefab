@@ -1099,6 +1099,18 @@ PrefabInstance:
       value: Character_Eurango
       objectReference: {fileID: 0}
     - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873977252375921772, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1138,6 +1150,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5627031868810054257, guid: 8ab26d65b55dd3541898d3b8069ea825, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3354227932198150491, guid: 7e6f614b0d59ccd40942224a630f9b67, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
