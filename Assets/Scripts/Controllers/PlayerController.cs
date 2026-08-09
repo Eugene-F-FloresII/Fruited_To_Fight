@@ -161,11 +161,11 @@ namespace Controllers
 
                 if (FacingDirection.x < 0)
                 {
-                    _playerCharacter.FlipCharacter(false);
+                    _playerCharacter.FlipCharacter(true);
                 }
                 else if (FacingDirection.x > 0)
                 {
-                    _playerCharacter.FlipCharacter(true);
+                    _playerCharacter.FlipCharacter(false);
                 }
             }
             
