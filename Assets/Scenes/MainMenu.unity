@@ -835,8 +835,11 @@ MonoBehaviour:
   _colPlayerName: player_name
   _colScore: score
   _colRoundsSurvived: rounds_survived
+  _colMapId: map_id
+  _colPlayerId: player_id
+  _currentMap: 0
   _testPlayerName: HuGe
-  _testScore: 2500
+  _testScore: 5000
   _testRounds: 30
 --- !u!4 &171287612
 Transform:

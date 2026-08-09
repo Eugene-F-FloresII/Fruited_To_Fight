@@ -12,6 +12,7 @@ namespace FTF.Editor
     {
         private const string GameplayScenePath = "Assets/Scenes/Gameplay.unity";
         private const string UIScenePath = "Assets/Scenes/UI.unity";
+        private const string MainMenuScenePath = "Assets/Scenes/MainMenu.unity";
 
         /// <summary>
         /// Opens the Gameplay scene in Unity Editor.
@@ -34,6 +35,18 @@ namespace FTF.Editor
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
                 EditorSceneManager.OpenScene(UIScenePath, OpenSceneMode.Single);
+            }
+        }
+
+        /// <summary>
+        /// Opens the Main Menu scene in Unity Editor.
+        /// </summary>
+        [MenuItem("FTF/Open Main Menu Scene", false, 3)]
+        private static void OpenMainMenuScene()
+        {
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                EditorSceneManager.OpenScene(MainMenuScenePath, OpenSceneMode.Single);
             }
         }
     }

@@ -23,6 +23,11 @@ namespace Managers
         [SerializeField] private string _colPlayerName = "player_name";
         [SerializeField] private string _colScore = "score";
         [SerializeField] private string _colRoundsSurvived = "rounds_survived";
+        [SerializeField] private string _colMapId = "map_id";
+        [SerializeField] private string _colPlayerId = "player_id";
+
+        [Header("Map Settings")]
+        [SerializeField] private Shared.Enums.MapType _currentMap;
 
         [Header("Debug Settings")]
         [SerializeField] private string _testPlayerName = "TestPlayer";
@@ -60,21 +65,71 @@ namespace Managers
             }
         }
 
+        private string GetPlayerId()
+        {
+            if (!UnityEngine.PlayerPrefs.HasKey("PlayerID"))
+            {
+                UnityEngine.PlayerPrefs.SetString("PlayerID", System.Guid.NewGuid().ToString());
+                UnityEngine.PlayerPrefs.Save();
+            }
+            return UnityEngine.PlayerPrefs.GetString("PlayerID");
+        }
+
         /// <summary>
         /// Submits a player's score to the Supabase database.
+        /// Only updates if the new score is higher than the existing score.
         /// </summary>
         public async UniTask<bool> SubmitScoreAsync(string playerName, int score, int rounds)
         {
-            string url = $"{_supabaseUrl}/rest/v1/{_tableName}";
+            string playerId = GetPlayerId();
+            string filterQuery = _currentMap == Shared.Enums.MapType.Grasslands 
+                ? $"or=({_colMapId}.eq.0,{_colMapId}.is.null)" 
+                : $"{_colMapId}=eq.{(int)_currentMap}";
+                
+            string checkUrl = $"{_supabaseUrl}/rest/v1/{_tableName}?select=id,{_colScore}&{_colPlayerId}=eq.{playerId}&{filterQuery}&limit=1";
             
-            // Build json payload dynamically to match column maps
+            string existingRowId = null;
+            int existingScore = -1;
+
+            using (UnityWebRequest checkReq = UnityWebRequest.Get(checkUrl))
+            {
+                SetCommonHeaders(checkReq);
+                try
+                {
+                    await checkReq.SendWebRequest().ToUniTask();
+                    if (checkReq.result == UnityWebRequest.Result.Success)
+                    {
+                        var rawEntries = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(checkReq.downloadHandler.text);
+                        if (rawEntries != null && rawEntries.Count > 0)
+                        {
+                            var row = rawEntries[0];
+                            if (row.ContainsKey("id") && row["id"] != null)
+                                existingRowId = row["id"].ToString();
+                            if (row.ContainsKey(_colScore) && row[_colScore] != null)
+                                existingScore = Convert.ToInt32(row[_colScore]);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+            }
+            
+            if (existingRowId != null && existingScore >= score)
+            {
+                Debug.Log($"Supabase: Existing score ({existingScore}) is higher or equal to new score ({score}). Skipping update.");
+                return true; // Return true because it's not a failure, just skipped.
+            }
+
             var payload = new Dictionary<string, object>
             {
+                { _colPlayerId, playerId },
                 { _colPlayerName, playerName },
-                { _colScore, score }
+                { _colScore, score },
+                { _colMapId, (int)_currentMap }
             };
             
-            // Only submit rounds if the column is configured
             if (!string.IsNullOrEmpty(_colRoundsSurvived))
             {
                 payload.Add(_colRoundsSurvived, rounds);
@@ -83,7 +138,15 @@ namespace Managers
             string json = JsonConvert.SerializeObject(payload);
             byte[] bodyData = Encoding.UTF8.GetBytes(json);
 
-            using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
+            string submitUrl = $"{_supabaseUrl}/rest/v1/{_tableName}";
+            string method = "POST";
+            if (existingRowId != null)
+            {
+                submitUrl = $"{_supabaseUrl}/rest/v1/{_tableName}?id=eq.{existingRowId}";
+                method = "PATCH";
+            }
+
+            using (UnityWebRequest request = new UnityWebRequest(submitUrl, method))
             {
                 request.uploadHandler = new UploadHandlerRaw(bodyData);
                 request.downloadHandler = new DownloadHandlerBuffer();
@@ -115,10 +178,14 @@ namespace Managers
         /// <summary>
         /// Fetches the top scores from Supabase.
         /// </summary>
-        public async UniTask<List<LeaderboardEntry>> FetchTopScoresAsync(int limit = 10)
+        public async UniTask<List<LeaderboardEntry>> FetchTopScoresAsync(int limit = 100)
         {
-            // Endpoint query: order by score descending, limit response
-            string url = $"{_supabaseUrl}/rest/v1/{_tableName}?select=*&order={_colScore}.desc&limit={limit}";
+            // Endpoint query: filter by map_id, order by score descending, limit response
+            string filterQuery = _currentMap == Shared.Enums.MapType.Grasslands 
+                ? $"or=({_colMapId}.eq.0,{_colMapId}.is.null)" 
+                : $"{_colMapId}=eq.{(int)_currentMap}";
+
+            string url = $"{_supabaseUrl}/rest/v1/{_tableName}?select=*&{filterQuery}&order={_colScore}.desc&limit={limit}";
 
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
