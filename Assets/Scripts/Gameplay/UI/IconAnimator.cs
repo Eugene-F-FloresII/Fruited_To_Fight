@@ -11,6 +11,8 @@ namespace Gameplay.UI
     {
         [Header("References")]
         [SerializeField] private Image _image;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private bool _isImage = true;
 
         [Header("Affliction Sprites")]
         [SerializeField] private List<Sprite> _afflictionSprites;
@@ -23,7 +25,15 @@ namespace Gameplay.UI
             if (_afflictionSprites != null && _afflictionSprites.Count > 0)
             {
                 _animationVersion++;
-                PlayAnimation(_afflictionSprites, _animationVersion).Forget();
+
+                if (_isImage)
+                {
+                  PlayImageAnimation(_afflictionSprites, _animationVersion).Forget();
+                }
+                else
+                {
+                    PlaySpriteRendererAnimation(_afflictionSprites, _animationVersion).Forget();
+                }
             }
         }
 
@@ -32,13 +42,28 @@ namespace Gameplay.UI
             _animationVersion++;
         }
 
-        private async UniTaskVoid PlayAnimation(List<Sprite> sprites, int version)
+        private async UniTaskVoid PlayImageAnimation(List<Sprite> sprites, int version)
         {
             int frame = 0;
             
             while (version == _animationVersion && this != null && _image != null)
             {
                 _image.sprite = sprites[frame];
+
+                frame = (frame + 1) % sprites.Count;
+
+                int delay = Mathf.RoundToInt(1000f / _fps);
+                await UniTask.Delay(delay, cancellationToken: this.GetCancellationTokenOnDestroy());
+            }
+        }
+        
+        private async UniTaskVoid PlaySpriteRendererAnimation(List<Sprite> sprites, int version)
+        {
+            int frame = 0;
+            
+            while (version == _animationVersion && this != null && _spriteRenderer != null)
+            {
+                _spriteRenderer.sprite = sprites[frame];
 
                 frame = (frame + 1) % sprites.Count;
 

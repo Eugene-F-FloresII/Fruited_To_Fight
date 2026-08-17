@@ -838,8 +838,8 @@ MonoBehaviour:
   _colMapId: map_id
   _colPlayerId: player_id
   _currentMap: 0
-  _testPlayerName: HuGe
-  _testScore: 5000
+  _testPlayerName: Hello world
+  _testScore: 4000
   _testRounds: 30
 --- !u!4 &171287612
 Transform:

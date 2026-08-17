@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5051767354666546004}
-  - component: {fileID: 7848555417262279382}
   m_Layer: 0
   m_Name: BurnAfflictionEnemy
   m_TagString: Untagged
@@ -34,28 +33,6 @@ Transform:
   - {fileID: 6881238056289018923}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &7848555417262279382
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501896106332578477}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a09a9dcd30d4e9d418e0e218a550cd24, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1556749089930885399
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,6 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6881238056289018923}
   - component: {fileID: 2565147404689411300}
+  - component: {fileID: 8958402642110765426}
   m_Layer: 0
   m_Name: Animation_Fire
   m_TagString: Untagged
@@ -82,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 1556749089930885399}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.41, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -135,7 +113,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -855298285791758126, guid: c1b3e4426c463be49a4b71d8dda1d875, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -147,6 +125,29 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &8958402642110765426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556749089930885399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd602372ce9c6f5428886eeb36d896c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.UI.IconAnimator
+  _image: {fileID: 0}
+  _spriteRenderer: {fileID: 2565147404689411300}
+  _isImage: 0
+  _afflictionSprites:
+  - {fileID: -855298285791758126, guid: c1b3e4426c463be49a4b71d8dda1d875, type: 3}
+  - {fileID: 9180251791023625898, guid: c1b3e4426c463be49a4b71d8dda1d875, type: 3}
+  - {fileID: -549789443665989942, guid: c1b3e4426c463be49a4b71d8dda1d875, type: 3}
+  - {fileID: -5167413608083449488, guid: c1b3e4426c463be49a4b71d8dda1d875, type: 3}
+  - {fileID: -8408763834710030297, guid: c1b3e4426c463be49a4b71d8dda1d875, type: 3}
+  - {fileID: 1144234645273286238, guid: c1b3e4426c463be49a4b71d8dda1d875, type: 3}
+  _fps: 12
 --- !u!1 &1575280488287538664
 GameObject:
   m_ObjectHideFlags: 0
@@ -4950,7 +4951,7 @@ ParticleSystemRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
