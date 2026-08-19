@@ -21,7 +21,7 @@ namespace Collection
             {
                 if (Enemy != null)
                 {
-                    Enemy.Freeze(Config.Power).Forget(); // Using Power as freeze duration for Ice
+                    Enemy.Freeze(Config.Power); // Using Power as freeze duration for Ice
                 }
                 CurrentStacks = 0;
             }

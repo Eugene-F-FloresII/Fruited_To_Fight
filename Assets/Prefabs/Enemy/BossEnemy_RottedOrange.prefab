@@ -15,6 +15,11 @@ GameObject:
   - component: {fileID: 2710715450788840562}
   - component: {fileID: 6170445283240097834}
   - component: {fileID: 420332929846147242}
+  - component: {fileID: -5032086874097659599}
+  - component: {fileID: 7962268647316641130}
+  - component: {fileID: 929409443057207700}
+  - component: {fileID: 1552363768024556943}
+  - component: {fileID: 3278901153623807790}
   m_Layer: 6
   m_Name: BossEnemy_RottedOrange
   m_TagString: Untagged
@@ -110,19 +115,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9af886a266e8e47a1e3816fa25c5a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Controllers.BossController
-  _enemyConfigReference:
-    m_AssetGUID: e2594d02712ac2b4289fbd51fcd609a8
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_SubObjectGUID: 
-    m_EditorAssetChanged: 0
   _activeEnemyCount: {fileID: 11400000, guid: a2f91ca57845bbd44a373ab4e7140224, type: 2}
   _defendingController: {fileID: 0}
-  _animator: {fileID: 1779643901948791470}
-  _hitMaterial: {fileID: 2100000, guid: f6fc82d52acb33e4f93cf7004c6be449, type: 2}
-  _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  _hitAudioClip: {fileID: 8300000, guid: 559c4182b25e92c4885555ae5153643e, type: 3}
-  _deathAudioClip: {fileID: 8300000, guid: 2fa393a65a257194b9480846fe0de7b5, type: 3}
+  _enemyHealth: {fileID: -5032086874097659599}
+  _enemyStats: {fileID: 7962268647316641130}
+  _enemyMovement: {fileID: 929409443057207700}
+  _enemyVisuals: {fileID: 1552363768024556943}
+  _enemyAfflictionHandler: {fileID: 3278901153623807790}
 --- !u!95 &1779643901948791470
 Animator:
   serializedVersion: 7
@@ -236,6 +235,78 @@ MonoBehaviour:
   - {fileID: 2578549575152815240}
   - {fileID: 9095209925723597791}
   _afflictionConfig: {fileID: 0}
+--- !u!114 &-5032086874097659599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191412059391474361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d38a15796d24dbd4eb534c00b49a2e54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Enemies.EnemyHealth
+  _deathAudioClip: {fileID: 8300000, guid: 2fa393a65a257194b9480846fe0de7b5, type: 3}
+--- !u!114 &7962268647316641130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191412059391474361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98847d79b715a44e9a8f66cb20c46b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Enemies.EnemyStats
+  _enemyConfigReference:
+    m_AssetGUID: e2594d02712ac2b4289fbd51fcd609a8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+--- !u!114 &929409443057207700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191412059391474361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6989d72a8d59eba4cb8ac8622739b3db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Enemies.EnemyMovement
+--- !u!114 &1552363768024556943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191412059391474361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feff34b7cccdb384fa4d1d9974865183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Enemies.EnemyVisuals
+  _hitMaterial: {fileID: 2100000, guid: f6fc82d52acb33e4f93cf7004c6be449, type: 2}
+  _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  _hitAudioClip: {fileID: 8300000, guid: 559c4182b25e92c4885555ae5153643e, type: 3}
+  _animator: {fileID: 1779643901948791470}
+  _spriteRenderer: {fileID: 4090929272528799532}
+--- !u!114 &3278901153623807790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191412059391474361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a20f2c5690c4164380a09fab0dee05a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Enemies.EnemyAfflictionHandler
 --- !u!1001 &957394094437133984
 PrefabInstance:
   m_ObjectHideFlags: 0

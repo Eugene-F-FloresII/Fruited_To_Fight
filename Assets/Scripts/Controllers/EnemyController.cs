@@ -1,178 +1,110 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Data;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
-using Gameplay;
-using Gameplay.Weapons;
 using Obvious.Soap;
 using Shared.Events;
+using Gameplay.Enemies;
+using Data;
+using Cysharp.Threading.Tasks;
+using Gameplay.Weapons;
 using Shared.Enums;
 using UnityEngine.AddressableAssets;
-using Random = System.Random;
-using Collection;
 
 namespace Controllers
 {
+    [RequireComponent(typeof(EnemyHealth))]
+    [RequireComponent(typeof(EnemyStats))]
+    [RequireComponent(typeof(EnemyMovement))]
+    [RequireComponent(typeof(EnemyVisuals))]
+    [RequireComponent(typeof(EnemyAfflictionHandler))]
     public class EnemyController : MonoBehaviour
     {
-        [Header("Enemy Config")]
-        [SerializeField] private AssetReferenceT<EnemyConfig> _enemyConfigReference;
-        
         [Header("Enemy References")]
         [SerializeField] private IntVariable _activeEnemyCount;
         [SerializeField] private DefendingController _defendingController;
-        [SerializeField] private Animator _animator;
         
-        [Header("Material References")]
-        [SerializeField] protected Material _hitMaterial;
-        [SerializeField] protected Material _defaultMaterial;
+        [Header("Components")]
+        [SerializeField] private EnemyHealth _enemyHealth;
+        [SerializeField] private EnemyStats _enemyStats;
+        [SerializeField] private EnemyMovement _enemyMovement;
+        [SerializeField] private EnemyVisuals _enemyVisuals;
+        [SerializeField] private EnemyAfflictionHandler _enemyAfflictionHandler;
 
-        [Header("SFX clips")] 
-        [SerializeField] private AudioClip _hitAudioClip;
-        [SerializeField] private AudioClip _deathAudioClip;
-        
-        
-        protected SpriteRenderer SpriteRenderer;
-        private PlayerController _playerController;
-        private EnemyConfig _enemyConfig;
-        private Rigidbody2D _enemyRb;
-        private Vector2 _projectileDirection;
-        private Vector2 _knockbackVelocity;
-        
-        private bool _isKnockedBack;
-        private bool _isFrozen;
-        private bool _hasRuntimeStats;
-        private float _currentHealth;
-        private float _maxHealth;
-        private float _currentDamage;
-        private float _currentSpeed;
-        private float _currentAttackSpeed;
-        private float _playerPosX;
-        private float _playerPosY;
-        private float _currentKnockbackForce;
-
-        private CancellationTokenSource _hitEffectCts;
-        private CancellationTokenSource _knockbackCts;
-        private CancellationTokenSource _freezeCts;
-        
-        private readonly string _velocityX = "VelocityX";
-        private readonly string _velocityY = "VelocityY";
-
-        public float CurrentHealth => _currentHealth;
-        public float MaxHealth => _maxHealth;
+        public float CurrentHealth => _enemyHealth != null ? _enemyHealth.CurrentHealth : 0f;
+        public float MaxHealth => _enemyHealth != null ? _enemyHealth.MaxHealth : 0f;
 
         private void Awake()
         {
-            CacheComponents();
-            LoadEnemyConfigAsync().Forget();
+            if (_enemyStats != null)
+            {
+                _enemyStats.LoadEnemyConfigAsyncAddress().Forget();
+            }
+            
+            if (_enemyHealth != null)
+            {
+                _enemyHealth.OnHitEvent += HandleHit;
+            }
         }
 
         private void OnEnable()
         {
             if (_activeEnemyCount != null) _activeEnemyCount.Value++;
-            _isFrozen = false;
-            _animator.speed = 1f;
-            ResetStatsFromConfig();
+            
+            if (_enemyStats != null)
+            {
+                _enemyStats.ResetStatsFromConfig();
+                if (_enemyHealth != null && _enemyHealth.CurrentHealth <= 0)
+                {
+                    _enemyHealth.InitializeHealth(_enemyStats.MaxHealth);
+                }
+            }
+            
+            if (_enemyMovement != null && _enemyStats != null)
+            {
+                _enemyMovement.SetSpeed(_enemyStats.CurrentSpeed);
+            }
         }
 
         private void OnDisable()
         {
             if (_activeEnemyCount != null) _activeEnemyCount.Value--;
-            DisposeTokens();
-            _hasRuntimeStats = false;
-
-            if (SpriteRenderer != null)
-                SpriteRenderer.material = _defaultMaterial;
         }
 
         private void OnDestroy()
         {
-            DisposeTokens();
-            if(_enemyConfigReference.IsValid())
+            if (_enemyHealth != null)
             {
-                _enemyConfigReference.ReleaseAsset();
+                _enemyHealth.OnHitEvent -= HandleHit;
             }
         }
 
-        private void FixedUpdate()
+        private void HandleHit()
         {
-            ChasePlayer();
+            if (_enemyVisuals != null)
+            {
+                _enemyVisuals.PlayHitEffectAndSound();
+            }
         }
 
-        public void KillEnemy()
+        public void InitializePlayer(PlayerController playerController)
         {
-            Events_Sound.PlaySound?.Invoke(_deathAudioClip);
-            Events_Seed.OnEnemyDeath?.Invoke(transform);
-            Events_Enemy.OnEnemyDeath?.Invoke();
-            gameObject.SetActive(false);
+            if (_enemyMovement != null)
+            {
+                _enemyMovement.Initialize(playerController);
+            }
         }
 
         public void ApplyAffliction(AfflictionConfig config)
         {
-            if (config == null) return;
-
-            var existingAfflictions = GetComponents<AfflictionState>();
-            foreach (var affliction in existingAfflictions)
+            if (_enemyAfflictionHandler != null)
             {
-                if (affliction.AfflictionType == config.Type)
-                {
-                    affliction.Refresh(config);
-                    return;
-                }
-            }
-
-            AfflictionState newState = null;
-            switch (config.Type)
-            {
-                case Shared.Enums.AfflictionType.Burn:
-                    newState = gameObject.AddComponent<BurnState>();
-                    break;
-                case Shared.Enums.AfflictionType.Ice:
-                    newState = gameObject.AddComponent<IceState>();
-                    break;
-                case Shared.Enums.AfflictionType.Weakness:
-                    newState = gameObject.AddComponent<WeaknessState>();
-                    break;
-                case Shared.Enums.AfflictionType.Lightning:
-                    newState = gameObject.AddComponent<LightningState>();
-                    newState.InitializeVFXPrefab(config.VFXPrefab);
-                    break;
-            }
-
-            if (newState != null)
-            {
-                newState.Initialize(this, config);
+                _enemyAfflictionHandler.ApplyAffliction(config, this);
             }
         }
 
-        public async UniTaskVoid Freeze(float duration)
+        public void Freeze(float duration)
         {
-            if (_freezeCts != null)
+            if (_enemyAfflictionHandler != null)
             {
-                _freezeCts.Cancel();
-                _freezeCts.Dispose();
-            }
-            _freezeCts = new CancellationTokenSource();
-            var token = _freezeCts.Token;
-
-            try
-            {
-                _isFrozen = true;
-                _animator.speed = 0f;
-                await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
-            }
-            catch (OperationCanceledException)
-            {
-            }
-            finally
-            {
-                if (!token.IsCancellationRequested)
-                {
-                    _isFrozen = false;
-                    _animator.speed = 1f;
-                }
+                _enemyAfflictionHandler.FreezeAsync(duration).Forget();
             }
         }
 
@@ -180,17 +112,12 @@ namespace Controllers
         {
             if (projectile == null) return;
             
-            Vector2 _projectileDirection = projectile.transform.right;
+            Vector2 projectileDirection = projectile.transform.right;
             
-            if (_knockbackCts != null)
+            if (_enemyMovement != null)
             {
-                _knockbackCts.Cancel();
-                _knockbackCts.Dispose();
-                _knockbackCts = null;
+                _enemyMovement.ApplyKnockback(projectileDirection, projectile.GetWeaponKnockback(), 0.3f);
             }
-            _knockbackCts = new CancellationTokenSource();
-            
-            EnemyKnockBack(_projectileDirection, projectile.GetWeaponKnockback(), 0.3f, _knockbackCts.Token).Forget();
             
             WeaponClass weaponClass = WeaponClass.None;
             AfflictionType afflictionType = AfflictionType.None;
@@ -202,7 +129,11 @@ namespace Controllers
                     afflictionType = projectile.WeaponConfig.Afflictions[0].Type;
                 }
             }
-            ApplyDamage(damage, DamageSourceInfo.FromWeapon(weaponClass, afflictionType));
+            
+            if (_enemyHealth != null)
+            {
+                _enemyHealth.ApplyDamage(damage, DamageSourceInfo.FromWeapon(weaponClass, afflictionType));
+            }
         }
 
         public void TakeDamage(float damage, Vector2 sourcePosition, float knockbackForce)
@@ -214,206 +145,76 @@ namespace Controllers
         {
             Vector2 knockbackDirection = ((Vector2)transform.position - sourcePosition).normalized;
             
-            if (_knockbackCts != null)
+            if (_enemyMovement != null)
             {
-                _knockbackCts.Cancel();
-                _knockbackCts.Dispose();
-                _knockbackCts = null;
+                _enemyMovement.ApplyKnockback(knockbackDirection, knockbackForce, 0.3f);
             }
-            _knockbackCts = new CancellationTokenSource();
             
-            EnemyKnockBack(knockbackDirection, knockbackForce, 0.3f, _knockbackCts.Token).Forget();
-            
-            ApplyDamage(damage, sourceInfo);
+            if (_enemyHealth != null)
+            {
+                _enemyHealth.ApplyDamage(damage, sourceInfo);
+            }
         }
 
         public void TakeDamage(float damage)
         {
-            ApplyDamage(damage, DamageSourceInfo.Default);
+            if (_enemyHealth != null)
+            {
+                _enemyHealth.ApplyDamage(damage, DamageSourceInfo.Default);
+            }
         }
 
         public void TakeDamage(float damage, DamageSourceInfo sourceInfo)
         {
-            ApplyDamage(damage, sourceInfo);
-        }
-
-        private void ApplyDamage(float damage, DamageSourceInfo sourceInfo)
-        {
-            _currentHealth -= damage;
-            Events_Enemy.OnEnemyHit?.Invoke(transform.position, Mathf.RoundToInt(damage), sourceInfo);
-            
-            if (_hitEffectCts != null)
+            if (_enemyHealth != null)
             {
-                _hitEffectCts.Cancel();
-                _hitEffectCts.Dispose();
-                _hitEffectCts = null;
-            }
-            _hitEffectCts = new CancellationTokenSource();
-            HitEffect(_hitEffectCts.Token).Forget();
-            
-            Events_Sound.PlaySound?.Invoke(_hitAudioClip);
-            
-            if (_currentHealth <= 0)
-            {
-                KillEnemy();
+                _enemyHealth.ApplyDamage(damage, sourceInfo);
             }
         }
 
         public float GetKnockBackForce()
         {
-            return _currentKnockbackForce;
+            return _enemyStats != null ? _enemyStats.CurrentKnockbackForce : 0f;
         }
 
         public int GotHitByEnemy()
         {
-            if (_enemyConfig == null) return 0;
-            return Mathf.RoundToInt(_currentDamage);
+            return _enemyStats != null ? Mathf.RoundToInt(_enemyStats.CurrentDamage) : 0;
         }
 
         public void ApplyRuntimeStats(EnemyRuntimeStats runtimeStats)
         {
-            _hasRuntimeStats = true;
-            _maxHealth = runtimeStats.Health;
-            _currentHealth = runtimeStats.Health;
-            _currentDamage = runtimeStats.Damage;
-            _currentSpeed = runtimeStats.MoveSpeed;
-            _currentAttackSpeed = runtimeStats.AttackSpeed;
-            _currentKnockbackForce = runtimeStats.KnockbackForce;
-        }
-
-        public void InitializePlayer(PlayerController playerController) =>  _playerController = playerController; 
-
-        private void ChasePlayer()
-        {
-            if (_isFrozen) return;
-
-            if (_isKnockedBack)
+            if (_enemyStats != null)
             {
-                // Decay knockback over time
-                _knockbackVelocity = Vector2.Lerp(_knockbackVelocity, Vector2.zero, 10f * Time.fixedDeltaTime);
-                transform.position += (Vector3)_knockbackVelocity * Time.fixedDeltaTime;
-                return;
-            }
-            
-            if (_playerController == null) return;
-
-            _playerPosX = _playerController.transform.position.x;
-            _playerPosY = _playerController.transform.position.y;
-            
-            _animator.SetFloat(_velocityX, _playerPosX);
-            _animator.SetFloat(_velocityY, _playerPosY);
-            
-            
-            gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, _playerController.transform.position, _currentSpeed * Time.deltaTime);
-        }
-
-        private void ResetStatsFromConfig()
-        {
-            if (_enemyConfig == null)
-            {
-                return;
-            }
-
-            if (_hasRuntimeStats)
-            {
-                return;
-            }
-
-            _maxHealth = _enemyConfig.EnemyHealth;
-            _currentHealth = _enemyConfig.EnemyHealth;
-            _currentDamage = _enemyConfig.EnemyDamage;
-            _currentKnockbackForce = _enemyConfig.EnemyKnockbackForce;
-            _currentSpeed = _enemyConfig.EnemyMoveSpeed;
-            _currentAttackSpeed = _enemyConfig.EnemyAtkSpeed;
-        }
-
-        private void CacheComponents()
-        {
-            _enemyRb = GetComponent<Rigidbody2D>();
-            SpriteRenderer = GetComponent<SpriteRenderer>();
-        }
-
-        private void DisposeTokens()
-        {
-            if (_hitEffectCts != null)
-            {
-                _hitEffectCts.Cancel();
-                _hitEffectCts.Dispose();
-                _hitEffectCts = null;
-            }
-
-            if (_knockbackCts != null)
-            {
-                _knockbackCts.Cancel();
-                _knockbackCts.Dispose();
-                _knockbackCts = null;
-            }
-
-            if (_freezeCts != null)
-            {
-                _freezeCts.Cancel();
-                _freezeCts.Dispose();
-                _freezeCts = null;
-            }
-        }
-        
-        protected virtual async UniTask HitEffect(CancellationToken token)
-        {
-            if (_hitMaterial != null && SpriteRenderer != null)
-            {
-                try
+                _enemyStats.ApplyRuntimeStats(runtimeStats);
+                if (_enemyHealth != null)
                 {
-                    SpriteRenderer.material = _hitMaterial;
-                    await UniTask.Delay(150, cancellationToken: token);
-                    if (SpriteRenderer != null)
-                        SpriteRenderer.material = _defaultMaterial;
+                    _enemyHealth.InitializeHealth(_enemyStats.MaxHealth);
                 }
-                catch (OperationCanceledException)
+                if (_enemyMovement != null)
                 {
-                    // Expected on cancellation
-                }
-                catch (Exception e) when (e is MissingReferenceException || e is ObjectDisposedException)
-                {
-                    Debug.Log("Entity Dead");
+                    _enemyMovement.SetSpeed(_enemyStats.CurrentSpeed);
                 }
             }
         }
-        
-        private async UniTaskVoid LoadEnemyConfigAsync()
-        {
-            _enemyConfig = await _enemyConfigReference.LoadAssetAsync<EnemyConfig>().ToUniTask();
 
-            ResetStatsFromConfig();
-        }
-        
-        private async UniTask EnemyKnockBack(Vector2 direction, float force, float duration, CancellationToken token)
+        public void KillEnemy()
         {
-            try
+            if (_enemyHealth != null)
             {
-                if (_enemyRb != null)
-                {
-                    _enemyRb.linearVelocity = Vector2.zero;
-                    _enemyRb.AddForce(direction * force, ForceMode2D.Impulse);
-                }
-                _isKnockedBack = true;
-                await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
-
-            }
-            catch (OperationCanceledException)
-            {
-                // Expected on cancellation
-            }
-            finally
-            {
-                _isKnockedBack = false;
-                if (_enemyRb != null)
-                {
-                    _enemyRb.linearVelocity = Vector2.zero;
-                }
+                _enemyHealth.KillEnemy();
             }
         }
-        
-        
+
+#if UNITY_EDITOR
+        public void EditorSetupComponents(EnemyHealth h, EnemyStats s, EnemyMovement m, EnemyVisuals v, EnemyAfflictionHandler a)
+        {
+            _enemyHealth = h;
+            _enemyStats = s;
+            _enemyMovement = m;
+            _enemyVisuals = v;
+            _enemyAfflictionHandler = a;
+        }
+#endif
     }
-
 }
