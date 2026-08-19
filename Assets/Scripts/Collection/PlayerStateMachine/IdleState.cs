@@ -1,16 +1,18 @@
 using Controllers;
 using UnityEngine;
 
-namespace Collection.PlayerStateMachine
+using Collection.StateMachine;
+
+namespace Collection.StateMachine
 {
     public class IdleState : IState
     {
         private PlayerController _playerController;
-        private PlayerStateMachine _playerStateMachine;
+        private StateMachine _playerStateMachine;
         
         private RunningState _runningState;
         
-        public IdleState(PlayerController player, PlayerStateMachine playerStateMachine)
+        public IdleState(PlayerController player, StateMachine playerStateMachine)
         {
             this._playerController = player;
             this._playerStateMachine = playerStateMachine;

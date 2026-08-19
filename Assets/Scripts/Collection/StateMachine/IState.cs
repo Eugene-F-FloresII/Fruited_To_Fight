@@ -1,5 +1,5 @@
 
-namespace Collection.PlayerStateMachine
+namespace Collection.StateMachine
 {
     public interface IState
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using Collection;
-using Collection.PlayerStateMachine;
+using Collection.StateMachine;
 using Data;
 using Gameplay;
 using Shared.Events;
@@ -32,7 +32,7 @@ namespace Controllers
         
         private IdleState _idleState;
         private RunningState _runningState;
-        private PlayerStateMachine _playerStateMachine;
+        private StateMachine _playerStateMachine;
         
         
         private Vector2 _enemyDirection;
@@ -61,7 +61,7 @@ namespace Controllers
 
         private void Start()
         {
-            _playerStateMachine = new PlayerStateMachine();
+            _playerStateMachine = new StateMachine();
             _runningState = new RunningState(this, _playerStateMachine, _playerCharacter.CharacterAnimator,_moveDirection.Value);
             _idleState = new IdleState(this, _playerStateMachine);
             

@@ -2,17 +2,19 @@ using Controllers;
 using Data;
 using UnityEngine;
 
-namespace Collection.PlayerStateMachine
+using Collection.StateMachine;
+
+namespace Collection.StateMachine
 {
     public class RunningState : IState
     {
         private CharacterConfig _characterConfig;
         private PlayerController _playerController;
-        private PlayerStateMachine _playerStateMachine;
+        private StateMachine _playerStateMachine;
         private Animator _animator;
         private Vector2 _moveDirection;
 
-        public RunningState(PlayerController playerController,PlayerStateMachine playerStateMachine, Animator animator, Vector2 moveDirection)
+        public RunningState(PlayerController playerController,StateMachine playerStateMachine, Animator animator, Vector2 moveDirection)
         {
             _playerController = playerController;
             _playerStateMachine = playerStateMachine;

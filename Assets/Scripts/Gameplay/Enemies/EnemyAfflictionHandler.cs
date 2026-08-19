@@ -11,22 +11,10 @@ namespace Gameplay.Enemies
     {
         private EnemyMovement _enemyMovement;
         private EnemyVisuals _enemyVisuals;
-        private CancellationTokenSource _freezeCts;
-
         private void Awake()
         {
             _enemyMovement = GetComponent<EnemyMovement>();
             _enemyVisuals = GetComponent<EnemyVisuals>();
-        }
-
-        private void OnDisable()
-        {
-            if (_freezeCts != null)
-            {
-                _freezeCts.Cancel();
-                _freezeCts.Dispose();
-                _freezeCts = null;
-            }
         }
 
         public void ApplyAffliction(AfflictionConfig config, Controllers.EnemyController controller)
@@ -67,34 +55,6 @@ namespace Gameplay.Enemies
             }
         }
 
-        public async UniTaskVoid FreezeAsync(float duration)
-        {
-            if (_freezeCts != null)
-            {
-                _freezeCts.Cancel();
-                _freezeCts.Dispose();
-            }
-            _freezeCts = new CancellationTokenSource();
-            var token = _freezeCts.Token;
 
-            try
-            {
-                if (_enemyMovement != null) _enemyMovement.SetFrozen(true);
-                if (_enemyVisuals != null) _enemyVisuals.SetAnimationSpeed(0f);
-                
-                await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: token);
-            }
-            catch (OperationCanceledException)
-            {
-            }
-            finally
-            {
-                if (!token.IsCancellationRequested)
-                {
-                    if (_enemyMovement != null) _enemyMovement.SetFrozen(false);
-                    if (_enemyVisuals != null) _enemyVisuals.SetAnimationSpeed(1f);
-                }
-            }
-        }
     }
 }

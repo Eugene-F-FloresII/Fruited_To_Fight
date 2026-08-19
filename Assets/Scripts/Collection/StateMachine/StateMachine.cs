@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Collection.PlayerStateMachine
+namespace Collection.StateMachine
 {
-    public class PlayerStateMachine
+    public class StateMachine
     {
         private IState _currentState;
 

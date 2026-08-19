@@ -7,6 +7,8 @@ using Cysharp.Threading.Tasks;
 using Gameplay.Weapons;
 using Shared.Enums;
 using UnityEngine.AddressableAssets;
+using Collection.StateMachine;
+using Collection.EnemyStateMachine;
 
 namespace Controllers
 {
@@ -30,9 +32,20 @@ namespace Controllers
 
         public float CurrentHealth => _enemyHealth != null ? _enemyHealth.CurrentHealth : 0f;
         public float MaxHealth => _enemyHealth != null ? _enemyHealth.MaxHealth : 0f;
+        
+        // State Machine
+        private StateMachine _stateMachine;
+        public EnemyChaseState ChaseState { get; private set; }
+        public EnemyKnockbackState KnockbackState { get; private set; }
+        public EnemyFrozenState FrozenState { get; private set; }
 
         private void Awake()
         {
+            _stateMachine = new StateMachine();
+            ChaseState = new EnemyChaseState(this, _stateMachine);
+            KnockbackState = new EnemyKnockbackState(this, _stateMachine);
+            FrozenState = new EnemyFrozenState(this, _stateMachine);
+
             if (_enemyStats != null)
             {
                 _enemyStats.LoadEnemyConfigAsyncAddress().Forget();
@@ -57,10 +70,7 @@ namespace Controllers
                 }
             }
             
-            if (_enemyMovement != null && _enemyStats != null)
-            {
-                _enemyMovement.SetSpeed(_enemyStats.CurrentSpeed);
-            }
+            _stateMachine.ChangeState(ChaseState);
         }
 
         private void OnDisable()
@@ -74,6 +84,11 @@ namespace Controllers
             {
                 _enemyHealth.OnHitEvent -= HandleHit;
             }
+        }
+
+        private void FixedUpdate()
+        {
+            _stateMachine.Execute();
         }
 
         private void HandleHit()
@@ -102,10 +117,8 @@ namespace Controllers
 
         public void Freeze(float duration)
         {
-            if (_enemyAfflictionHandler != null)
-            {
-                _enemyAfflictionHandler.FreezeAsync(duration).Forget();
-            }
+            FrozenState.SetParameters(duration);
+            _stateMachine.ChangeState(FrozenState);
         }
 
         public void TakeDamage(float damage, ProjectileWeapon projectile)
@@ -114,10 +127,8 @@ namespace Controllers
             
             Vector2 projectileDirection = projectile.transform.right;
             
-            if (_enemyMovement != null)
-            {
-                _enemyMovement.ApplyKnockback(projectileDirection, projectile.GetWeaponKnockback(), 0.3f);
-            }
+            KnockbackState.SetParameters(projectileDirection * projectile.GetWeaponKnockback(), 0.3f);
+            _stateMachine.ChangeState(KnockbackState);
             
             WeaponClass weaponClass = WeaponClass.None;
             AfflictionType afflictionType = AfflictionType.None;
@@ -145,10 +156,8 @@ namespace Controllers
         {
             Vector2 knockbackDirection = ((Vector2)transform.position - sourcePosition).normalized;
             
-            if (_enemyMovement != null)
-            {
-                _enemyMovement.ApplyKnockback(knockbackDirection, knockbackForce, 0.3f);
-            }
+            KnockbackState.SetParameters(knockbackDirection * knockbackForce, 0.3f);
+            _stateMachine.ChangeState(KnockbackState);
             
             if (_enemyHealth != null)
             {
@@ -191,10 +200,6 @@ namespace Controllers
                 {
                     _enemyHealth.InitializeHealth(_enemyStats.MaxHealth);
                 }
-                if (_enemyMovement != null)
-                {
-                    _enemyMovement.SetSpeed(_enemyStats.CurrentSpeed);
-                }
             }
         }
 
@@ -203,6 +208,39 @@ namespace Controllers
             if (_enemyHealth != null)
             {
                 _enemyHealth.KillEnemy();
+            }
+        }
+
+        // Facade methods for States
+        public void MoveTowardsPlayer()
+        {
+            if (_enemyMovement != null)
+            {
+                _enemyMovement.MoveTowardsPlayer(_enemyStats != null ? _enemyStats.CurrentSpeed : 0f);
+            }
+        }
+
+        public void ApplyImpulse(Vector2 force)
+        {
+            if (_enemyMovement != null)
+            {
+                _enemyMovement.ApplyImpulse(force);
+            }
+        }
+
+        public void ResetVelocity()
+        {
+            if (_enemyMovement != null)
+            {
+                _enemyMovement.ResetVelocity();
+            }
+        }
+
+        public void SetAnimationSpeed(float speed)
+        {
+            if (_enemyVisuals != null)
+            {
+                _enemyVisuals.SetAnimationSpeed(speed);
             }
         }
 
