@@ -3,7 +3,6 @@ using System.Threading;
 using Controllers;
 using Cysharp.Threading.Tasks;
 using Data;
-using Gameplay.Enemies;
 using Shared.Events;
 using Shared.Enums;
 using UnityEngine;
@@ -17,9 +16,9 @@ namespace Collection
         /// <summary>
         /// Initializes the lightning state and checks stacks for a strike.
         /// </summary>
-        public override void Initialize(EnemyController enemy, AfflictionConfig config, EnemyAffliction visualController)
+        public override void Initialize(EnemyController enemy, AfflictionConfig config)
         {
-            base.Initialize(enemy, config, visualController);
+            base.Initialize(enemy, config);
             _lightningCts = new CancellationTokenSource();
             CheckStacks();
         }

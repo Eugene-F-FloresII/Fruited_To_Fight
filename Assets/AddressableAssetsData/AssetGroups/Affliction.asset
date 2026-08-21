@@ -10,29 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: VFX
+  m_Name: Affliction
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: VFX
-  m_GUID: d8c0fa4a6b24702418a6e333fd3ac6b2
+  m_GroupName: Affliction
+  m_GUID: 61151a5761d51794381ded23b960ecbd
   m_SerializeEntries:
-  - m_GUID: 055672c49cfe9cd4c9197a239850b2bf
-    m_Address: Assets/Prefabs/Afflictions/LightningAfflictionEnemy.prefab
+  - m_GUID: 1db174a37fc01bb41a7ea04f481dabdd
+    m_Address: Assets/Prefabs/Afflictions/Lightning.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - LightningAffliction
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2fbb95db9b0005940b50e937c6980256
-    m_Address: Assets/Prefabs/Afflictions/BurnAfflictionEnemy.prefab
+  - m_GUID: 43ddac93c3704fb42b1d6995d7ab4909
+    m_Address: Assets/Prefabs/Afflictions/Burn.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b0944d32be492cb4aacb28cdb5a1001d
-    m_Address: Assets/Prefabs/AfflictionVFX/LightningVFXPrefab.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - BurnAffliction
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3f98cc3d43238a947aa6a142a2b489e0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 97c73d36664dbef45938d4c8ab5c93d7, type: 2}
-    - {fileID: 11400000, guid: 19d4c447aed45e643b0b34a8d874b417, type: 2}
+    - {fileID: 11400000, guid: be612140a4f81c94483711acd033b254, type: 2}
+    - {fileID: 11400000, guid: 7bc5c3066821c5545a6aadc2115431e0, type: 2}

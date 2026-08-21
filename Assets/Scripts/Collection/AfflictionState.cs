@@ -1,6 +1,5 @@
 using Controllers;
 using Data;
-using Gameplay.Enemies;
 using Shared.Enums;
 using UnityEngine;
 
@@ -14,25 +13,18 @@ namespace Collection
         protected EnemyController Enemy;
         protected AfflictionConfig Config;
         protected float RemainingDuration;
-        protected EnemyAffliction VisualController;
         protected int CurrentStacks;
 
         /// <summary>
-        /// Initializes the affliction state with the enemy, config, and visual controller.
+        /// Initializes the affliction state with the enemy and config.
         /// </summary>
-        public virtual void Initialize(EnemyController enemy, AfflictionConfig config, EnemyAffliction visualController)
+        public virtual void Initialize(EnemyController enemy, AfflictionConfig config)
         {
             Enemy = enemy;
             Config = config;
             AfflictionType = config.Type;
             RemainingDuration = config.Duration;
             CurrentStacks = 1;
-
-            VisualController = visualController;
-            if (VisualController != null)
-            {
-                VisualController.ToggleVisual(AfflictionType, true);
-            }
         }
 
         /// <summary>
@@ -64,14 +56,8 @@ namespace Collection
         }
 
         /// <summary>
-        /// Disposes the affliction state, toggling off its visual.
+        /// Disposes the affliction state and performs cleanup.
         /// </summary>
-        public virtual void Dispose()
-        {
-            if (VisualController != null)
-            {
-                VisualController.ToggleVisual(AfflictionType, false);
-            }
-        }
+        public virtual void Dispose() { }
     }
 }

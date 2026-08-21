@@ -1,6 +1,5 @@
 using Controllers;
 using Data;
-using Gameplay.Enemies;
 using Shared.Events;
 using Shared.Enums;
 using UnityEngine;
@@ -14,9 +13,9 @@ namespace Collection
         /// <summary>
         /// Initializes the burn state and resets the tick timer.
         /// </summary>
-        public override void Initialize(EnemyController enemy, AfflictionConfig config, EnemyAffliction visualController)
+        public override void Initialize(EnemyController enemy, AfflictionConfig config)
         {
-            base.Initialize(enemy, config, visualController);
+            base.Initialize(enemy, config);
             _tickTimer = 0f;
         }
 

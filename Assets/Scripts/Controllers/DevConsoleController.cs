@@ -108,6 +108,7 @@ namespace Controllers
             _commands.Add(new DevConsoleCommand("Set Skeletal Leafs to 9999", "Cheat", SetSkeletalLeafCurrency));
             _commands.Add(new DevConsoleCommand("Reset Permanent Upgrades", "Reset", ResetPermanentUpgrades));
             _commands.Add(new DevConsoleCommand("Show Results Panel (5k/100/20)", "Show", TriggerResultPanelCheat));
+            _commands.Add(new DevConsoleCommand("Spawn Lightning Wisp", "Spawn", SpawnLightningWisp));
         }
 
         private void PopulateConsoleUI()
@@ -295,6 +296,12 @@ namespace Controllers
 
             SetConsoleActive(false);
             Events_Game.OnShowResultPanel?.Invoke(true);
+        }
+
+        private void SpawnLightningWisp()
+        {
+            Events_Wisps.OnChosenWisp?.Invoke("LightningWisp");
+            Debug.Log("[DevConsole] Spawned Lightning Wisp.");
         }
 
         // --- AUTOMATIC INSTANTIATION ---

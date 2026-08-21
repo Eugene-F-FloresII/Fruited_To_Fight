@@ -14,5 +14,6 @@ namespace Data
         public float ExplosionRadius = 5f;
         public float LightningStrikeDelay = 0.5f;
         public AssetReferenceGameObject VFXPrefabReference;
+        public AssetReferenceGameObject EnemyVisualPrefabReference;
     }
 }

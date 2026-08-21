@@ -1,6 +1,5 @@
 using Controllers;
 using Data;
-using Gameplay.Enemies;
 using Shared.Events;
 using Shared.Enums;
 
@@ -11,9 +10,9 @@ namespace Collection
         /// <summary>
         /// Initializes the weakness state and applies instant 10% HP damage.
         /// </summary>
-        public override void Initialize(EnemyController enemy, AfflictionConfig config, EnemyAffliction visualController)
+        public override void Initialize(EnemyController enemy, AfflictionConfig config)
         {
-            base.Initialize(enemy, config, visualController);
+            base.Initialize(enemy, config);
             ApplyWeakness();
         }
 

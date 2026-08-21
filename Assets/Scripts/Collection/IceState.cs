@@ -1,6 +1,5 @@
 using Controllers;
 using Data;
-using Gameplay.Enemies;
 using UnityEngine;
 
 namespace Collection
@@ -10,9 +9,9 @@ namespace Collection
         /// <summary>
         /// Initializes the ice state and checks stacks for a freeze.
         /// </summary>
-        public override void Initialize(EnemyController enemy, AfflictionConfig config, EnemyAffliction visualController)
+        public override void Initialize(EnemyController enemy, AfflictionConfig config)
         {
-            base.Initialize(enemy, config, visualController);
+            base.Initialize(enemy, config);
             CheckStacks();
         }
 

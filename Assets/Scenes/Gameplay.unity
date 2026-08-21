@@ -24938,6 +24938,9 @@ MonoBehaviour:
     UnlockRound: 9
     BaseWeight: 20
     WeightGrowthPerRound: 10
+  _afflictionConfigs:
+  - {fileID: 11400000, guid: 1db174a37fc01bb41a7ea04f481dabdd, type: 2}
+  - {fileID: 11400000, guid: 43ddac93c3704fb42b1d6995d7ab4909, type: 2}
   _camera: {fileID: 519420031}
   _spawnMode: 1
   _minSpawnDistance: 25

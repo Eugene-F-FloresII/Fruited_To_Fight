@@ -11,6 +11,7 @@ using Shared.Events;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
+using Gameplay.Enemies;
 
 namespace Managers
 {
@@ -27,6 +28,7 @@ namespace Managers
 
         [Header("Enemy Spawn References")] 
         [SerializeField] private List<EnemyVariantSettings> _enemyVariants;
+        [SerializeField] private List<AfflictionConfig> _afflictionConfigs;
         [SerializeField] private Camera _camera;
 
         [Header("Spawn Settings")]
@@ -74,6 +76,7 @@ namespace Managers
                 }
             }
             
+            EnemyAfflictionHandler.ReleasePoolsOP();
             ServiceLocator.Unregister<EnemySpawnManager>();
         }
 
@@ -280,6 +283,11 @@ namespace Managers
             }
 
             CreatePools();
+            
+            GameObject afflictionPoolParent = new GameObject("Pool_Afflictions");
+            afflictionPoolParent.transform.SetParent(this.transform);
+            EnemyAfflictionHandler.PreWarmPoolsAsyncAddress(_afflictionConfigs, afflictionPoolParent.transform).Forget();
+            
             _isInitialized = true;
         }
 

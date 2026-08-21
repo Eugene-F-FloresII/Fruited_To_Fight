@@ -54,6 +54,15 @@ namespace Controllers
             if (_enemyHealth != null)
             {
                 _enemyHealth.OnHitEvent += HandleHit;
+                _enemyHealth.OnDeathEvent += HandleDeath;
+            }
+        }
+
+        private void HandleDeath()
+        {
+            if (_enemyAfflictionHandler != null)
+            {
+                _enemyAfflictionHandler.ClearAllAfflictions();
             }
         }
 
@@ -76,7 +85,6 @@ namespace Controllers
         private void OnDisable()
         {
             if (_activeEnemyCount != null) _activeEnemyCount.Value--;
-            if (_enemyAfflictionHandler != null) _enemyAfflictionHandler.ClearAllAfflictions();
         }
 
         private void OnDestroy()
@@ -84,6 +92,7 @@ namespace Controllers
             if (_enemyHealth != null)
             {
                 _enemyHealth.OnHitEvent -= HandleHit;
+                _enemyHealth.OnDeathEvent -= HandleDeath;
             }
         }
 

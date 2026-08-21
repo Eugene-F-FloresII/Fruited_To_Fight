@@ -16,3 +16,17 @@ MonoBehaviour:
   Duration: 3
   Power: 3
   MaxStacks: 5
+  ExplosionRadius: 5
+  LightningStrikeDelay: 0.5
+  VFXPrefabReference:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  EnemyVisualPrefabReference:
+    m_AssetGUID: 2fbb95db9b0005940b50e937c6980256
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
