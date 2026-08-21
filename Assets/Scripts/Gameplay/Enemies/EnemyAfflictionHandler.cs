@@ -4,6 +4,7 @@ using Collection;
 using Cysharp.Threading.Tasks;
 using Data;
 using UnityEngine;
+using Controllers;
 
 namespace Gameplay.Enemies
 {
@@ -17,7 +18,7 @@ namespace Gameplay.Enemies
             _enemyVisuals = GetComponent<EnemyVisuals>();
         }
 
-        public void ApplyAffliction(AfflictionConfig config, Controllers.EnemyController controller)
+        public void ApplyAffliction(AfflictionConfig config, EnemyController controller)
         {
             if (config == null) return;
 
@@ -45,7 +46,6 @@ namespace Gameplay.Enemies
                     break;
                 case Shared.Enums.AfflictionType.Lightning:
                     newState = gameObject.AddComponent<LightningState>();
-                    newState.InitializeVFXPrefab(config.VFXPrefab);
                     break;
             }
 

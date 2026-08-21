@@ -1,5 +1,6 @@
 using Shared.Enums;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Data
 {
@@ -12,6 +13,6 @@ namespace Data
         public int MaxStacks = 5;
         public float ExplosionRadius = 5f;
         public float LightningStrikeDelay = 0.5f;
-        public GameObject VFXPrefab;
+        public AssetReferenceGameObject VFXPrefabReference;
     }
 }

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: VFX
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: VFX
+  m_GUID: d8c0fa4a6b24702418a6e333fd3ac6b2
+  m_SerializeEntries:
+  - m_GUID: b0944d32be492cb4aacb28cdb5a1001d
+    m_Address: Assets/Prefabs/AfflictionVFX/LightningVFXPrefab.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3f98cc3d43238a947aa6a142a2b489e0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 97c73d36664dbef45938d4c8ab5c93d7, type: 2}
+    - {fileID: 11400000, guid: 19d4c447aed45e643b0b34a8d874b417, type: 2}

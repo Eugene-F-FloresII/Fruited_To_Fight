@@ -4,15 +4,13 @@ using Cysharp.Threading.Tasks;
 using System;
 using Shared.Events;
 using Shared.Enums;
+using Data;
 
 namespace Collection
 {
     public class LightningState : AfflictionState
     {
-
-        private GameObject _lightningGameObject;
-
-        public override void Initialize(EnemyController enemy, Data.AfflictionConfig config)
+        public override void Initialize(EnemyController enemy, AfflictionConfig config)
         {
             base.Initialize(enemy, config);
             CheckStacks();
@@ -34,10 +32,7 @@ namespace Collection
 
         private async UniTaskVoid TriggerLightningStrike()
         {
-            if (_gameObjectVFX != null)
-            {
-                _lightningGameObject = Instantiate(_gameObjectVFX, transform.position, Quaternion.identity);
-            }
+            Events_VFX.SpawnVFXEvent?.Invoke(Config.VFXPrefabReference, transform.position, Quaternion.identity, 1f + Config.LightningStrikeDelay);
 
             try
             {
@@ -56,7 +51,6 @@ namespace Collection
                 if (hitCollider.TryGetComponent(out EnemyController enemy))
                 {
                     enemy.TakeDamage(damage, DamageSourceInfo.FromAffliction(AfflictionType.Lightning));
-                    Destroy(_lightningGameObject, 1f);
                 }
             }
         }
