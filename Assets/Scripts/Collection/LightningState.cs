@@ -1,50 +1,69 @@
-using UnityEngine;
+using System;
+using System.Threading;
 using Controllers;
 using Cysharp.Threading.Tasks;
-using System;
+using Data;
+using Gameplay.Enemies;
 using Shared.Events;
 using Shared.Enums;
-using Data;
+using UnityEngine;
 
 namespace Collection
 {
     public class LightningState : AfflictionState
     {
-        public override void Initialize(EnemyController enemy, AfflictionConfig config)
+        private CancellationTokenSource _lightningCts;
+
+        /// <summary>
+        /// Initializes the lightning state and checks stacks for a strike.
+        /// </summary>
+        public override void Initialize(EnemyController enemy, AfflictionConfig config, EnemyAffliction visualController)
         {
-            base.Initialize(enemy, config);
+            base.Initialize(enemy, config, visualController);
+            _lightningCts = new CancellationTokenSource();
             CheckStacks();
         }
 
+        /// <summary>
+        /// Called when a new stack is added, checks if max stacks reached for a strike.
+        /// </summary>
         protected override void OnStackAdded()
         {
             CheckStacks();
         }
-        
+
+        /// <summary>
+        /// Checks if current stacks reached max and triggers a lightning strike.
+        /// </summary>
         private void CheckStacks()
         {
             if (CurrentStacks >= Config.MaxStacks)
             {
-                TriggerLightningStrike().Forget();
+                TriggerLightningStrikeAsync().Forget();
                 CurrentStacks = 0;
             }
         }
 
-        private async UniTaskVoid TriggerLightningStrike()
+        /// <summary>
+        /// Triggers an AoE lightning strike after a delay.
+        /// </summary>
+        private async UniTaskVoid TriggerLightningStrikeAsync()
         {
-            Events_VFX.SpawnVFXEvent?.Invoke(Config.VFXPrefabReference, transform.position, Quaternion.identity, 1f + Config.LightningStrikeDelay);
+            Events_VFX.SpawnVFXEvent?.Invoke(Config.VFXPrefabReference, Enemy.transform.position, Quaternion.identity, 1f + Config.LightningStrikeDelay);
 
             try
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(Config.LightningStrikeDelay), cancellationToken: this.GetCancellationTokenOnDestroy());
+                await UniTask.Delay(TimeSpan.FromSeconds(Config.LightningStrikeDelay), cancellationToken: _lightningCts.Token);
             }
             catch (OperationCanceledException)
             {
                 return;
             }
 
-            float damage = Config.Power * 4f; // Power + 300% = 400% (Power * 4)
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, Config.ExplosionRadius);
+            if (Enemy == null || !Enemy.gameObject.activeInHierarchy) return;
+
+            float damage = Config.Power * 4f;
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(Enemy.transform.position, Config.ExplosionRadius);
 
             foreach (var hitCollider in hitEnemies)
             {
@@ -55,6 +74,19 @@ namespace Collection
             }
         }
 
-       
+        /// <summary>
+        /// Disposes the lightning state and cancels any pending lightning strike.
+        /// </summary>
+        public override void Dispose()
+        {
+            if (_lightningCts != null)
+            {
+                _lightningCts.Cancel();
+                _lightningCts.Dispose();
+                _lightningCts = null;
+            }
+
+            base.Dispose();
+        }
     }
 }

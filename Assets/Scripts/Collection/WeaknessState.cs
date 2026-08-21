@@ -1,6 +1,6 @@
-
-
-
+using Controllers;
+using Data;
+using Gameplay.Enemies;
 using Shared.Events;
 using Shared.Enums;
 
@@ -8,12 +8,18 @@ namespace Collection
 {
     public class WeaknessState : AfflictionState
     {
-        public override void Initialize(Controllers.EnemyController enemy, Data.AfflictionConfig config)
+        /// <summary>
+        /// Initializes the weakness state and applies instant 10% HP damage.
+        /// </summary>
+        public override void Initialize(EnemyController enemy, AfflictionConfig config, EnemyAffliction visualController)
         {
-            base.Initialize(enemy, config);
+            base.Initialize(enemy, config, visualController);
             ApplyWeakness();
         }
 
+        /// <summary>
+        /// Applies 10% of current HP as damage to the enemy.
+        /// </summary>
         private void ApplyWeakness()
         {
             if (Enemy != null)

@@ -1,21 +1,26 @@
 using Controllers;
 using Data;
+using Gameplay.Enemies;
 using Shared.Enums;
 using UnityEngine;
-using Gameplay.Enemies;
 
 namespace Collection
 {
-    public abstract class AfflictionState : MonoBehaviour
+    public abstract class AfflictionState
     {
         public AfflictionType AfflictionType { get; protected set; }
+        public bool IsExpired => RemainingDuration <= 0;
+
         protected EnemyController Enemy;
         protected AfflictionConfig Config;
         protected float RemainingDuration;
         protected EnemyAffliction VisualController;
         protected int CurrentStacks;
 
-        public virtual void Initialize(EnemyController enemy, AfflictionConfig config)
+        /// <summary>
+        /// Initializes the affliction state with the enemy, config, and visual controller.
+        /// </summary>
+        public virtual void Initialize(EnemyController enemy, AfflictionConfig config, EnemyAffliction visualController)
         {
             Enemy = enemy;
             Config = config;
@@ -23,43 +28,45 @@ namespace Collection
             RemainingDuration = config.Duration;
             CurrentStacks = 1;
 
-            VisualController = enemy.GetComponentInChildren<EnemyAffliction>();
+            VisualController = visualController;
             if (VisualController != null)
             {
                 VisualController.ToggleVisual(AfflictionType, true);
             }
         }
 
+        /// <summary>
+        /// Refreshes the affliction with a new config, resetting duration and adding a stack.
+        /// </summary>
         public virtual void Refresh(AfflictionConfig config)
         {
-            // If the new config is the same type but has different values, we update it
             Config = config;
             RemainingDuration = config.Duration;
-            
+
             CurrentStacks = Mathf.Min(CurrentStacks + 1, Config.MaxStacks);
             OnStackAdded();
         }
 
+        /// <summary>
+        /// Called when a new stack is added via Refresh.
+        /// </summary>
         protected virtual void OnStackAdded() { }
 
-        protected virtual void Update()
+        /// <summary>
+        /// Ticks the affliction state by deltaTime. Called by the handler each frame.
+        /// </summary>
+        public virtual void Tick(float deltaTime)
         {
             if (RemainingDuration > 0)
             {
-                RemainingDuration -= Time.deltaTime;
-                if (RemainingDuration <= 0)
-                {
-                    OnDurationExpired();
-                }
+                RemainingDuration -= deltaTime;
             }
         }
 
-        protected virtual void OnDurationExpired()
-        {
-            Destroy(this);
-        }
-
-        protected virtual void OnDestroy()
+        /// <summary>
+        /// Disposes the affliction state, toggling off its visual.
+        /// </summary>
+        public virtual void Dispose()
         {
             if (VisualController != null)
             {
@@ -67,6 +74,4 @@ namespace Collection
             }
         }
     }
-
 }
-

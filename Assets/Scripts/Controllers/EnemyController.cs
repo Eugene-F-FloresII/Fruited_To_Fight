@@ -76,6 +76,7 @@ namespace Controllers
         private void OnDisable()
         {
             if (_activeEnemyCount != null) _activeEnemyCount.Value--;
+            if (_enemyAfflictionHandler != null) _enemyAfflictionHandler.ClearAllAfflictions();
         }
 
         private void OnDestroy()

@@ -1,8 +1,8 @@
-using System;
-using System.Threading;
+using System.Collections.Generic;
 using Collection;
-using Cysharp.Threading.Tasks;
 using Data;
+using Gameplay.Enemies;
+using Shared.Enums;
 using UnityEngine;
 using Controllers;
 
@@ -10,51 +10,87 @@ namespace Gameplay.Enemies
 {
     public class EnemyAfflictionHandler : MonoBehaviour
     {
-        private EnemyMovement _enemyMovement;
-        private EnemyVisuals _enemyVisuals;
+        private EnemyAffliction _visualController;
+        private Dictionary<AfflictionType, AfflictionState> _activeAfflictions = new Dictionary<AfflictionType, AfflictionState>();
+        private List<AfflictionType> _expiredKeys = new List<AfflictionType>();
+
         private void Awake()
         {
-            _enemyMovement = GetComponent<EnemyMovement>();
-            _enemyVisuals = GetComponent<EnemyVisuals>();
+            _visualController = GetComponentInChildren<EnemyAffliction>();
         }
 
+        private void Update()
+        {
+            if (_activeAfflictions.Count == 0) return;
+
+            _expiredKeys.Clear();
+
+            foreach (var kvp in _activeAfflictions)
+            {
+                kvp.Value.Tick(Time.deltaTime);
+
+                if (kvp.Value.IsExpired)
+                {
+                    _expiredKeys.Add(kvp.Key);
+                }
+            }
+
+            foreach (var key in _expiredKeys)
+            {
+                if (_activeAfflictions.TryGetValue(key, out var state))
+                {
+                    state.Dispose();
+                    _activeAfflictions.Remove(key);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies an affliction to the enemy. Refreshes if the same type is already active.
+        /// </summary>
         public void ApplyAffliction(AfflictionConfig config, EnemyController controller)
         {
             if (config == null) return;
 
-            var existingAfflictions = GetComponents<AfflictionState>();
-            foreach (var affliction in existingAfflictions)
+            if (_activeAfflictions.TryGetValue(config.Type, out var existingState))
             {
-                if (affliction.AfflictionType == config.Type)
-                {
-                    affliction.Refresh(config);
-                    return;
-                }
+                existingState.Refresh(config);
+                return;
             }
 
-            AfflictionState newState = null;
-            switch (config.Type)
-            {
-                case Shared.Enums.AfflictionType.Burn:
-                    newState = gameObject.AddComponent<BurnState>();
-                    break;
-                case Shared.Enums.AfflictionType.Ice:
-                    newState = gameObject.AddComponent<IceState>();
-                    break;
-                case Shared.Enums.AfflictionType.Weakness:
-                    newState = gameObject.AddComponent<WeaknessState>();
-                    break;
-                case Shared.Enums.AfflictionType.Lightning:
-                    newState = gameObject.AddComponent<LightningState>();
-                    break;
-            }
-
+            AfflictionState newState = CreateAfflictionState(config.Type);
             if (newState != null)
             {
-                newState.Initialize(controller, config);
+                _activeAfflictions[config.Type] = newState;
+                newState.Initialize(controller, config, _visualController);
             }
         }
 
+        /// <summary>
+        /// Clears all active afflictions. Called when the enemy is returned to pool.
+        /// </summary>
+        public void ClearAllAfflictions()
+        {
+            foreach (var kvp in _activeAfflictions)
+            {
+                kvp.Value.Dispose();
+            }
+            _activeAfflictions.Clear();
+        }
 
+        /// <summary>
+        /// Creates a new affliction state instance based on the type.
+        /// </summary>
+        private AfflictionState CreateAfflictionState(AfflictionType type)
+        {
+            return type switch
+            {
+                AfflictionType.Burn => new BurnState(),
+                AfflictionType.Ice => new IceState(),
+                AfflictionType.Weakness => new WeaknessState(),
+                AfflictionType.Lightning => new LightningState(),
+                _ => null
+            };
+        }
     }
 }
