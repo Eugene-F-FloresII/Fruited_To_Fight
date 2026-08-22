@@ -25718,10 +25718,10 @@ MonoBehaviour:
   - AfflictionType: 1
     Color: {r: 0.9924528, g: 0.75598687, b: 0.45503017, a: 1}
   - AfflictionType: 4
-    Color: {r: 0.5264151, g: 0.6470175, b: 1, a: 1}
+    Color: {r: 0.93207544, g: 0.8630198, b: 0.0052758222, a: 1}
   _wispColors:
   - WispType: 3
-    Color: {r: 0.51886785, g: 0.6411896, b: 1, a: 1}
+    Color: {r: 0.9333334, g: 0.86274517, b: 0.003921569, a: 1}
 --- !u!114 &1587301482
 MonoBehaviour:
   m_ObjectHideFlags: 0

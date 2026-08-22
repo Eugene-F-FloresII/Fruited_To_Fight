@@ -48,9 +48,13 @@ namespace Gameplay
         };
         [SerializeField] private List<AfflictionColorConfig> _afflictionColors = new()
         {
-            new AfflictionColorConfig { AfflictionType = Shared.Enums.AfflictionType.Burn, Color = new Color(1f, 0.45f, 0f) }
+            new AfflictionColorConfig { AfflictionType = Shared.Enums.AfflictionType.Burn, Color = new Color(1f, 0.45f, 0f) },
+            new AfflictionColorConfig { AfflictionType = Shared.Enums.AfflictionType.Lightning, Color = Color.yellow }
         };
-        [SerializeField] private List<WispColorConfig> _wispColors = new();
+        [SerializeField] private List<WispColorConfig> _wispColors = new()
+        {
+            new WispColorConfig { WispType = Shared.Enums.WispType.Lightning, Color = Color.yellow }
+        };
 
         private readonly Queue<DamageNumber> _pool = new();
         private readonly HashSet<DamageNumber> _activeDamageNumbers = new();

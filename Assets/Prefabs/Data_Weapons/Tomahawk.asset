@@ -29,7 +29,7 @@ MonoBehaviour:
   WeaponRange: 6
   WeaponDamage: 40
   WeaponPierce: 3
-  WeaponSpeed: 5
+  WeaponSpeed: 10
   WeaponAtkSpeed: 2
   WeaponKnockback: 10
   AbilityCooldown: 10
