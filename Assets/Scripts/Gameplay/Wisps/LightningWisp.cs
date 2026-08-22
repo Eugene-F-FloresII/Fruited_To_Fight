@@ -79,13 +79,35 @@ namespace Gameplay.Wisps
             LightningBounce(transform.position, enemy, _maxJumps, _cts.Token);
         }
 
+        private static readonly System.Collections.Generic.List<Collider2D> _overlapResults = new System.Collections.Generic.List<Collider2D>();
+
         private EnemyController GetNextTarget(EnemyController currentTarget)
         {
-            return EnemyInRange
-                .Where(e => e != null && e.gameObject.activeInHierarchy && !EnemyAlreadyHit.Contains(e))
-                .Where(e => Vector2.Distance(currentTarget.transform.position, e.transform.position) <= _jumpRadius)
-                .OrderBy(e => Vector2.Distance(currentTarget.transform.position, e.transform.position))
-                .FirstOrDefault();
+            // Use Physics2D with a pre-allocated List to avoid array allocations (adhering to List over Arrays standard)
+            _overlapResults.Clear();
+            ContactFilter2D filter = new ContactFilter2D { useTriggers = true };
+            Physics2D.OverlapCircle(currentTarget.transform.position, _jumpRadius, filter, _overlapResults);
+            
+            EnemyController bestTarget = null;
+            float closestDistance = float.MaxValue;
+
+            foreach (var col in _overlapResults)
+            {
+                if (col.TryGetComponent(out EnemyController enemy))
+                {
+                    if (enemy != null && enemy.gameObject.activeInHierarchy && !EnemyAlreadyHit.Contains(enemy))
+                    {
+                        float distance = Vector2.Distance(currentTarget.transform.position, enemy.transform.position);
+                        if (distance < closestDistance)
+                        {
+                            closestDistance = distance;
+                            bestTarget = enemy;
+                        }
+                    }
+                }
+            }
+
+            return bestTarget;
         }
 
         private void LightningBounce(Vector3 startPos, EnemyController currentTarget, int jumpsLeft, CancellationToken token)
@@ -112,7 +134,9 @@ namespace Gameplay.Wisps
             visual.transform.position = startPos;
             Vector2 direction = (Vector2)currentTarget.transform.position - (Vector2)startPos;
             visual.transform.right = direction;
-            visual.transform.localScale = new Vector3(direction.magnitude, 1f, 1f);
+            
+            // Preserve the original Y and Z scale (thickness) of the prefab
+            visual.transform.localScale = new Vector3(direction.magnitude, visual.transform.localScale.y, visual.transform.localScale.z);
             
             // Handle visual despawn independently
             DespawnVisual(visual, token).Forget();
