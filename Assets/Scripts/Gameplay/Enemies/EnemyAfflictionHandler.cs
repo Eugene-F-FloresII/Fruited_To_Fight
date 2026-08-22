@@ -93,36 +93,38 @@ namespace Gameplay.Enemies
             if (_activeAfflictions.Count == 0) return;
 
             _expiredKeys.Clear();
-
-            foreach (var kvp in _activeAfflictions)
+            foreach (var key in _activeAfflictions.Keys)
             {
-                kvp.Value.Tick(Time.deltaTime);
-
-                if (kvp.Value.IsExpired)
-                {
-                    _expiredKeys.Add(kvp.Key);
-                }
+                _expiredKeys.Add(key);
             }
 
             foreach (var key in _expiredKeys)
             {
                 if (_activeAfflictions.TryGetValue(key, out var state))
                 {
-                    state.Dispose();
-                    _activeAfflictions.Remove(key);
-                    
-                    // Return visual to pool
-                    if (_activeVisuals.TryGetValue(key, out var visualObj))
+                    state.Tick(Time.deltaTime);
+
+                    // Stop ticking if enemy died and cleared all afflictions during this tick
+                    if (_activeAfflictions.Count == 0) break;
+
+                    if (state.IsExpired)
                     {
-                        if (_visualPools.TryGetValue(key, out var pool))
+                        state.Dispose();
+                        _activeAfflictions.Remove(key);
+                        
+                        // Return visual to pool
+                        if (_activeVisuals.TryGetValue(key, out var visualObj))
                         {
-                            pool.Release(visualObj);
+                            if (_visualPools.TryGetValue(key, out var pool))
+                            {
+                                pool.Release(visualObj);
+                            }
+                            else
+                            {
+                                Destroy(visualObj);
+                            }
+                            _activeVisuals.Remove(key);
                         }
-                        else
-                        {
-                            Destroy(visualObj);
-                        }
-                        _activeVisuals.Remove(key);
                     }
                 }
             }

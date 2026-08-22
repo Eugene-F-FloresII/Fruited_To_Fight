@@ -15,7 +15,7 @@ MonoBehaviour:
   Type: 4
   Duration: 4
   Power: 10
-  MaxStacks: 5
+  MaxStacks: 2
   ExplosionRadius: 5
   LightningStrikeDelay: 0.12
   VFXPrefabReference:

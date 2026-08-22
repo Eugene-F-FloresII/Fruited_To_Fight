@@ -683,7 +683,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -0.08332953, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25258,8 +25258,8 @@ MonoBehaviour:
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
-    SpawnRound: 2
-    SpawnOnDivisibleRound: 0
+    SpawnRound: 3
+    SpawnOnDivisibleRound: 1
   _camera: {fileID: 519420031}
   _activeEnemyCount: {fileID: 11400000, guid: a2f91ca57845bbd44a373ab4e7140224, type: 2}
   _spawnMode: 0
@@ -26564,6 +26564,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1748285374680566841, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+      propertyPath: Composition.ScreenPosition.x
+      value: 0.003703535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910022959166021599, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.08332953
+      objectReference: {fileID: 0}
     - target: {fileID: 6029804757836756755, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -26604,6 +26612,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6325839232366575955, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325839232366575955, guid: 60bbb5328dc11dc4fb6b606d568d7de3, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 158643190}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

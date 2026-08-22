@@ -27,10 +27,10 @@ MonoBehaviour:
   WeaponHoming: 0
   WeaponLevel: {fileID: 11400000, guid: 1c73f343ac90cd2469d6a16ccf74ff8d, type: 2}
   WeaponRange: 6
-  WeaponDamage: 45
+  WeaponDamage: 40
   WeaponPierce: 3
-  WeaponSpeed: 10
-  WeaponAtkSpeed: 0.9
+  WeaponSpeed: 5
+  WeaponAtkSpeed: 2
   WeaponKnockback: 10
   AbilityCooldown: 10
   AbilityDuration: 6

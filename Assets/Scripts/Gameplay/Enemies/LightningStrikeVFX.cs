@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Gameplay.Enemies
@@ -8,12 +11,42 @@ namespace Gameplay.Enemies
     public class LightningStrikeVFX : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer _triangleRenderer;
+        [SerializeField] private float _shakeForce = 1.0f;
+        [SerializeField] private float _shakeDelay = 0.15f;
         
         private Camera _mainCamera;
+        private CancellationTokenSource _shakeCts;
 
         private void Awake()
         {
             _mainCamera = Camera.main;
+        }
+
+        private void OnEnable()
+        {
+            _shakeCts = new CancellationTokenSource();
+            TriggerShakeAsync().Forget();
+        }
+
+        private void OnDisable()
+        {
+            if (_shakeCts != null)
+            {
+                _shakeCts.Cancel();
+                _shakeCts.Dispose();
+                _shakeCts = null;
+            }
+        }
+
+        /// <summary>
+        /// Delays the screen shake to match when the lightning hits the ground.
+        /// </summary>
+        private async UniTaskVoid TriggerShakeAsync()
+        {
+            bool isCanceled = await UniTask.Delay(TimeSpan.FromSeconds(_shakeDelay), cancellationToken: _shakeCts.Token).SuppressCancellationThrow();
+            if (isCanceled) return;
+
+            Shared.Events.Events_Character.RequestShake(_shakeForce);
         }
 
         private void LateUpdate()

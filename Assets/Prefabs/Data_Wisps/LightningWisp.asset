@@ -16,7 +16,7 @@ MonoBehaviour:
   WispLevel: {fileID: 11400000, guid: 4e25914cb6159c643bfe8235982e4deb, type: 2}
   Damage: 10
   Range: 6
-  AtkSpeed: 1
+  AtkSpeed: 0.5
   ProjectileSpeed: 20
   WispType: 3
   Afflictions:
