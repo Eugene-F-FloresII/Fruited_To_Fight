@@ -52,6 +52,11 @@ namespace Gameplay.Enemies
             {
                 Events_Sound.PlaySoundWithVolume?.Invoke(_enemyStats.Config.DeathSFX, _enemyStats.Config.DeathSFXVolume);
             }
+
+            if (_enemyStats != null && _enemyStats.Config != null && _enemyStats.Config.DeathVFX != null && _enemyStats.Config.DeathVFX.RuntimeKeyIsValid())
+            {
+                Events_VFX.SpawnVFXEvent?.Invoke(_enemyStats.Config.DeathVFX, transform.position, Quaternion.identity, transform.lossyScale, _enemyStats.Config.DeathVFXDuration);
+            }
             Events_Seed.OnEnemyDeath?.Invoke(transform);
             Events_Enemy.OnEnemyDeath?.Invoke();
             OnDeathEvent?.Invoke();

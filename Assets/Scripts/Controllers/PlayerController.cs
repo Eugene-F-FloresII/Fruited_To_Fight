@@ -225,6 +225,10 @@ namespace Controllers
 
         private void GameOver()
         {
+            if (CharacterConfig != null && CharacterConfig.DeathVFX != null && CharacterConfig.DeathVFX.RuntimeKeyIsValid())
+            {
+                Events_VFX.SpawnVFXEvent?.Invoke(CharacterConfig.DeathVFX, transform.position, Quaternion.identity, transform.lossyScale, CharacterConfig.DeathVFXDuration);
+            }
             ResetStats();
             Events_Game.OnShowResultPanel?.Invoke(false);
         }

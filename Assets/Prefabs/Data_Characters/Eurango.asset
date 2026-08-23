@@ -18,3 +18,10 @@ MonoBehaviour:
   CharacterHealth: 100
   CharacterKnockbackResistance: 10
   CharacterArmor: 0
+  DeathVFX:
+    m_AssetGUID: 3c402ec4cb3cc1e4086bd68642536f70
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  DeathVFXDuration: 1

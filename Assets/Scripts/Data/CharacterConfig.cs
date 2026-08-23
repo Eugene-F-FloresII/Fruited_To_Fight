@@ -13,6 +13,9 @@ namespace Data
         public float CharacterKnockbackResistance;
         public float CharacterArmor;
 
+        [Header("VFX")]
+        public UnityEngine.AddressableAssets.AssetReferenceGameObject DeathVFX;
+        public float DeathVFXDuration = 1f;
     }
 
 }

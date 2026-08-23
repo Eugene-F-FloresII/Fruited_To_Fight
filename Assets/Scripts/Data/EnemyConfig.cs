@@ -21,6 +21,10 @@ namespace Data
         [Range(0f, 1f)] public float DeathSFXVolume = 1f;
         public AudioClip HitSFX;
         [Range(0f, 1f)] public float HitSFXVolume = 1f;
+        
+        [Header("VFX")]
+        public UnityEngine.AddressableAssets.AssetReferenceGameObject DeathVFX;
+        public float DeathVFXDuration = 1f;
     }
 
 }

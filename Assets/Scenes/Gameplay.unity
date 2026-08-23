@@ -25258,7 +25258,7 @@ MonoBehaviour:
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
-    SpawnRound: 3
+    SpawnRound: 1
     SpawnOnDivisibleRound: 1
   _camera: {fileID: 519420031}
   _activeEnemyCount: {fileID: 11400000, guid: a2f91ca57845bbd44a373ab4e7140224, type: 2}
