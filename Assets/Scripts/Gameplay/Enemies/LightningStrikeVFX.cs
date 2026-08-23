@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Shared.Events;
 using UnityEngine;
 
 namespace Gameplay.Enemies
@@ -13,7 +14,15 @@ namespace Gameplay.Enemies
         [SerializeField] private SpriteRenderer _triangleRenderer;
         [SerializeField] private float _shakeForce = 1.0f;
         [SerializeField] private float _shakeDelay = 0.15f;
-        
+
+        [Header("Sound Settings")]
+        [SerializeField] private AudioClip _strikeSFX;
+        [Range(0f, 1f)]
+        [SerializeField] private float _strikeSFXVolume = 1f;
+        [SerializeField] private AudioClip _explosionSFX;
+        [Range(0f, 1f)]
+        [SerializeField] private float _explosionSFXVolume = 1f;
+
         private Camera _mainCamera;
         private CancellationTokenSource _shakeCts;
 
@@ -24,8 +33,9 @@ namespace Gameplay.Enemies
 
         private void OnEnable()
         {
+            PlayStrikeSFX();
             _shakeCts = new CancellationTokenSource();
-            TriggerShakeAsync().Forget();
+            TriggerShakeAndExplosionSFXAsync().Forget();
         }
 
         private void OnDisable()
@@ -39,14 +49,30 @@ namespace Gameplay.Enemies
         }
 
         /// <summary>
-        /// Delays the screen shake to match when the lightning hits the ground.
+        /// Plays the lightning strike sound when the VFX is first enabled.
         /// </summary>
-        private async UniTaskVoid TriggerShakeAsync()
+        private void PlayStrikeSFX()
+        {
+            if (_strikeSFX != null)
+            {
+                Events_Sound.PlaySoundWithVolume?.Invoke(_strikeSFX, _strikeSFXVolume);
+            }
+        }
+
+        /// <summary>
+        /// Delays the screen shake and explosion sound to match when the lightning hits the ground.
+        /// </summary>
+        private async UniTaskVoid TriggerShakeAndExplosionSFXAsync()
         {
             bool isCanceled = await UniTask.Delay(TimeSpan.FromSeconds(_shakeDelay), cancellationToken: _shakeCts.Token).SuppressCancellationThrow();
             if (isCanceled) return;
 
             Shared.Events.Events_Character.RequestShake(_shakeForce);
+
+            if (_explosionSFX != null)
+            {
+                Events_Sound.PlaySoundWithVolume?.Invoke(_explosionSFX, _explosionSFXVolume);
+            }
         }
 
         private void LateUpdate()
