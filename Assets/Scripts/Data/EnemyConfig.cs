@@ -15,6 +15,12 @@ namespace Data
         public float EnemyMoveSpeed;
         public float EnemyAtkSpeed;
         public float EnemyKnockbackForce;
+
+        [Header("Sound Settings")]
+        public AudioClip DeathSFX;
+        [Range(0f, 1f)] public float DeathSFXVolume = 1f;
+        public AudioClip HitSFX;
+        [Range(0f, 1f)] public float HitSFXVolume = 1f;
     }
 
 }

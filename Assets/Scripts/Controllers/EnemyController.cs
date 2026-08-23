@@ -49,6 +49,16 @@ namespace Controllers
             if (_enemyStats != null)
             {
                 _enemyStats.LoadEnemyConfigAsyncAddress().Forget();
+
+                if (_enemyHealth != null)
+                {
+                    _enemyHealth.Initialize(_enemyStats);
+                }
+
+                if (_enemyVisuals != null)
+                {
+                    _enemyVisuals.Initialize(_enemyStats);
+                }
             }
             
             if (_enemyHealth != null)

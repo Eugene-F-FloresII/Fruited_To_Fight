@@ -4,6 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Obvious.Soap;
 using Shared.Events;
+using Data;
 
 namespace Gameplay.Enemies
 {
@@ -13,13 +14,11 @@ namespace Gameplay.Enemies
         [SerializeField] private Material _hitMaterial;
         [SerializeField] private Material _defaultMaterial;
 
-        [Header("SFX clips")] 
-        [SerializeField] private AudioClip _hitAudioClip;
-        
         [Header("References")]
         [SerializeField] private Animator _animator;
         [SerializeField] private SpriteRenderer _spriteRenderer;
-        
+
+        private EnemyStats _enemyStats;
         private CancellationTokenSource _hitEffectCts;
         private readonly string _velocityX = "VelocityX";
         private readonly string _velocityY = "VelocityY";
@@ -42,13 +41,21 @@ namespace Gameplay.Enemies
                 _spriteRenderer.material = _defaultMaterial;
         }
 
+        /// <summary>
+        /// Initializes the reference to EnemyStats for config-driven audio.
+        /// </summary>
+        public void Initialize(EnemyStats enemyStats)
+        {
+            _enemyStats = enemyStats;
+        }
+
         public void PlayHitEffectAndSound()
         {
-            if (_hitAudioClip != null)
+            if (_enemyStats != null && _enemyStats.Config != null && _enemyStats.Config.HitSFX != null)
             {
-                Events_Sound.PlaySound?.Invoke(_hitAudioClip);
+                Events_Sound.PlaySoundWithVolume?.Invoke(_enemyStats.Config.HitSFX, _enemyStats.Config.HitSFXVolume);
             }
-            
+
             if (_hitEffectCts != null)
             {
                 _hitEffectCts.Cancel();
@@ -97,11 +104,10 @@ namespace Gameplay.Enemies
         }
 
 #if UNITY_EDITOR
-        public void EditorSetup(Material hit, Material def, AudioClip hitAudio, Animator anim, SpriteRenderer sr)
+        public void EditorSetup(Material hit, Material def, Animator anim, SpriteRenderer sr)
         {
             _hitMaterial = hit;
             _defaultMaterial = def;
-            _hitAudioClip = hitAudio;
             _animator = anim;
             _spriteRenderer = sr;
         }

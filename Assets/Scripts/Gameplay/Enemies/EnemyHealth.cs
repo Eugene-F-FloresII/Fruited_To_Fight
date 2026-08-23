@@ -2,21 +2,30 @@ using UnityEngine;
 using Shared.Events;
 using Obvious.Soap;
 using System;
+using Data;
 
 namespace Gameplay.Enemies
 {
     public class EnemyHealth : MonoBehaviour
     {
-        [SerializeField] private AudioClip _deathAudioClip;
-        
+        private EnemyStats _enemyStats;
+
         private float _currentHealth;
         private float _maxHealth;
-        
+
         public Action OnDeathEvent { get; set; }
         public Action OnHitEvent { get; set; }
 
         public float CurrentHealth => _currentHealth;
         public float MaxHealth => _maxHealth;
+
+        /// <summary>
+        /// Initializes the reference to EnemyStats for config-driven audio.
+        /// </summary>
+        public void Initialize(EnemyStats enemyStats)
+        {
+            _enemyStats = enemyStats;
+        }
 
         public void InitializeHealth(float maxHealth)
         {
@@ -39,18 +48,14 @@ namespace Gameplay.Enemies
 
         public void KillEnemy()
         {
-            if (_deathAudioClip != null)
+            if (_enemyStats != null && _enemyStats.Config != null && _enemyStats.Config.DeathSFX != null)
             {
-                Events_Sound.PlaySound?.Invoke(_deathAudioClip);
+                Events_Sound.PlaySoundWithVolume?.Invoke(_enemyStats.Config.DeathSFX, _enemyStats.Config.DeathSFXVolume);
             }
             Events_Seed.OnEnemyDeath?.Invoke(transform);
             Events_Enemy.OnEnemyDeath?.Invoke();
             OnDeathEvent?.Invoke();
             gameObject.SetActive(false);
         }
-        
-#if UNITY_EDITOR
-        public void SetDeathAudioClip(AudioClip clip) => _deathAudioClip = clip;
-#endif
     }
 }

@@ -11,6 +11,8 @@ namespace Gameplay.Enemies
 
         private EnemyConfig _enemyConfig;
         private bool _hasRuntimeStats;
+
+        public EnemyConfig Config => _enemyConfig;
         
         public float MaxHealth { get; private set; }
         public float CurrentDamage { get; private set; }

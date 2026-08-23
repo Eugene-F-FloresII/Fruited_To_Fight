@@ -20,3 +20,7 @@ MonoBehaviour:
   EnemyMoveSpeed: 3
   EnemyAtkSpeed: 10
   EnemyKnockbackForce: 12
+  DeathSFX: {fileID: 8300000, guid: 2fa393a65a257194b9480846fe0de7b5, type: 3}
+  DeathSFXVolume: 0.7
+  HitSFX: {fileID: 8300000, guid: 559c4182b25e92c4885555ae5153643e, type: 3}
+  HitSFXVolume: 0.7
