@@ -15,5 +15,6 @@ namespace Data
         public float LightningStrikeDelay = 0.5f;
         public AssetReferenceGameObject VFXPrefabReference;
         public AssetReferenceGameObject EnemyVisualPrefabReference;
+        public AssetReferenceGameObject HitEffectPrefab;
     }
 }

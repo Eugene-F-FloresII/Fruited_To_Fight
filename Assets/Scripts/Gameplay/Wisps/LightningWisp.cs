@@ -127,6 +127,11 @@ namespace Gameplay.Wisps
                 }
 
                 currentTarget.TakeDamage(_wispConfig.Damage, DamageSourceInfo.FromWisp(WispType.Lightning));
+                
+                if (_wispConfig.HitEffectPrefab != null && _wispConfig.HitEffectPrefab.RuntimeKeyIsValid())
+                {
+                    Shared.Events.Events_VFX.SpawnVFXEvent?.Invoke(_wispConfig.HitEffectPrefab, currentTarget.transform.position, Quaternion.identity, currentTarget.transform.localScale, 1f);
+                }
             }
 
             // Get visual from pool and set it up

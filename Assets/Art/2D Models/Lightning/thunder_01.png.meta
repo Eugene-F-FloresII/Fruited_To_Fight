@@ -1,0 +1,675 @@
+fileFormatVersion: 2
+guid: a6db209536e77f34ea9da7c89dd47f4e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4253910258267176132
+    second: thunder_01_0
+  - first:
+      213: -3387088492607352290
+    second: thunder_01_1
+  - first:
+      213: -2196772218230530041
+    second: thunder_01_2
+  - first:
+      213: 6776047938903677786
+    second: thunder_01_3
+  - first:
+      213: 5734708093334837105
+    second: thunder_01_4
+  - first:
+      213: 8182929581082814437
+    second: thunder_01_5
+  - first:
+      213: 1724700430534773489
+    second: thunder_01_6
+  - first:
+      213: 6420708219196270109
+    second: thunder_01_7
+  - first:
+      213: 2856945423553913275
+    second: thunder_01_8
+  - first:
+      213: 4822203660768076435
+    second: thunder_01_9
+  - first:
+      213: 8104308724643087925
+    second: thunder_01_10
+  - first:
+      213: 6648224005944173723
+    second: thunder_01_11
+  - first:
+      213: -7125441790884685931
+    second: thunder_01_12
+  - first:
+      213: -3920912199978675840
+    second: thunder_01_13
+  - first:
+      213: -4882021127337184072
+    second: thunder_01_14
+  - first:
+      213: -9118995928558481848
+    second: thunder_01_15
+  - first:
+      213: 6608033612658623160
+    second: thunder_01_16
+  - first:
+      213: -2744357439954155170
+    second: thunder_01_17
+  - first:
+      213: 7795984630441279442
+    second: thunder_01_18
+  - first:
+      213: -608096252586806731
+    second: thunder_01_19
+  - first:
+      213: -5239204311725051485
+    second: thunder_01_20
+  - first:
+      213: -3783748993505936051
+    second: thunder_01_21
+  - first:
+      213: -7812500813968836719
+    second: thunder_01_22
+  - first:
+      213: -6622475464287036183
+    second: thunder_01_23
+  - first:
+      213: 8281828057998531999
+    second: thunder_01_24
+  - first:
+      213: -1885915138275296135
+    second: thunder_01_25
+  - first:
+      213: -2427043236719367629
+    second: thunder_01_26
+  - first:
+      213: -8607135874010979916
+    second: thunder_01_27
+  - first:
+      213: -4875821420872938935
+    second: thunder_01_28
+  - first:
+      213: 8219514274175116733
+    second: thunder_01_29
+  - first:
+      213: 4974539693793740294
+    second: thunder_01_30
+  - first:
+      213: -2978530167317325632
+    second: thunder_01_31
+  - first:
+      213: 6389328515114788504
+    second: thunder_01_32
+  - first:
+      213: -8060802846404496817
+    second: thunder_01_33
+  - first:
+      213: -2603336367845270850
+    second: thunder_01_34
+  - first:
+      213: -842652208828956573
+    second: thunder_01_35
+  - first:
+      213: 8276100624484661822
+    second: thunder_01_36
+  - first:
+      213: -2245412034939436557
+    second: thunder_01_37
+  - first:
+      213: 1688312941309109257
+    second: thunder_01_38
+  - first:
+      213: 6956090558066648522
+    second: thunder_01_39
+  - first:
+      213: 2522826271626861901
+    second: thunder_01_40
+  - first:
+      213: -3874393795192932179
+    second: thunder_01_41
+  - first:
+      213: -7857942590497342316
+    second: thunder_01_42
+  - first:
+      213: 2745525871032559494
+    second: thunder_01_43
+  - first:
+      213: 4907829233660769019
+    second: thunder_01_44
+  - first:
+      213: 953862389552920814
+    second: thunder_01_45
+  - first:
+      213: 8502811478485079567
+    second: thunder_01_46
+  - first:
+      213: -6047264681436862456
+    second: thunder_01_47
+  - first:
+      213: -8800645985347535130
+    second: thunder_01_48
+  - first:
+      213: -2810667683996867519
+    second: thunder_01_49
+  - first:
+      213: -6443119091358936966
+    second: thunder_01_50
+  - first:
+      213: 8200732310782023688
+    second: thunder_01_51
+  - first:
+      213: 2669766166371857089
+    second: thunder_01_52
+  - first:
+      213: -6933315507640026088
+    second: thunder_01_53
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 127
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: thunder_01_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c334895882317f4c0800000000000000
+      internalID: -4253910258267176132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_1
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e12535726f4aef0d0800000000000000
+      internalID: -3387088492607352290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_2
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7002ce77e4f7381e0800000000000000
+      internalID: -2196772218230530041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_3
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5b1f5b03bb590e50800000000000000
+      internalID: 6776047938903677786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_4
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 177d7c980a6c59f40800000000000000
+      internalID: 5734708093334837105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_5
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e72a76591b9f8170800000000000000
+      internalID: 8182929581082814437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_6
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fa0df957ed5fe710800000000000000
+      internalID: 1724700430534773489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_7
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d16ef936b10fa1950800000000000000
+      internalID: 6420708219196270109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_8
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb1eb99d9b8e5a720800000000000000
+      internalID: 2856945423553913275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_9
+      rect:
+        serializedVersion: 2
+        x: 1134
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3926baa2ea8ebe240800000000000000
+      internalID: 4822203660768076435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_10
+      rect:
+        serializedVersion: 2
+        x: 1260
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 536437ab8d9487070800000000000000
+      internalID: 8104308724643087925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_11
+      rect:
+        serializedVersion: 2
+        x: 1386
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b94e685728c334c50800000000000000
+      internalID: 6648224005944173723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_12
+      rect:
+        serializedVersion: 2
+        x: 1512
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 597589281785d1d90800000000000000
+      internalID: -7125441790884685931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_13
+      rect:
+        serializedVersion: 2
+        x: 1638
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08196c4c02f1699c0800000000000000
+      internalID: -3920912199978675840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_14
+      rect:
+        serializedVersion: 2
+        x: 1764
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b47d1796a39f3cb0800000000000000
+      internalID: -4882021127337184072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunder_01_15
+      rect:
+        serializedVersion: 2
+        x: 1890
+        y: 1
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84ec90a7481d27180800000000000000
+      internalID: -9118995928558481848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 826195bbf02d8524aa9581e2d1c708d0
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":126.0,"y":126.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      thunder_01_0: -4253910258267176132
+      thunder_01_1: -3387088492607352290
+      thunder_01_10: 8104308724643087925
+      thunder_01_11: 6648224005944173723
+      thunder_01_12: -7125441790884685931
+      thunder_01_13: -3920912199978675840
+      thunder_01_14: -4882021127337184072
+      thunder_01_15: -9118995928558481848
+      thunder_01_2: -2196772218230530041
+      thunder_01_3: 6776047938903677786
+      thunder_01_4: 5734708093334837105
+      thunder_01_5: 8182929581082814437
+      thunder_01_6: 1724700430534773489
+      thunder_01_7: 6420708219196270109
+      thunder_01_8: 2856945423553913275
+      thunder_01_9: 4822203660768076435
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

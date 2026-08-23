@@ -48,7 +48,7 @@ namespace Collection
         /// </summary>
         private async UniTaskVoid TriggerLightningStrikeAsync()
         {
-            Events_VFX.SpawnVFXEvent?.Invoke(Config.VFXPrefabReference, Enemy.transform.position, Quaternion.identity, 1f + Config.LightningStrikeDelay);
+            Events_VFX.SpawnVFXEvent?.Invoke(Config.VFXPrefabReference, Enemy.transform.position, Quaternion.identity, Vector3.one, 1f + Config.LightningStrikeDelay);
 
             try
             {
@@ -69,6 +69,11 @@ namespace Collection
                 if (hitCollider.TryGetComponent(out EnemyController enemy))
                 {
                     enemy.TakeDamage(damage, DamageSourceInfo.FromAffliction(AfflictionType.Lightning));
+                    
+                    if (Config.HitEffectPrefab != null && Config.HitEffectPrefab.RuntimeKeyIsValid())
+                    {
+                        Events_VFX.SpawnVFXEvent?.Invoke(Config.HitEffectPrefab, enemy.transform.position, Quaternion.identity, enemy.transform.localScale, 1f);
+                    }
                 }
             }
         }

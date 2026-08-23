@@ -21,5 +21,11 @@ MonoBehaviour:
   WispType: 3
   AttackSfx: {fileID: 8300000, guid: fae083ee0bd507544993e2b1fccd8b37, type: 3}
   AttackSfxVolume: 2
+  HitEffectPrefab:
+    m_AssetGUID: b8b2fa6761157ed409647675e6148c5a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   Afflictions:
   - {fileID: 11400000, guid: 1db174a37fc01bb41a7ea04f481dabdd, type: 2}

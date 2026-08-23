@@ -30,3 +30,9 @@ MonoBehaviour:
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
+  HitEffectPrefab:
+    m_AssetGUID: b8b2fa6761157ed409647675e6148c5a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0

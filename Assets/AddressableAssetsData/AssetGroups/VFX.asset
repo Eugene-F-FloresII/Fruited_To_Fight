@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8b2fa6761157ed409647675e6148c5a
+    m_Address: Assets/Prefabs/Afflictions/LightingOnHitEffect.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3f98cc3d43238a947aa6a142a2b489e0, type: 2}
   m_SchemaSet:

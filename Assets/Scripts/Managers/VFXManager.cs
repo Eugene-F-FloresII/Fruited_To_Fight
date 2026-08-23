@@ -37,13 +37,13 @@ namespace Managers
             _vfxPools.Clear();
         }
 
-        private void OnSpawnVFX(AssetReferenceGameObject assetRef, Vector3 position, Quaternion rotation, float duration)
+        private void OnSpawnVFX(AssetReferenceGameObject assetRef, Vector3 position, Quaternion rotation, Vector3 scale, float duration)
         {
             if (assetRef == null || !assetRef.RuntimeKeyIsValid()) return;
-            SpawnVFXAsyncOPAddress(assetRef, position, rotation, duration).Forget();
+            SpawnVFXAsyncOPAddress(assetRef, position, rotation, scale, duration).Forget();
         }
 
-        private async UniTaskVoid SpawnVFXAsyncOPAddress(AssetReferenceGameObject assetRef, Vector3 position, Quaternion rotation, float duration)
+        private async UniTaskVoid SpawnVFXAsyncOPAddress(AssetReferenceGameObject assetRef, Vector3 position, Quaternion rotation, Vector3 scale, float duration)
         {
             string key = assetRef.RuntimeKey.ToString();
 
@@ -75,6 +75,7 @@ namespace Managers
             GameObject vfxInstance = _vfxPools[key].Get();
             vfxInstance.transform.position = position;
             vfxInstance.transform.rotation = rotation;
+            vfxInstance.transform.localScale = scale;
 
             DespawnVFXAsyncOP(key, vfxInstance, duration).Forget();
         }

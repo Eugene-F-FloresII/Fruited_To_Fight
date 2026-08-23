@@ -24,6 +24,9 @@ namespace Data
         [Header("Sound Settings")]
         public AudioClip AttackSfx;
         [Range(0f, 2f)] public float AttackSfxVolume = 1f;
+
+        [Header("VFX")]
+        public UnityEngine.AddressableAssets.AssetReferenceGameObject HitEffectPrefab;
         
         [Header("Afflictions")]
         public List<AfflictionConfig> Afflictions;
