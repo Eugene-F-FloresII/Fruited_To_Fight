@@ -31,27 +31,35 @@ namespace Managers
         private void OnEnable()
         {
             Events_Sound.PlaySound += OnPlaySound;
+            Events_Sound.PlaySoundWithVolume += OnPlaySoundWithVolume;
         }
 
         private void OnDisable()
         {
             Events_Sound.PlaySound -= OnPlaySound;
+            Events_Sound.PlaySoundWithVolume -= OnPlaySoundWithVolume;
         }
 
         private void OnPlaySound(AudioClip clip)
         {
             if (clip == null) return;
-            PlaySoundAsync(clip, this.GetCancellationTokenOnDestroy()).Forget();
+            PlaySoundAsync(clip, 1f, this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        private async UniTaskVoid PlaySoundAsync(AudioClip clip, System.Threading.CancellationToken cancellationToken)
+        private void OnPlaySoundWithVolume(AudioClip clip, float volumeMult)
+        {
+            if (clip == null) return;
+            PlaySoundAsync(clip, volumeMult, this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        private async UniTaskVoid PlaySoundAsync(AudioClip clip, float volumeMult, System.Threading.CancellationToken cancellationToken)
         {
             AudioSource source = GetSource();
             
             // Randomize properties
             source.clip = clip;
             source.pitch = Random.Range(_minPitch, _maxPitch);
-            source.volume = Random.Range(_minVolume, _maxVolume);
+            source.volume = Random.Range(_minVolume, _maxVolume) * volumeMult;
             
             source.gameObject.SetActive(true);
             source.Play();

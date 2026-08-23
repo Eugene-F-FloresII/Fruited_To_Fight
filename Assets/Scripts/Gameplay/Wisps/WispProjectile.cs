@@ -33,6 +33,10 @@ namespace Gameplay.Wisps
                 if (target != null)
                 {
                     _lastFireTime = Time.time;
+                    if (_wispConfig.AttackSfx != null)
+                    {
+                        Shared.Events.Events_Sound.PlaySoundWithVolume?.Invoke(_wispConfig.AttackSfx, _wispConfig.AttackSfxVolume);
+                    }
                     FireProjectile(target);
                 }
                 else

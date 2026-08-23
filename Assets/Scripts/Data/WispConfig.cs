@@ -21,6 +21,9 @@ namespace Data
         public float ProjectileSpeed;
         public WispType WispType;
         
+        [Header("Sound Settings")]
+        public AudioClip AttackSfx;
+        [Range(0f, 2f)] public float AttackSfxVolume = 1f;
         
         [Header("Afflictions")]
         public List<AfflictionConfig> Afflictions;

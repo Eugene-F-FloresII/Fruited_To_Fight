@@ -19,5 +19,7 @@ MonoBehaviour:
   AtkSpeed: 0.5
   ProjectileSpeed: 20
   WispType: 3
+  AttackSfx: {fileID: 8300000, guid: fae083ee0bd507544993e2b1fccd8b37, type: 3}
+  AttackSfxVolume: 2
   Afflictions:
   - {fileID: 11400000, guid: 1db174a37fc01bb41a7ea04f481dabdd, type: 2}
