@@ -31,7 +31,7 @@ namespace Data.Upgrades
             float resultRange;
           
             resultDamage = (damageValue * GetMultiplier()) - damageValue;
-            resultAtkSpeed = (atkSpeedValue * GetMultiplier()) - atkSpeedValue;
+            resultAtkSpeed = (atkSpeedValue / GetMultiplier()) - atkSpeedValue;
             resultProjectileSpeed = (projectileSpeedValue * GetMultiplier()) - projectileSpeedValue;
             resultRange = (rangeValue * GetMultiplier()) - rangeValue;
         
