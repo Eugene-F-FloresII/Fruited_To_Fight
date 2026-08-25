@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2b2c867d04f28c4ba3621783a5652ef, type: 3}
+  m_Name: FireWisp
+  m_EditorClassIdentifier: Assembly-CSharp::Data.WispConfig
+  WispPrefab: {fileID: 2335026433865752761, guid: b5ae1a76e96589742b7e281098194c42, type: 3}
+  WispLevel: {fileID: 11400000, guid: 61a5f083ed51b624a83280957bcd0443, type: 2}
+  Damage: 20
+  Range: 6
+  AtkSpeed: 1.2
+  ProjectileSpeed: 20
+  WispType: 0
+  AttackSfx: {fileID: 8300000, guid: 47be42555ce790a4983d5415ae64881a, type: 3}
+  AttackSfxVolume: 1.5
+  HitEffectPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Afflictions:
+  - {fileID: 11400000, guid: 43ddac93c3704fb42b1d6995d7ab4909, type: 2}
