@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fa12ce5b8904504da83f6aa4447efd6
+    m_Address: Assets/Prefabs/AfflictionVFX/FireExplosionVFX.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2fbb95db9b0005940b50e937c6980256
     m_Address: Assets/Prefabs/Afflictions/BurnAfflictionEnemy.prefab
     m_ReadOnly: 0

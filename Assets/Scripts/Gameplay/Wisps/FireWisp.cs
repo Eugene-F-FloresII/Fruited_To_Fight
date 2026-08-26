@@ -16,6 +16,9 @@ namespace Gameplay.Wisps
         [SerializeField, Range(0.1f, 1f)] private float _aoeRadiusPercentage = 0.2f;
         [SerializeField] private float _arcHeightMultiplier = 0.5f;
         [SerializeField] private GameObject _projectilePrefab;
+        [SerializeField] private UnityEngine.AddressableAssets.AssetReferenceGameObject _explosionPrefab;
+        [SerializeField] private float _explosionDuration = 0.5f;
+        [SerializeField] private float _explosionScaleMultiplier = 1.25f;
         
         private CancellationTokenSource _cts;
         private ObjectPool<GameObject> _projectilePool;
@@ -175,15 +178,16 @@ namespace Gameplay.Wisps
                 
                 if (token.IsCancellationRequested) return;
 
-                // Explosion logic
-                if (_wispConfig.HitEffectPrefab != null && _wispConfig.HitEffectPrefab.RuntimeKeyIsValid())
-                {
-                    Events_VFX.SpawnVFXEvent?.Invoke(_wispConfig.HitEffectPrefab, targetPosition, Quaternion.identity, Vector3.one, 1f);
-                }
-
-                // AoE Damage
+                // AoE Explosion Radius
                 float aoeRadius = _wispConfig.Range * _aoeRadiusPercentage;
                 
+                // Spawn giant Mortar Explosion VFX
+                if (_explosionPrefab != null && _explosionPrefab.RuntimeKeyIsValid())
+                {
+                    Vector3 explosionScale = Vector3.one * (aoeRadius * 2f * _explosionScaleMultiplier);
+                    Events_VFX.SpawnVFXEvent?.Invoke(_explosionPrefab, targetPosition, Quaternion.identity, explosionScale, _explosionDuration);
+                }
+
                 // Use OverlapCircleNonAlloc for performance
                 int hitCount = Physics2D.OverlapCircleNonAlloc(targetPosition, aoeRadius, _overlapResults);
                 
@@ -193,6 +197,12 @@ namespace Gameplay.Wisps
                     {
                         if (enemy.gameObject.activeInHierarchy)
                         {
+                            // Spawn tiny Enemy Hit Spark directly on the hit enemy
+                            if (_wispConfig.HitEffectPrefab != null && _wispConfig.HitEffectPrefab.RuntimeKeyIsValid())
+                            {
+                                Events_VFX.SpawnVFXEvent?.Invoke(_wispConfig.HitEffectPrefab, enemy.transform.position, Quaternion.identity, Vector3.one, 1f);
+                            }
+
                             if (_wispConfig.Afflictions != null)
                             {
                                 foreach (var affliction in _wispConfig.Afflictions)

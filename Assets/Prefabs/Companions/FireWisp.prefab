@@ -113,9 +113,17 @@ MonoBehaviour:
   _circleCollider2D: {fileID: 2043531113609662803}
   EnemyInRange: []
   EnemyAlreadyHit: []
-  _aoeRadiusPercentage: 0.2
+  _aoeRadiusPercentage: 0.3
   _arcHeightMultiplier: 0.5
   _projectilePrefab: {fileID: 5432684180257592977, guid: 8d202fd058c7c544a8341a4a4e83117e, type: 3}
+  _explosionPrefab:
+    m_AssetGUID: 1fa12ce5b8904504da83f6aa4447efd6
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  _explosionDuration: 1
+  _explosionScaleMultiplier: 1.5
 --- !u!1 &2335026433865752761
 GameObject:
   m_ObjectHideFlags: 0
