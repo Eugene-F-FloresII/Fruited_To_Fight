@@ -114,8 +114,8 @@ MonoBehaviour:
   EnemyInRange: []
   EnemyAlreadyHit: []
   _aoeRadiusPercentage: 0.2
-  _meteorVisualPrefab: {fileID: 1294915752174635233, guid: 4454c89532acd334d999f5dc1651ad8c, type: 3}
-  _spawnOffset: {x: 3, y: 5}
+  _arcHeightMultiplier: 0.5
+  _projectilePrefab: {fileID: 5432684180257592977, guid: 8d202fd058c7c544a8341a4a4e83117e, type: 3}
 --- !u!1 &2335026433865752761
 GameObject:
   m_ObjectHideFlags: 0

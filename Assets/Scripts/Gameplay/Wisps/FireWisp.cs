@@ -14,24 +14,26 @@ namespace Gameplay.Wisps
     {
         [Header("Fire Wisp Settings")]
         [SerializeField, Range(0.1f, 1f)] private float _aoeRadiusPercentage = 0.2f;
-        [SerializeField] private GameObject _meteorVisualPrefab;
-        [SerializeField] private Vector2 _spawnOffset = new Vector2(3f, 5f);
+        [SerializeField] private float _arcHeightMultiplier = 0.5f;
+        [SerializeField] private GameObject _projectilePrefab;
         
         private CancellationTokenSource _cts;
-        private ObjectPool<GameObject> _meteorPool;
+        private ObjectPool<GameObject> _projectilePool;
         private static readonly Collider2D[] _overlapResults = new Collider2D[20];
-        private readonly System.Collections.Generic.List<ActiveMeteor> _activeMeteors = new System.Collections.Generic.List<ActiveMeteor>();
+        private readonly System.Collections.Generic.List<ActiveProjectile> _activeProjectiles = new System.Collections.Generic.List<ActiveProjectile>();
 
-        private class ActiveMeteor
+        private class ActiveProjectile
         {
-            public GameObject MeteorObj;
+            public GameObject ProjectileObj;
+            public Vector3 StartPos;
             public Vector3 TargetPos;
+            public float Distance;
         }
 
         private void Awake()
         {
-            _meteorPool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(_meteorVisualPrefab),
+            _projectilePool = new ObjectPool<GameObject>(
+                createFunc: () => Instantiate(_projectilePrefab),
                 actionOnGet: (obj) => obj.SetActive(true),
                 actionOnRelease: (obj) => obj.SetActive(false),
                 actionOnDestroy: (obj) => Destroy(obj),
@@ -55,21 +57,20 @@ namespace Gameplay.Wisps
             _cts?.Dispose();
         }
 
-        private async UniTask AnimateMeteorAsync(GameObject meteor, Vector3 targetPos, CancellationToken token)
+        private async UniTask AnimateProjectileAsync(GameObject projectile, Vector3 startPos, Vector3 targetPos, float distance, CancellationToken token)
         {
             try
             {
-                Vector3 startPos = meteor.transform.position;
                 float duration = 1f; // Default duration
                 
                 // Calculate duration based on distance and ProjectileSpeed (avoiding divide by zero)
                 if (_wispConfig != null && _wispConfig.ProjectileSpeed > 0)
                 {
-                    float distance = Vector3.Distance(startPos, targetPos);
                     duration = distance / _wispConfig.ProjectileSpeed;
                 }
                 
                 float elapsed = 0f;
+                Vector3 previousPos = startPos;
 
                 while (elapsed < duration)
                 {
@@ -78,13 +79,29 @@ namespace Gameplay.Wisps
                     elapsed += Time.deltaTime;
                     float t = Mathf.Clamp01(elapsed / duration);
                     
-                    meteor.transform.position = Vector3.Lerp(startPos, targetPos, t);
+                    // Linear lerp for base position
+                    Vector3 currentPos = Vector3.Lerp(startPos, targetPos, t);
+                    
+                    // Add arc height using a sine wave
+                    float arc = Mathf.Sin(t * Mathf.PI) * distance * _arcHeightMultiplier;
+                    currentPos.y += arc;
+                    
+                    projectile.transform.position = currentPos;
+                    
+                    // Rotate to face travel direction
+                    Vector2 direction = (currentPos - previousPos).normalized;
+                    if (direction != Vector2.zero)
+                    {
+                        projectile.transform.right = direction; // Assuming fireball sprite faces RIGHT by default.
+                    }
+                    
+                    previousPos = currentPos;
                     
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
                 }
                 
                 // Ensure it reaches exactly the target
-                meteor.transform.position = targetPos;
+                projectile.transform.position = targetPos;
             }
             catch (OperationCanceledException)
             {
@@ -92,9 +109,9 @@ namespace Gameplay.Wisps
             }
             finally
             {
-                if (meteor != null)
+                if (projectile != null)
                 {
-                    _meteorPool.Release(meteor);
+                    _projectilePool.Release(projectile);
                 }
             }
         }
@@ -127,31 +144,34 @@ namespace Gameplay.Wisps
             _cts?.Dispose();
             _cts = new CancellationTokenSource();
             
-            // Execute the meteor drop sequence
-            DropMeteorAsync(target, _cts.Token).Forget();
+            // Execute the mortar firing sequence
+            FireMortarAsync(target, _cts.Token).Forget();
         }
         
-        private async UniTask DropMeteorAsync(EnemyController target, CancellationToken token)
+        private async UniTask FireMortarAsync(EnemyController target, CancellationToken token)
         {
             if (target == null || token.IsCancellationRequested || _wispConfig == null) return;
             
+            Vector3 startPosition = transform.position;
             Vector3 targetPosition = target.transform.position;
-            Vector3 spawnPosition = targetPosition + (Vector3)_spawnOffset;
+            float distance = Vector3.Distance(startPosition, targetPosition);
             
-            GameObject meteor = _meteorPool.Get();
-            meteor.transform.position = spawnPosition;
+            GameObject projectile = _projectilePool.Get();
+            projectile.transform.position = startPosition;
             
-            // Face the target
-            Vector2 direction = (targetPosition - spawnPosition).normalized;
-            meteor.transform.up = direction; // Assuming meteor sprite faces UP by default. Change to .right if it faces right.
+            ActiveProjectile activeDrop = new ActiveProjectile { 
+                ProjectileObj = projectile, 
+                StartPos = startPosition,
+                TargetPos = targetPosition,
+                Distance = distance
+            };
             
-            ActiveMeteor activeDrop = new ActiveMeteor { MeteorObj = meteor, TargetPos = targetPosition };
-            _activeMeteors.Add(activeDrop);
+            _activeProjectiles.Add(activeDrop);
 
             try
             {
-                // Wait for meteor to hit the ground
-                await AnimateMeteorAsync(meteor, targetPosition, token);
+                // Wait for mortar to hit the ground
+                await AnimateProjectileAsync(projectile, startPosition, targetPosition, distance, token);
                 
                 if (token.IsCancellationRequested) return;
 
@@ -189,7 +209,7 @@ namespace Gameplay.Wisps
             }
             finally
             {
-                _activeMeteors.Remove(activeDrop);
+                _activeProjectiles.Remove(activeDrop);
             }
         }
         
@@ -205,25 +225,36 @@ namespace Gameplay.Wisps
 
         private void OnDrawGizmos()
         {
-            if (_wispConfig == null || _activeMeteors == null || _activeMeteors.Count == 0) return;
+            if (_wispConfig == null || _activeProjectiles == null || _activeProjectiles.Count == 0) return;
 
             float aoeRadius = _wispConfig.Range * _aoeRadiusPercentage;
 
-            foreach (var active in _activeMeteors)
+            foreach (var active in _activeProjectiles)
             {
-                if (active.MeteorObj != null && active.MeteorObj.activeInHierarchy)
+                if (active.ProjectileObj != null && active.ProjectileObj.activeInHierarchy)
                 {
-                    // Draw path from meteor to target
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawLine(active.MeteorObj.transform.position, active.TargetPos);
-                    
                     // Draw AoE blast zone at the target position
                     Gizmos.color = new Color(1f, 0.5f, 0f, 0.5f); // Orange
                     Gizmos.DrawWireSphere(active.TargetPos, aoeRadius);
                     
-                    // Draw a solid sphere for the meteor itself
+                    // Draw a solid sphere for the projectile itself
                     Gizmos.color = Color.red;
-                    Gizmos.DrawSphere(active.MeteorObj.transform.position, 0.2f);
+                    Gizmos.DrawSphere(active.ProjectileObj.transform.position, 0.2f);
+                    
+                    // Draw the projected arc trajectory
+                    Gizmos.color = Color.red;
+                    int segments = 20;
+                    Vector3 previousPoint = active.StartPos;
+                    for (int i = 1; i <= segments; i++)
+                    {
+                        float t = i / (float)segments;
+                        Vector3 point = Vector3.Lerp(active.StartPos, active.TargetPos, t);
+                        float arc = Mathf.Sin(t * Mathf.PI) * active.Distance * _arcHeightMultiplier;
+                        point.y += arc;
+                        
+                        Gizmos.DrawLine(previousPoint, point);
+                        previousPoint = point;
+                    }
                 }
             }
         }
